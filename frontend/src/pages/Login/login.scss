@@ -1,0 +1,51 @@
+@import '../../Misc/colors.scss';
+
+.centered-container {
+    position: absolute;
+    left: 40%;
+    top: 30%;
+    min-width: 389px;
+    min-height: 389px;
+    background-color: rgb(218, 215, 205, 0.5);
+    border-radius: 12px;
+    box-shadow: 0px 0px 91px rgba(0, 0, 0, 0.14);
+}
+
+.text-centered {
+    text-align: center;
+}
+
+.silenced {
+    font-size: 9px;
+    line-height: 9px;
+    font-weight: 400;
+    align-content: flex-start;
+}
+
+.login-form {
+    margin: 75px 55px 55px 55px;
+}
+
+.login-btn {
+    font-family: 'Montserrat SemiBold';
+    font-size: 14px;
+    border-radius: 6px;
+    width: 100%;
+    letter-spacing: 0.1;
+    text-transform: none;
+    margin: 30px auto 15px auto;
+}
+
+.login-btn:hover {
+    background-color: $G3Hover;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: $TextColor;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    font-family: 'Montserrat SemiBold';
+    font-size: 11px;
+}
