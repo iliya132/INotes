@@ -7,7 +7,8 @@
 }
 
 .menu-list {
-    margin-top: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
     list-style: none;
     display: inline-block;
     padding-left: 0;
@@ -30,10 +31,29 @@
     font-weight: bold;
     font-size: 16px;
     float: right;
-    margin-top: 45px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: right;
 }
 
 .nav-link{
     text-decoration: none;
-    color: $TextColor
+    color: $TextColor;
+    user-select: none;
+}
+
+.avatar{
+    border-radius: 11px;
+    width: 44px;
+    height: 44px;
+    background-color: black;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 16px;
+}
+
+.header-row{
+    padding-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 200px;
 }

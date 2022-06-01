@@ -21,6 +21,10 @@ body {
     width: 100%;
 }
 
+.h100{
+    height: 100%;
+}
+
 /*Change text in autofill textbox*/
 input:-webkit-autofill{
     -webkit-text-fill-color: $TextColor !important;

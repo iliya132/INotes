@@ -20,6 +20,7 @@
     line-height: 9px;
     font-weight: 400;
     align-content: flex-start;
+    user-select: none;
 }
 
 .login-form {
@@ -48,4 +49,9 @@
     width: 100%;
     font-family: 'Montserrat SemiBold';
     font-size: 11px;
+    user-select: none;
+}
+
+.login-header{
+    user-select: none;
 }

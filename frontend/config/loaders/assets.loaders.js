@@ -1,11 +1,8 @@
+/* eslint-disable no-undef */
 module.exports = {
-    test: /\.(png|jp(e*)g|svg|gif)$/,
-    use: [
-        {
-            loader: 'file-loader',
-            options: {
-                name: 'images/name.[ext]'
-            }
-        }
-    ]
+    resource: {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        
+    },
 };
