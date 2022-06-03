@@ -1,0 +1,40 @@
+@import "../../Misc/colors.scss";
+
+.search-container{
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    padding: 5px;
+}
+
+.search-field {
+    
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    font-size: 13px;
+    color: $TextColor;
+    line-height: 13px;
+    outline: none;
+    padding-left: 10px;
+    font-size: 12px;
+}
+
+.input-container {
+    width: 100%;
+    display: grid;
+    height: 30px;
+    background-color: rgb(218, 215, 205, 0.8) !important;
+    border-radius: 6px;
+    grid-template-columns: 1fr 50px;
+}
+
+.eye-icon {
+    width: 48px;
+    height: 48px;
+    position:relative;
+    grid-column: 2;
+    margin-top: -8px;
+    cursor: pointer;
+}
+

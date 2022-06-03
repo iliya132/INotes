@@ -1,4 +1,5 @@
 import React, { HTMLInputTypeAttribute } from "react";
+import { Icons } from "../Svg/types";
 
 export default interface IInputProps{
     type: HTMLInputTypeAttribute;
@@ -6,5 +7,6 @@ export default interface IInputProps{
     autocomplete?: 'username' | 'email' | 'password' | 'new-password' | 'current-password';
     error?: string,
     className?: string,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>
+    onChange?: React.ChangeEventHandler<HTMLInputElement>,
+    icon?: Icons
 }

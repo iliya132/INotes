@@ -38,3 +38,12 @@ input:-webkit-autofill:active{
     -webkit-background-clip: text;
     background-clip: text;
 }
+
+.tooltip{
+    border: red;
+    &::after{
+
+       content: "123"
+    }
+
+}
