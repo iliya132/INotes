@@ -1,0 +1,49 @@
+@import './colors.scss';
+@import './fonts.scss';
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: $Background;
+}
+
+body {
+    font-family: Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.row {
+    display: block;
+    width: 100%;
+}
+
+.h100{
+    height: 100%;
+}
+
+/*Change text in autofill textbox*/
+input:-webkit-autofill{
+    -webkit-text-fill-color: $TextColor !important;
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.tooltip{
+    border: red;
+    &::after{
+
+       content: "123"
+    }
+
+}

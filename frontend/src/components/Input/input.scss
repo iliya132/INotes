@@ -1,0 +1,40 @@
+@import '../../Misc/colors.scss';
+
+.input-container {
+    width: 100%;
+    display: grid;
+    height: 30px;
+    grid-template-columns: 1fr 50px;
+    border-bottom: 1px solid $TextColor;
+}
+
+.input-container .input {
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+
+    font-size: 13px;
+    color: $TextColor;
+    line-height: 13px;
+    outline: none;
+}
+
+.eye-icon {
+    width: 48px;
+    height: 48px;
+    position:relative;
+    grid-column: 2;
+    margin-top: -8px;
+    cursor: pointer;
+}
+
+.error-label{
+    color: $Error;
+    font-size: 9px;
+    font-weight: 400;
+}
+
+.input-error{
+    color:$Error !important;
+}

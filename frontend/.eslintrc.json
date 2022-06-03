@@ -21,10 +21,15 @@
     ],
     "rules": {
         "indent": ["error", 4]
+
     },
     "settings": {
         "react": {
             "version": "detect"
         }
+
+    },
+    "globals": {
+        "JSX":true
     }
 }

@@ -1,0 +1,59 @@
+@import "../../Misc/colors.scss";
+
+.favicon-img {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+}
+
+.menu-list {
+    margin-top: auto;
+    margin-bottom: auto;
+    list-style: none;
+    display: inline-block;
+    padding-left: 0;
+}
+
+
+.menu-list >li {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 40px;
+    vertical-align: middle;
+}
+
+.menu-list >li >img{
+    margin: auto auto;
+}
+
+.profile-info {
+    font-weight: bold;
+    font-size: 16px;
+    float: right;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: right;
+}
+
+.nav-link{
+    text-decoration: none;
+    color: $TextColor;
+    user-select: none;
+}
+
+.avatar{
+    border-radius: 11px;
+    width: 44px;
+    height: 44px;
+    background-color: black;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 16px;
+}
+
+.header-row{
+    padding-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+}

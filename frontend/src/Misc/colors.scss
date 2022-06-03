@@ -1,0 +1,13 @@
+$Background: #A3B18A;
+$Background-light: #BAC4A7;
+$Gray: #DAD7CD;
+$G2: #588157;
+$G3: #344E41;
+$G3Hover: #26392F;
+$G4: #344E41;
+$TextColor: #272727;
+$Error: #B41313;
+
+@function GrayTransparent($transparent) {
+    @return rgb(218, 215, 205, $transparent);
+}

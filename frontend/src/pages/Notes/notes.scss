@@ -1,0 +1,38 @@
+@import '../../Misc/colors.scss';
+
+.notes-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-column-gap: 30px;
+    height: 97%;
+}
+
+.notes-nav {
+    background-color: $Background-light;
+    min-height: 100px;
+    border-radius: 9px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+}
+
+.nav-commands {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    padding: 5px;
+}
+
+.notes-list {
+}
+
+.work-field {
+    background-color: $Background-light;
+    min-height: 100px;
+    border-radius: 9px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+}
+
+.plus-icon{
+    margin: auto auto;
+    cursor: pointer;
+}

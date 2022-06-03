@@ -1,30 +1,30 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const styleLoaders = require('./loaders/style.loaders.js')
-const assetsLoaders = require('./loaders/assets.loaders.js')
-const tsLoaders = require('./loaders/typescript.loaders.js')
-const path = require('path')
+/* eslint-disable no-undef */
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const styleLoaders = require('./loaders/style.loaders.js');
+const assetsLoaders = require('./loaders/assets.loaders.js');
+const tsLoaders = require('./loaders/typescript.loaders.js');
+const path = require('path');
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
     mode: isDev ? 'development' : 'production',
     entry: {
-        main: ['./src/index.tsx']
+        main: ['./src/index.tsx'],
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].js',
-        publicPath: '/'
+        publicPath: '/',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', 'jsx', 'json']
+        extensions: ['.ts', '.tsx', '.js', 'jsx', 'json'],
     },
     devServer: {
         port: 3000,
-        historyApiFallback: true
+        historyApiFallback: true,
     },
     devtool: isDev ? 'source-map' : false,
     plugins: [
@@ -32,32 +32,24 @@ module.exports = {
             template: './static/index.html',
             minify: {
                 collapseWhitespace: !isDev,
-                removeComments: !isDev
-            }
+                removeComments: !isDev,
+            },
         }),
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin({
             patterns: [
                 {
                     from: path.resolve(__dirname, '../static/assets'),
-                    to: path.resolve(__dirname, '../dist')
+                    to: path.resolve(__dirname, '../dist'),
                 },
                 {
                     from: path.resolve(__dirname, '../manifest.json'),
-                    to: path.resolve(__dirname, '../dist')
-                }
-            ]
+                    to: path.resolve(__dirname, '../dist'),
+                },
+            ],
         }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css'
-        })
     ],
     module: {
-        rules: [
-            tsLoaders,
-            styleLoaders.sass,
-            styleLoaders.css,
-            assetsLoaders
-        ]
-    }
-}
+        rules: [tsLoaders, styleLoaders.sass, styleLoaders.css, assetsLoaders.resource],
+    },
+};

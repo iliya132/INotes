@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="eye-open" viewBox="0 0 512 512">
+        <g>
+            <path d="   M256,193.4c-46.4,0-86.8,25.2-108.5,62.6c21.7,37.4,62.1,62.6,108.5,62.6c46.4,0,86.8-25.2,108.5-62.6   C342.8,218.6,302.4,193.4,256,193.4z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="10" />
+            <circle cx="256" cy="256" fill="none" r="37.7" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="10" />
+        </g>
+    </symbol>
+    <symbol id="eye-closed" viewBox="0 0 512 512">
+        <g>
+            <path d="   M261.2,193.4c-46.4,0-86.8,25.2-108.5,62.6c21.7,37.4,62.1,62.6,108.5,62.6c46.4,0,86.8-25.2,108.5-62.6   C348,218.6,307.5,193.4,261.2,193.4z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="10" />
+            <circle cx="261.2" cy="256" fill="none" r="37.7" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="10" />
+            <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="10" x1="152.7" x2="369.6" y1="348.5" y2="170" />
+        </g>
+    </symbol>
+    <symbol id="search" viewBox="-25 -16 50 50">
+        <g clip-path="url(#clip0_35_133)">
+            <path d="M6.05099 0C2.84309 0 0.242065 2.60105 0.242065 5.80893C0.242065 9.01683 2.84309 11.6179 6.05099 11.6179C7.28453 11.6179 8.42856 11.2331 9.36891 10.5777L13.7618 14.9699C13.8015 15.0096 13.8657 15.0096 13.9033 14.9727L14.7309 14.1451C14.7692 14.1068 14.7658 14.0412 14.7282 14.0036L10.3926 9.66807C11.3056 8.64231 11.8599 7.29052 11.8599 5.8089C11.8599 2.60105 9.2589 0 6.05099 0ZM6.05099 10.9345C3.22034 10.9345 0.925463 8.63958 0.925463 5.80893C0.925463 2.97828 3.22032 0.683421 6.05099 0.683421C8.88167 0.683421 11.1765 2.97828 11.1765 5.80893C11.1765 8.63958 8.88164 10.9345 6.05099 10.9345Z" fill="#344E41" />
+        </g>
+        <defs>
+            <clipPath id="clip0_35_133">
+                <rect width="15" height="15" fill="white" />
+            </clipPath>
+        </defs>
+    </symbol>
+    <symbol id="plus" viewBox="0 0 25 25">
+        <path d="M12.5 5.46875V19.5312" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M5.46875 12.5H19.5312" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+    </symbol>
+</svg>
