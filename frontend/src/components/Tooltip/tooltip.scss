@@ -1,32 +1,32 @@
+@use "sass:math";
 @import "../../Misc/colors.scss";
 
-@mixin has-tooltip($tooltip-transition-in-duration: .3s) {
+@mixin has-tooltip($tooltip-transition-in-duration: 0.3s) {
     position: relative;
     // Prevent the tooltip from being clipped by its container.
     overflow: visible;
 
     // Display the tooltip on hover and on focus.
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         .tooltip {
             visibility: visible;
             opacity: 1;
             transform: translate(-10%, 0); // horizontally centered
-            transition:
-                visibility 0s linear 0s,
-                opacity $tooltip-transition-in-duration ease-out 0s,
+            transition: visibility 0s linear 0s, opacity $tooltip-transition-in-duration ease-out 0s,
                 transform $tooltip-transition-in-duration ease-out 0s;
         }
     }
 }
 
 @mixin tooltip(
-        $tooltip-background-color: white,
-        $tooltip-arrow-base: 2em,
-        $tooltip-arrow-length: 1em,
-        $tooltip-border-width: 0,
-        $tooltip-border-color: transparent,
-        $tooltip-transition-out-duration: .3s
-    ) {
+    $tooltip-background-color: white,
+    $tooltip-arrow-base: 2em,
+    $tooltip-arrow-length: 1em,
+    $tooltip-border-width: 0,
+    $tooltip-border-color: transparent,
+    $tooltip-transition-out-duration: 0.3s
+) {
     // Sizing and positioning
     box-sizing: border-box;
     position: absolute;
@@ -42,10 +42,8 @@
     visibility: hidden;
     opacity: 0;
     transform: translate(-10%, $tooltip-arrow-length);
-    transition:
-        visibility 0s linear $tooltip-transition-out-duration,
-        opacity $tooltip-transition-out-duration ease-in 0s,
-        transform $tooltip-transition-out-duration ease-in 0s;
+    transition: visibility 0s linear $tooltip-transition-out-duration,
+        opacity $tooltip-transition-out-duration ease-in 0s, transform $tooltip-transition-out-duration ease-in 0s;
 
     // Disable events.
     pointer-events: none;
@@ -53,14 +51,16 @@
     &::after {
         content: "";
         position: absolute;
-        bottom: 100%; left: 10%;
-        width: 0; height: 0;
+        bottom: 100%;
+        left: 10%;
+        width: 0;
+        height: 0;
         // Draw a triangle.
         border-bottom: ($tooltip-arrow-length - $tooltip-border-width) solid $tooltip-background-color;
-        border-left: ($tooltip-arrow-base / 2 - $tooltip-border-width) solid transparent;
-        border-right: ($tooltip-arrow-base / 2 - $tooltip-border-width) solid transparent;
+        border-left: (math.div($tooltip-arrow-base, 2) - $tooltip-border-width) solid transparent;
+        border-right: (math.div($tooltip-arrow-base, 2) - $tooltip-border-width) solid transparent;
         // Center the triangle.
-        margin-left: ($tooltip-border-width - $tooltip-arrow-base / 2);
+        margin-left: ($tooltip-border-width - math.div($tooltip-arrow-base, 2));
     }
 
     // Specific styles when the tooltip has a border
@@ -70,26 +70,29 @@
         &::before {
             content: "";
             position: absolute;
-            top: 100%; left: 50%;
-            width: 0; height: 0;
+            top: 100%;
+            left: 50%;
+            width: 0;
+            height: 0;
             // Draw another triangle to simulate a border.
             border-top: $tooltip-arrow-length solid $tooltip-border-color;
-            border-left: ($tooltip-arrow-base / 2) solid transparent;
-            border-right: ($tooltip-arrow-base / 2) solid transparent;
+
+            border-left: math.div($tooltip-arrow-base, 2) solid transparent;
+            border-right: math.div($tooltip-arrow-base, 2) solid transparent;
             // Center the triangle.
-            margin-left: ($tooltip-arrow-base / -2);
+            margin-left: math.div($tooltip-arrow-base, -2);
         }
     }
 }
 
 .has-tooltip {
-    @include has-tooltip($tooltip-transition-in-duration: .3s);
+    @include has-tooltip($tooltip-transition-in-duration: 0.3s);
 }
 
 .tooltip {
     min-width: 15em;
-    padding: .5em .75em;
-    box-shadow: 0 .05em .15em rgba(black, .1);
+    padding: 0.5em 0.75em;
+    box-shadow: 0 0.05em 0.15em rgba(black, 0.1);
     font-size: 12px;
 }
 
@@ -98,7 +101,7 @@
         $tooltip-background-color: GrayTransparent(0.9),
         $tooltip-arrow-base: 1.5em,
         $tooltip-arrow-length: 0.6em,
-        $tooltip-transition-out-duration: .2s
+        $tooltip-transition-out-duration: 0.2s
     );
     color: $TextColor;
 }
