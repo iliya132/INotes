@@ -25,5 +25,6 @@ jobs:
     - name: Build
       run: |
         cd frontend
+        npm i -g husky
         npm install
         npm run build
