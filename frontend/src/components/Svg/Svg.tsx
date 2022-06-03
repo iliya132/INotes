@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './Svg.scss';
+import styles from './svg.scss';
 import root from '../../Misc/root.scss';
 import { ICONS_DATA, ISvgProps } from './types';
 import sprite from '../../../static/assets/icons.svg';
-
 
 export function Svg(props: ISvgProps) {
     const { icon, className: externalClassName, height, width, onClick } = props;
