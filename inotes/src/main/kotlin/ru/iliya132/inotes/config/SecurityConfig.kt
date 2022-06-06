@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import ru.iliya132.inotes.security.AuthEntryPoint
+import ru.iliya132.inotes.security.AuthFailureHandler
+import ru.iliya132.inotes.security.AuthSuccessHandler
+import ru.iliya132.inotes.services.security.UserDetailsService
 import javax.sql.DataSource
 
 @Configuration
@@ -19,10 +23,21 @@ class SecurityConfig {
     lateinit var dataSource: DataSource
 
     @Autowired
+    lateinit var userDetailsService: UserDetailsService
+
+    @Autowired
+    lateinit var authenticationEntryPoint: AuthEntryPoint
+
+    @Autowired
+    lateinit var authenticationSuccessHandler: AuthSuccessHandler
+
+    @Autowired
+    lateinit var authenticationFailureHandler: AuthFailureHandler
+
+    @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        auth.jdbcAuthentication()
-            .dataSource(dataSource)
+        auth.userDetailsService(userDetailsService)
     }
 
     @Bean
@@ -30,55 +45,23 @@ class SecurityConfig {
         return BCryptPasswordEncoder()
     }
 
-    @Throws(java.lang.Exception::class)
-    protected fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .antMatchers("/h2-console/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/api*").hasRole("user")
+            .antMatchers("/login*").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
             .and()
             .formLogin()
-        http.csrf()
-            .ignoringAntMatchers("/h2-console/**")
-        http.headers()
-            .frameOptions()
-            .sameOrigin()
+            .successHandler(authenticationSuccessHandler)
+            .failureHandler(authenticationFailureHandler)
+            .loginProcessingUrl("/login")
+            .and().logout().logoutUrl("/logout")
+            .deleteCookies("JSESSIONID")
+        return http.build()
     }
 
-   @Bean
-   @Throws(Exception::class)
-   fun filterChain(http: HttpSecurity): SecurityFilterChain? {
-       http.authorizeRequests()
-           .antMatchers("/h2-console/**")
-           .permitAll()
-           .anyRequest()
-           .authenticated()
-           .and()
-           .formLogin()
-       http.csrf()
-           .ignoringAntMatchers("/h2-console/**")
-       http.headers()
-           .frameOptions()
-           .sameOrigin()
-       return http.build()
-   }
-//
-//
-//    @Bean
-//    fun users(dataSource: DataSource?): UserDetailsManager? {
-//        val user: UserDetails = User.withDefaultPasswordEncoder()
-//            .username("user")
-//            .password("password")
-//            .roles("USER")
-//            .build()
-//        val users = JdbcUserDetailsManager(dataSource)
-//        users.createUser(user)
-//        return users
-//    }
-//
-//    @Bean
-//    fun passwordEncoder(): PasswordEncoder? {
-//        return BCryptPasswordEncoder()
-//    }
 }
