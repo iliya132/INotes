@@ -1,0 +1,12 @@
+inotes:
+  sql:
+    url: jdbc:postgresql://rc1b-enk036iglr1em2qx.mdb.yandexcloud.net:6432/inotes
+    username: iliya132
+    driverClassName: org.postgresql.Driver
+
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.xml
+
+

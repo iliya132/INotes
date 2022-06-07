@@ -1,15 +1,18 @@
 package ru.iliya132.inotes.models
 
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
-    lateinit var userName: String
-    lateinit var password: String
-    var enabled: Boolean = false
+data class User(
+    @Id val id: Long,
+    private val userName: String,
+    private val password: String,
+    private val enabled: Boolean,
+
     @ManyToMany
     @JoinTable(
         name="user_roles",
@@ -18,14 +21,34 @@ class User {
         inverseJoinColumns = [JoinColumn(
             name = "role_id", referencedColumnName = "id")]
     )
-    lateinit var roles: Collection<Role>
+    private val roles: Collection<Role>
+) :UserDetails {
 
-    constructor(){}
-    constructor(id: Long, userName: String, password: String, enabled: Boolean, roles: Collection<Role>) {
-        this.id = id
-        this.userName = userName
-        this.password = password
-        this.enabled = enabled
-        this.roles = roles
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
+    }
+
+    override fun getPassword(): String {
+        return password
+    }
+
+    override fun getUsername(): String {
+        return userName
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isEnabled(): Boolean {
+        return enabled
     }
 }
