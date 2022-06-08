@@ -3,56 +3,99 @@ package ru.iliya132.inotes.controller
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import ru.iliya132.inotes.dto.NoteDTO
 import ru.iliya132.inotes.dto.NotebookDTO
 import ru.iliya132.inotes.dto.NotebookWithNotesDTO
-import ru.iliya132.inotes.models.Note
+import ru.iliya132.inotes.models.User
 import ru.iliya132.inotes.services.NotebookService
+import java.util.*
 
 @RestController
 @RequestMapping("/api/notebook")
 class NotebookController(
+
+
     private val notebookService: NotebookService
 ) {
 
-
-    fun saveNotebook(notebook: NotebookDTO){
-//        notebookService.save(notebook)
+    @PutMapping("/save")
+    fun saveNotebook(notebook: NotebookDTO, authentication: Authentication): ResponseEntity<String> {
+        notebookService.save(notebook)
+        return ResponseEntity.ok().build()
     }
 
     @GetMapping("/")
     fun getNotebooks(authentication: Authentication): List<NotebookWithNotesDTO> {
-//        val currentUser = userManagerService.getUserInfo(authentication)
-//        return notebookService.getNotebooksForUser(currentUser)
-        return listOf()
+        val currentUser = authentication.principal as User
+        return notebookService.getNotebooksForUser(currentUser.id)
     }
 
     @DeleteMapping("/remove/{id}")
-    fun removeNotebook(@PathVariable id: Long, authentication: Authentication) :ResponseEntity<String>{
-//        val currentUser = userManagerService.getUserInfo(authentication)
-//        if(notebookService.isUserOwner(id, currentUser)){
-//            notebookService.remove(id)
-//            return ResponseEntity.ok().build()
-//        }
-        return ResponseEntity.badRequest().build()
+    fun removeNotebook(@PathVariable id: Long, authentication: Authentication): ResponseEntity<String> {
+        return isUserOwnedOrBadRequest(id, authentication) {
+            notebookService.remove(id)
+        }
     }
 
     @PostMapping("/add-note")
-    fun addNote(note: Note){
-
+    fun addNote(note: NoteDTO, authentication: Authentication): ResponseEntity<String> {
+        return isUserOwnedOrBadRequest(note.notebookId, authentication) {
+            notebookService.saveNote(note)
+        }
     }
 
     @PutMapping("/update-note")
-    fun updateNote(note:Note){
-
+    fun updateNote(note: NoteDTO, authentication: Authentication): ResponseEntity<String> {
+        return isUserOwnedOrBadRequest(note.notebookId, authentication) {
+            notebookService.saveNote(note)
+        }
     }
 
     @DeleteMapping("/remove-note/{id}")
-    fun removeNote(@PathVariable id:Long){
-
+    fun removeNote(@PathVariable id: Long, authentication: Authentication): ResponseEntity<String> {
+        val note = notebookService.findNoteById(id)
+        if (note.isPresent) {
+            return isUserOwnedOrBadRequest(note.get().notebook, authentication) {
+                notebookService.removeNote(id)
+            }
+        }
+        return ResponseEntity.badRequest().body("No notes found for $id")
     }
 
     @GetMapping("/get-notes/{notebookId}")
-    fun getNotes(@PathVariable notebookId: Long){
+    fun getNotes(
+        @PathVariable notebookId: Long,
+        authentication: Authentication
+    ): ResponseEntity<kotlin.collections.Collection<NoteDTO>> {
+        return isUserOwnedOrBadRequestWithEntity(notebookId, authentication) {
+            return@isUserOwnedOrBadRequestWithEntity notebookService.getNotes(notebookId)
+        }
+    }
 
+    private fun isUserOwnedOrBadRequest(
+        notebookId: Long,
+        auth: Authentication,
+        action: () -> Unit
+    ): ResponseEntity<String> {
+        val currentUser = auth.principal as User
+        return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
+            action()
+            ResponseEntity.ok().build()
+        } else {
+            ResponseEntity.badRequest().body("Notebook doesn't belong to current user authenticated")
+        }
+    }
+
+    private fun <T : Any> isUserOwnedOrBadRequestWithEntity(
+        notebookId: Long,
+        auth: Authentication,
+        action: () -> T
+    ): ResponseEntity<T> {
+        val currentUser = auth.principal as User
+        return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
+            return ResponseEntity.of(Optional.of(action()))
+        } else {
+            ResponseEntity.badRequest().build()
+        }
     }
 }
