@@ -32,6 +32,7 @@
     "@babel/preset-env": "7.17.12",
     "@babel/preset-react": "7.17.12",
     "@babel/preset-typescript": "7.17.12",
+    "@types/axios": "^0.14.0",
     "@types/react": "18.0.10",
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "5.25.0",
@@ -71,12 +72,15 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.8.2",
+    "axios": "^0.27.2",
     "classnames": "2.3.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-error-boundary": "3.1.4",
     "react-redux": "8.0.1",
     "react-router-dom": "6.3.0",
+    "react-select": "^5.3.2",
+    "reactjs-popup": "^2.0.5",
     "redux-thunk": "2.4.1"
   }
 }

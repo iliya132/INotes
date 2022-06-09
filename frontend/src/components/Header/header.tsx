@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './header.scss';
 import { useSelector } from 'react-redux';
 import { currentUser, isAuth } from '../../store/reducers/authReduces';
+import ContextMenu from '../ContextMenu';
+import { profileActions } from './constants';
+import Popup from 'reactjs-popup';
+import authController from '../../controllers/AuthController';
 
 export function Header() {
     const isAuthenticated = useSelector(isAuth);
     const user = useSelector(currentUser);
+    const [contextVisible, setContextVisible] = useState(false);
+
+    const handleLogout = () => {
+        authController.logout();
+    };
 
     return (
         <>
@@ -35,9 +44,32 @@ export function Header() {
                     </li>
                 </ul>
                 {isAuthenticated ? (
-                    <div className={classNames(styles['profile-info'], styles['nav-link'])}>
-                        {user?.email}
-                        <div className={styles.avatar}></div>
+                    <div
+                        className={classNames(styles['profile-info'], styles['nav-link'])}
+                        onClick={(e) => {
+                            setContextVisible(!contextVisible);
+                            e.stopPropagation();
+                        }}>
+                        <Popup
+                            trigger={
+                                <div>
+                                    <div className={styles['user-name-link']}>{user?.userName}</div>
+                                    <div className={styles.avatar}></div>
+                                </div>
+                            }
+                            mouseLeaveDelay={300}
+                            mouseEnterDelay={0}
+                            arrow={false}
+                            position="bottom left"
+                            className={styles["popup-content"]}>
+                            <div className={styles['context-field']}>
+                                <div className={styles['profile-context-header']}>Профиль</div>
+                                <div className={styles['profile-context-option']}>Редактировать</div>
+                                <div className={styles['profile-context-option']} onClick={handleLogout}>
+                                    Выйти
+                                </div>
+                            </div>
+                        </Popup>
                     </div>
                 ) : (
                     <NavLink to="/login" className={classNames(styles['profile-info'], styles['nav-link'])}>

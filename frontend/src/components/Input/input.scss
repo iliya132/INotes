@@ -33,6 +33,8 @@
     color: $Error;
     font-size: 9px;
     font-weight: 400;
+    overflow-wrap: break-word;
+    max-height: 100%;
 }
 
 .input-error{
