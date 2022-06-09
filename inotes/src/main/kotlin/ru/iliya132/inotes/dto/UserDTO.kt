@@ -11,6 +11,5 @@ data class UserDTO(
     val userName: String,
     @NotNull
     @NotEmpty
-    val password: String,
-    val confirmPassword: String
+    val password: String
 )

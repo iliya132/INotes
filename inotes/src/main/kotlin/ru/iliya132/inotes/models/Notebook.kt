@@ -9,8 +9,8 @@ import javax.persistence.Table
 @Table(name = "notebooks")
 data class Notebook(
     @Id
-    override val id: Long,
-    override val name: String,
-    val owner: Long,
-    val color: String
-) : NamedEntity
+    override val id: Long = 0,
+    override val name: String = "",
+    val owner: Long = 0,
+    val color: String = ""
+) : NamedEntity, java.io.Serializable
