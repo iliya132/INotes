@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.context.annotation.PropertySource
 
 @Configuration
-@Profile("!test")
+@Profile("production")
 @PropertySource("classpath:inotes.secrets.yaml")
 class PropertiesConfig {
 }
