@@ -1,26 +1,29 @@
 import axios from "axios";
 import { REG_EXP_VALIDATE_PASSWORD } from "../Misc/regexp";
-import { auth, authError, validationError } from "../store/reducers/authReduces";
-import { useAppDispatch } from "../store/store.hooks";
+import { auth, authError, logout, validationError } from "../store/reducers/authReduces";
+import { store } from "../store/store";
 import { User } from "../store/types";
 import BaseController from "./base/BaseController";
 import { ValidationResult as ValidationResult } from "./types";
 
 class AuthController extends BaseController {
     private authUrl = this.baseUrl + "auth/";
-    private dispatch = useAppDispatch();
 
     public login(username: string, password: string) {
         var formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        axios.postForm(this.authUrl + "login", formData)
+        axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
             .then(response => {
-                if (response.status !== 200) {
-                    this.dispatch(auth(response.data as User))
+                if (response.status === 200) {
+                    this.getUser();
                 } else {
-                    this.dispatch(authError(response.statusText))
+                    store.dispatch(authError(response.data.message))
                 }
+            })
+            // eslint-disable-next-line no-unused-vars
+            .catch(_ => {
+                store.dispatch(authError("Логин или пароль указаны неверно"))
             });
     }
 
@@ -28,20 +31,40 @@ class AuthController extends BaseController {
         let validity = this.validate(username, password, confirmPassword);
         if (validity.isSucceded) {
             let formData = new FormData();
-            formData.append("username", username);
+            formData.append("userName", username);
             formData.append("password", password);
             axios.postForm(this.authUrl + "register", formData).then(
                 response => {
-                    if (response.status !== 200) {
-                        this.dispatch(auth(response.data as User))
-                    } else {
-                        this.dispatch(authError(response.statusText))
+                    if (response.status === 200) {
+                        store.dispatch(auth(response.data as User))
                     }
                 }
-            );
+            ).catch(reason => {
+                store.dispatch(authError(reason.message))
+            });
         } else {
-            this.dispatch(validationError(validity));
+            store.dispatch(validationError(validity));
         }
+    }
+
+    public getUser() {
+        axios.get(this.authUrl + "user", { withCredentials: true })
+            .then(response => {
+                console.log(response.data)
+                store.dispatch(auth(response.data as User))
+            }).catch(reason => {
+                store.dispatch(authError(reason.message))
+            })
+    }
+
+    public logout() {
+        axios.post(this.authUrl + "logout", null, { withCredentials: true })
+            .then(_ => {
+                store.dispatch(logout());
+            }).catch(reason => {
+                console.error(reason.message);
+                store.dispatch(logout());
+            })
     }
 
     private validate(username: string, password: string, confirmPassword: string): ValidationResult {

@@ -1,12 +1,13 @@
 import { ValidationResult } from "../controllers/types";
 
 export interface User {
-    email: string;
+    userName: string;
     avatar?: string;
+    roles: string[];
 }
 
 export interface AuthState {
-    isAuth: boolean;
+    isAuth?: boolean;
     user?: User;
     error: string;
     validation: ValidationResult;

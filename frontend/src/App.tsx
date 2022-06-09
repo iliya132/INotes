@@ -13,7 +13,7 @@ import { isAuth } from './store/reducers/authReduces';
 export default function App() {
     const isAuthenticated = useSelector(isAuth);
 
-    return (
+    return isAuthenticated === undefined ? null : (
         <Routes>
             <Route
                 path="/"
@@ -23,7 +23,13 @@ export default function App() {
                     </GuardRoute>
                 }></Route>
 
-            <Route path="/home" element={<Home />}></Route>
+            <Route
+                path="/home"
+                element={
+                    <GuardRoute canActivate={!isAuthenticated} redirectTo="/">
+                        <Home />
+                    </GuardRoute>
+                }></Route>
 
             <Route
                 path="/login"

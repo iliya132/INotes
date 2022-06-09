@@ -7,7 +7,10 @@ import ErrorFallback from './pages/ErrorFallback/errorFallback';
 import App from './App';
 import './Misc/root.scss';
 import { store } from './store/store';
+import authController from './controllers/AuthController';
 // import { store } from './store/store';
+
+authController.getUser();
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
