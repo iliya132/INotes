@@ -1,13 +1,12 @@
 package ru.iliya132.inotes
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
+import org.junit.Test
 
-@SpringBootTest
-class InotesApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+class InotesApplicationTests : BaseDbTest() {
 
+    @Test
+    fun contextLoads() {
+    
+    }
 }

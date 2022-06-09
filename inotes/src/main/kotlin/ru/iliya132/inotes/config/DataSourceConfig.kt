@@ -4,11 +4,13 @@ package ru.iliya132.inotes.config
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.jdbc.core.JdbcTemplate
 import javax.sql.DataSource
 
 
 @Configuration
+@Profile("!test")
 class DataSourceConfig {
     @Bean
     fun dataSourceProperties(): DataSourceProperties {
