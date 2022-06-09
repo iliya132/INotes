@@ -25,3 +25,6 @@ create table user_roles
     role_id bigint not null references roles(id),
     primary key (user_id, role_id)
 );
+
+--changeset iliya132:inserted-primary-roles
+insert into roles(name) values ('ROLE_USER'), ('ROLE_ADMIN');

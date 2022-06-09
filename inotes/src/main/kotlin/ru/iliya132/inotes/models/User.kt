@@ -8,21 +8,23 @@ import javax.persistence.*
 @Entity
 @Table(name = "users")
 data class User(
-    @Id val id: Long,
-    private val userName: String,
-    private val password: String,
-    private val enabled: Boolean,
+    @Id val id: Long = 0,
+    private val userName: String = "",
+    private val password: String = "",
+    private val enabled: Boolean = true,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name="user_roles",
+        name = "user_roles",
         joinColumns = [JoinColumn(
-            name = "user_id", referencedColumnName = "id")],
+            name = "user_id", referencedColumnName = "id"
+        )],
         inverseJoinColumns = [JoinColumn(
-            name = "role_id", referencedColumnName = "id")]
+            name = "role_id", referencedColumnName = "id"
+        )]
     )
-    private val roles: Collection<Role>
-) :UserDetails {
+    private val roles: Collection<Role> = listOf()
+) : UserDetails, java.io.Serializable {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
