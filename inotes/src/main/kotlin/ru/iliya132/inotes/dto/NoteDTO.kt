@@ -1,14 +1,15 @@
 package ru.iliya132.inotes.dto
 
+import ru.iliya132.inotes.models.base.BaseEntity
+
 data class NoteDTO(
-		val id: Long,
-		val name: String,
-		val content: String,
-		val notebookId: Long
-                  ) : IValidatedEntity {
-	override fun validate(): Boolean {
-		return name.isNotEmpty() &&
-				content.isNotEmpty() &&
-				notebookId > 0
-	}
+    override val id: Long,
+    val name: String,
+    val content: String,
+    val notebookId: Long
+) : IValidatedEntity, BaseEntity {
+    override fun validate(): Boolean {
+        return name.isNotEmpty() &&
+                content.isNotEmpty()
+    }
 }

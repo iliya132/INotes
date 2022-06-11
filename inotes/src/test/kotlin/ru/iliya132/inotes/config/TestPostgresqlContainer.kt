@@ -15,7 +15,7 @@ class TestPostgresqlContainer : PostgreSQLContainer<TestPostgresqlContainer>("po
     companion object {
         private var container: TestPostgresqlContainer? = null
         fun getInstance(): TestPostgresqlContainer {
-            if (container == null) {
+            if (container==null) {
                 container = TestPostgresqlContainer()
             }
             return container!!
