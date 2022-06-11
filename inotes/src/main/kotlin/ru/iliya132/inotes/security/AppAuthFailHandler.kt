@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletResponse
 
 class AppAuthFailHandler : SimpleUrlAuthenticationFailureHandler() {
 
-    override fun onAuthenticationFailure(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        exception: AuthenticationException?
-    ) {
-        response!!.status = HttpStatus.UNAUTHORIZED.value()
+	override fun onAuthenticationFailure(
+			request: HttpServletRequest?,
+			response: HttpServletResponse?,
+			exception: AuthenticationException?
+	                                    ) {
+		response!!.status = HttpStatus.UNAUTHORIZED.value()
 
-        response.outputStream.println("not authenticated")
+		response.outputStream.print("wrong credentials")
 
-    }
+	}
 }

@@ -10,11 +10,9 @@ import ru.iliya132.inotes.config.TestPostgresqlContainer
 @SpringBootTest
 @ActiveProfiles("test")
 abstract class BaseDbTest {
-
-
-    companion object {
-        @ClassRule
-        @JvmField
-        public var postgreSqlContainer: PostgreSQLContainer<*> = TestPostgresqlContainer.getInstance()
-    }
+	companion object {
+		@ClassRule
+		@JvmField
+		var postgreSqlContainer: PostgreSQLContainer<*> = TestPostgresqlContainer.getInstance()
+	}
 }
