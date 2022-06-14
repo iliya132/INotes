@@ -33,7 +33,13 @@ export function AddComponent() {
                             <Popup trigger={<li>Записную книжку</li>} nested position="bottom left">
                                 <NotebookPopup afterClick={() => close()} />
                             </Popup>
-                            <li onClick={() => {handleNoteCreate(); close();}}>Заметку</li>
+                            <li
+                                onClick={() => {
+                                    handleNoteCreate();
+                                    close();
+                                }}>
+                                Заметку
+                            </li>
                         </ul>
                     </div>
                 );

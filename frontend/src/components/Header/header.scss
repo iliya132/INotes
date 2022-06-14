@@ -1,63 +1,63 @@
 @import '../../Misc/colors.scss';
 
 .favicon-img {
+    display: inline-block;
     width: 50px;
     height: 50px;
-    display: inline-block;
 }
 
 .menu-list {
+    display: inline-block;
     margin-top: auto;
     margin-bottom: auto;
-    list-style: none;
-    display: inline-block;
     padding-left: 0;
+    list-style: none;
 }
 
 .menu-list > li {
     display: inline-block;
-    font-weight: bold;
-    font-size: 20px;
     margin-right: 40px;
+    font-size: 20px;
+    font-weight: bold;
     vertical-align: middle;
 }
 
 .menu-list > li > img {
-    margin: auto auto;
+    margin: auto;
 }
 
 .profile-info {
     display: flex;
-    font-weight: bold;
-    font-size: 16px;
-    float: right;
     margin-top: auto;
     margin-bottom: auto;
+    float: right;
+    font-size: 16px;
+    font-weight: bold;
     text-align: right;
 }
 
 .nav-link {
-    text-decoration: none;
     color: $TextColor;
-    user-select: none;
+    text-decoration: none;
     cursor: pointer;
+    user-select: none;
 }
 
 .avatar {
-    border-radius: 11px;
+    display: inline-flex;
     width: 44px;
     height: 44px;
-    background-color: black;
-    display: inline-flex;
-    float: right;
-    vertical-align: middle;
     margin-left: 16px;
+    float: right;
+    border-radius: 11px;
+    background-color: black;
+    vertical-align: middle;
 }
 
 .header-row {
-    padding-top: 15px;
     display: flex;
     justify-content: space-between;
+    padding-top: 15px;
 }
 
 .user-name-link {
@@ -66,53 +66,56 @@
 }
 
 .context-field {
-    text-align: left;
     padding: 5px 0;
-    background-color: $Gray;
     border: 1px solid $G2;
     border-radius: 6px;
+    background-color: $Gray;
+    text-align: left;
 }
 
 .profile-context-header {
-    font-size: 14px;
-    font-weight: 600;
     display: block;
-    text-align: center;
     margin: 5px auto;
     padding-bottom: 10px;
     border-bottom: 1px solid $G4;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .profile-context-option {
+    margin: 10px auto;
     padding: 5px 15px;
     font-size: 14px;
     font-weight: normal;
-    margin: 10px auto;
     cursor: pointer;
+
     &:hover {
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(200 200 200);
     }
 }
 
 @keyframes anvil {
     0% {
-        transform: scale(1) translateY(0px);
+        transform: scale(1) translateY(0);
         opacity: 0;
-        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        box-shadow: 0 0 0 rgb(241 241 241 / 0%);
     }
+
     1% {
         transform: scale(0.96) translateY(10px);
         opacity: 0;
-        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        box-shadow: 0 0 0 rgb(241 241 241 / 0%);
     }
+
     100% {
-        transform: scale(1) translateY(0px);
+        transform: scale(1) translateY(0);
         opacity: 1;
-        box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+        box-shadow: 0 0 500px rgb(241 241 241 / 0%);
     }
 }
 
 .popup-content {
-    -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+    animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
     animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
 }

@@ -8,30 +8,30 @@
 .search-field {
     width: 100%;
     height: 30px;
-    border: none;
-    background-color: transparent;
-    font-size: 13px;
-    color: $TextColor;
-    line-height: 13px;
-    outline: none;
     padding-left: 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: $TextColor;
+    font-size: 13px;
     font-size: 12px;
+    line-height: 13px;
 }
 
 .input-container {
-    width: 98%;
     display: grid;
-    height: 30px;
-    background-color: rgb(218, 215, 205, 0.8) !important;
-    border-radius: 6px;
     grid-template-columns: 1fr 50px;
+    width: 98%;
+    height: 30px;
+    border-radius: 6px;
+    background-color: rgb(218 215 205 / 80%) !important;
 }
 
 .eye-icon {
-    width: 48px;
-    height: 48px;
     position: relative;
     grid-column: 2;
+    width: 48px;
+    height: 48px;
     margin-top: -8px;
     cursor: pointer;
 }

@@ -1,19 +1,19 @@
 .container {
+    display: grid;
+    grid-template-rows: 1fr 15fr;
     width: 1170px;
     min-width: 80%;
     height: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-rows: 1fr 15fr;
 }
 
 .container-full {
+    display: grid;
+    grid-template-rows: 1fr 15fr;
     width: 100%;
     min-width: 80%;
     height: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-rows: 1fr 15fr;
 }
 
 .header-container {
@@ -24,7 +24,7 @@
 
 .content {
     box-sizing: border-box;
-    padding: 15px;
-    margin: 15px;
     box-sizing: border-box;
+    margin: 15px;
+    padding: 15px;
 }

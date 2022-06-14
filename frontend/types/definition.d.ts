@@ -7,3 +7,8 @@ declare module '*.svg' {
   const content: any;
   export default content;
 }
+
+declare module 'markdown-it-underline' {
+  const value: any;
+  export default value;
+}
