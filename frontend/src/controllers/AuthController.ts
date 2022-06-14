@@ -1,29 +1,33 @@
 import axios from "axios";
+import { Dispatch } from "react";
 import { REG_EXP_VALIDATE_PASSWORD } from "../Misc/regexp";
 import { auth, authError, logout, validationError } from "../store/reducers/authReduces";
 import { store } from "../store/store";
+import { fetchUser } from "../store/thunks/authThunks";
+import { fetchNotesThunk } from "../store/thunks/notesThunks";
 import { User } from "../store/types";
 import BaseController from "./base/BaseController";
 import { ValidationResult as ValidationResult } from "./types";
 
 class AuthController extends BaseController {
     private authUrl = this.baseUrl + "auth/";
+    private dispatchStore = store.dispatch as typeof store.dispatch | Dispatch<any>
 
     public login(username: string, password: string) {
         var formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
+        return axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
                     this.getUser();
                 } else {
-                    store.dispatch(authError(response.data.message))
+                    this.dispatchStore(authError(response.data.message))
                 }
             })
             // eslint-disable-next-line no-unused-vars
             .catch(_ => {
-                store.dispatch(authError("Логин или пароль указаны неверно"))
+                this.dispatchStore(authError("Логин или пароль указаны неверно"))
             });
     }
 
@@ -36,34 +40,29 @@ class AuthController extends BaseController {
             axios.postForm(this.authUrl + "register", formData).then(
                 response => {
                     if (response.status === 200) {
-                        store.dispatch(auth(response.data as User))
+                        this.dispatchStore(auth(response.data as User))
                     }
                 }
             ).catch(reason => {
-                store.dispatch(authError(reason.message))
+                this.dispatchStore(authError(reason.message))
             });
         } else {
-            store.dispatch(validationError(validity));
+            this.dispatchStore(validationError(validity));
         }
     }
 
     public getUser() {
-        axios.get(this.authUrl + "user", { withCredentials: true })
-            .then(response => {
-                console.log(response.data)
-                store.dispatch(auth(response.data as User))
-            }).catch(reason => {
-                store.dispatch(authError(reason.message))
-            })
+        this.dispatchStore(fetchUser())
+        this.dispatchStore(fetchNotesThunk());
     }
 
     public logout() {
-        axios.post(this.authUrl + "logout", null, { withCredentials: true })
+        return axios.post(this.authUrl + "logout", null, { withCredentials: true })
             .then(_ => {
-                store.dispatch(logout());
+                this.dispatchStore(logout());
             }).catch(reason => {
                 console.error(reason.message);
-                store.dispatch(logout());
+                this.dispatchStore(logout());
             })
     }
 
@@ -99,4 +98,3 @@ class AuthController extends BaseController {
 
 const authController = new AuthController();
 export default authController;
-

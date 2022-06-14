@@ -31,8 +31,8 @@
     box-sizing: border-box;
     position: absolute;
     left: 50%;
-    top: 100%; // displayed on bottom
-    margin-bottom: $tooltip-arrow-length;
+    top: 100%; // displayed on top
+    margin-top: $tooltip-arrow-length;
 
     // Text and color properties.
     background-color: $tooltip-background-color;
@@ -70,12 +70,12 @@
         &::before {
             content: "";
             position: absolute;
-            top: 100%;
-            left: 50%;
+            bottom: 100%;
+            left: 10%;
             width: 0;
             height: 0;
             // Draw another triangle to simulate a border.
-            border-top: $tooltip-arrow-length solid $tooltip-border-color;
+            border-bottom: $tooltip-arrow-length solid $tooltip-border-color;
 
             border-left: math.div($tooltip-arrow-base, 2) solid transparent;
             border-right: math.div($tooltip-arrow-base, 2) solid transparent;
@@ -91,17 +91,23 @@
 
 .tooltip {
     min-width: 15em;
-    padding: 0.5em 0.75em;
+    padding: 0.9em 0.1em;
     box-shadow: 0 0.05em 0.15em rgba(black, 0.1);
-    font-size: 12px;
+    font-size: 14px;
+
 }
 
 .tooltip-without-border {
     @include tooltip(
-        $tooltip-background-color: GrayTransparent(0.9),
-        $tooltip-arrow-base: 1.5em,
+        $tooltip-background-color: $Gray,
+        $tooltip-arrow-base: 1.0em,
         $tooltip-arrow-length: 0.6em,
-        $tooltip-transition-out-duration: 0.2s
+        $tooltip-transition-out-duration: 0.2s,
+        $tooltip-border-width: 1,
+        $tooltip-border-color: $G4
     );
+    border: 1px solid $G4;
+    border-radius: 6px;
+    z-index: 999;
     color: $TextColor;
 }

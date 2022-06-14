@@ -1,0 +1,125 @@
+@import '../../Misc/colors.scss';
+
+.work-field {
+    background-color: $Background-light;
+    min-height: 100px;
+    border-radius: 9px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+    display: grid;
+    grid-template-rows: 50px 1fr 50px;
+    padding: 5px 20px;
+}
+
+.workfield-actions {
+    font-size: 18px;
+    font-weight: 500;
+    display: grid;
+    grid-template-columns: 1fr 250px;
+}
+
+.workfield-actions-container {
+    display: flex;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+.workfield-content {
+    border-radius: 2px;
+}
+
+.workfield-buttons {
+    margin-top: 6px;
+    display: flex;
+    margin-left: auto;
+}
+
+.stash-changes-btn {
+    background-color: $Gray;
+    margin-right: 11px;
+    border-radius: 6px;
+    color: $TextColor;
+    text-transform: none;
+    &:hover {
+        background-color: #bebcb5;
+    }
+    display: none; //TODO
+}
+
+.apply-changes-btn {
+    border-radius: 6px;
+    text-transform: none;
+    &:hover {
+        background-color: #2a3f35;
+    }
+}
+
+.workfield-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.workfield-content-edit-field {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+}
+
+.workfield-content-edit-field-actions {
+    display: flex;
+    margin-left: auto;
+}
+
+.wf-action-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid $Gray;
+}
+
+.workfield-content-display-field {
+    background-color: white;
+    padding: 15px;
+}
+
+.workfield-content-edit-field-textarea {
+    margin: 0 0 5px 0;
+    textarea {
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        resize: none;
+        border: none;
+        outline: none;
+        background-color: rgb(243, 243, 243);
+        margin: auto;
+        border-radius: 4px;
+        border: 1px solid grey;
+        box-sizing: border-box;
+        box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            cursor: all-scroll;
+        }
+        &::-webkit-scrollbar-track {
+            background: GrayTransparent(0.2);
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $G4;
+            border-radius: 20px;
+        }
+    }
+}
+
+.note-name-edit-field {
+    border-bottom: none;
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    font-size: 13px;
+    color: $TextColor;
+    line-height: 18px;
+    outline: none;
+    font-size: 20px;
+    text-align: left;
+}

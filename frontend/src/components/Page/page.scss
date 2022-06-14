@@ -1,11 +1,30 @@
 .container {
     width: 1170px;
-    width: 80%;
+    min-width: 80%;
     height: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-rows: 1fr 15fr;
-    
 }
 
+.container-full {
+    width: 100%;
+    min-width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: 1fr 15fr;
+}
 
+.header-container {
+    width: 1170px;
+    min-width: 80%;
+    margin: 0 auto;
+}
+
+.content {
+    box-sizing: border-box;
+    padding: 15px;
+    margin: 15px;
+    box-sizing: border-box;
+}

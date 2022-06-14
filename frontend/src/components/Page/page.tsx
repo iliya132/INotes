@@ -3,15 +3,19 @@ import Header from '../Header';
 import styles from './page.scss';
 import rootStyles from '../../Misc/root.scss';
 import { IPageProps } from './types';
+import classNames from 'classnames';
 
 export function Page(props: IPageProps) {
-    const { children } = props;
+    const { children, isFullWidth } = props;
     return (
-        <div className={styles.container}>
-            <div className={rootStyles.row}>
-                <Header />
+        <div className={isFullWidth ? styles['container-full'] : styles.container}>
+            <div className={isFullWidth ? styles['header-container'] : undefined}>
+                <div className={rootStyles.row}>
+                    <Header />
+                </div>
             </div>
-            <div className={rootStyles.row}>{children}</div>
+
+            <div className={classNames(styles.content)}>{children}</div>
         </div>
     );
 }

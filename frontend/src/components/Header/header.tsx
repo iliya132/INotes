@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import styles from './header.scss';
 import { useSelector } from 'react-redux';
 import { currentUser, isAuth } from '../../store/reducers/authReduces';
-import ContextMenu from '../ContextMenu';
-import { profileActions } from './constants';
 import Popup from 'reactjs-popup';
 import authController from '../../controllers/AuthController';
 
@@ -60,8 +58,7 @@ export function Header() {
                             mouseLeaveDelay={300}
                             mouseEnterDelay={0}
                             arrow={false}
-                            position="bottom left"
-                            className={styles["popup-content"]}>
+                            position="bottom left">
                             <div className={styles['context-field']}>
                                 <div className={styles['profile-context-header']}>Профиль</div>
                                 <div className={styles['profile-context-option']}>Редактировать</div>

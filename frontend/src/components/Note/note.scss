@@ -1,0 +1,43 @@
+@import '../../Misc/colors.scss';
+
+.note-container {
+    background-color: GrayTransparent(0.7);
+    margin: 5px;
+    min-height: 30px;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid $Background;
+    color: $TextColor;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    &:hover {
+        border: 1px solid $G2;
+        & .more-actions {
+            display: block;
+        }
+    }
+}
+
+.note-container-selected {
+    background-color: rgb(207, 216, 157);
+}
+
+.note-circle {
+    margin: auto;
+}
+
+.note-name {
+    margin: auto;
+}
+
+.note-circle-container {
+    display: flex;
+}
+
+.more-actions {
+    display: none;
+    cursor: pointer;
+}

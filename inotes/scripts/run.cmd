@@ -1,0 +1,1 @@
+mvn -B package --file ../pom.xml && java -jar ../target/inotes-0.0.1-SNAPSHOT.jar
