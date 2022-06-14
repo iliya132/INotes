@@ -6,8 +6,10 @@ import javax.persistence.*
 @Entity
 @Table(name = "roles")
 data class Role(
-		@Id @GeneratedValue(strategy = GenerationType.AUTO) override val id: Long = 0,
-		override val name: String = "",
-		@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-		val users: Collection<User>? = null
-               ) : NamedEntity, java.io.Serializable
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	override val id: Long = 0,
+	override val name: String = "",
+	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	val users: Collection<User>? = null
+) : NamedEntity, java.io.Serializable

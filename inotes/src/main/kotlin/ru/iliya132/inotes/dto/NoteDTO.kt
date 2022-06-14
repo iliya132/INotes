@@ -9,7 +9,6 @@ data class NoteDTO(
     val notebookId: Long
 ) : IValidatedEntity, BaseEntity {
     override fun validate(): Boolean {
-        return name.isNotEmpty() &&
-                content.isNotEmpty()
+        return name.isNotEmpty()
     }
 }
