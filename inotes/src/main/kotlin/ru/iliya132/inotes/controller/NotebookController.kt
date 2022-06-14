@@ -1,6 +1,7 @@
 package ru.iliya132.inotes.controller
 
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import ru.iliya132.inotes.dto.NoteDTO
@@ -8,6 +9,8 @@ import ru.iliya132.inotes.dto.NotebookDTO
 import ru.iliya132.inotes.dto.NotebookWithNotesDTO
 import ru.iliya132.inotes.models.User
 import ru.iliya132.inotes.services.NotebookService
+import ru.iliya132.inotes.utils.toDTO
+import ru.iliya132.inotes.utils.toDto
 import ru.iliya132.inotes.utils.validation.CustomValidationException
 import java.util.*
 
@@ -16,12 +19,11 @@ import java.util.*
 class NotebookController(private val notebookService: NotebookService) {
 
     @PostMapping("/save")
-    fun saveNotebook(@RequestBody notebook: NotebookDTO, authentication: Authentication): ResponseEntity<String> {
+    fun saveNotebook(@RequestBody notebook: NotebookDTO, authentication: Authentication): ResponseEntity<NotebookDTO> {
         if (!notebook.validate()) {
             throw CustomValidationException("provided data is invalid")
         }
-        notebookService.save(notebook)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok().body(notebookService.save(notebook).toDTO())
     }
 
     @GetMapping("/")
@@ -34,16 +36,17 @@ class NotebookController(private val notebookService: NotebookService) {
     fun removeNotebook(@PathVariable id: Long, authentication: Authentication): ResponseEntity<String> {
         return isUserOwnedOrBadRequest(id, authentication) {
             notebookService.remove(id)
+            ResponseEntity.ok("")
         }
     }
 
     @PostMapping("/add-note")
-    fun addNote(@RequestBody note: NoteDTO, authentication: Authentication): ResponseEntity<String> {
+    fun addNote(@RequestBody note: NoteDTO, authentication: Authentication): ResponseEntity<NoteDTO> {
         if (!note.validate()) {
             throw CustomValidationException("provided note is not valid")
         }
         return isUserOwnedOrBadRequest(note.notebookId, authentication) {
-            notebookService.saveNote(note)
+            return@isUserOwnedOrBadRequest ResponseEntity.ok().body(notebookService.saveNote(note).toDto())
         }
     }
 
@@ -54,6 +57,7 @@ class NotebookController(private val notebookService: NotebookService) {
         }
         return isUserOwnedOrBadRequest(note.notebookId, authentication) {
             notebookService.saveNote(note)
+            ResponseEntity.ok("")
         }
     }
 
@@ -63,6 +67,7 @@ class NotebookController(private val notebookService: NotebookService) {
         if (note.isPresent) {
             return isUserOwnedOrBadRequest(note.get().notebook, authentication) {
                 notebookService.removeNote(id)
+                ResponseEntity.ok("")
             }
         }
         return ResponseEntity.badRequest().body("No notes found for $id")
@@ -78,17 +83,16 @@ class NotebookController(private val notebookService: NotebookService) {
         }
     }
 
-    private fun isUserOwnedOrBadRequest(
+    private fun <T> isUserOwnedOrBadRequest(
         notebookId: Long,
         auth: Authentication,
-        action: () -> Unit
-    ): ResponseEntity<String> {
+        action: () -> ResponseEntity<T>
+    ): ResponseEntity<T> {
         val currentUser = auth.principal as User
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             action()
-            ResponseEntity.ok().build()
         } else {
-            ResponseEntity.badRequest().body("Notebook doesn't belong to current user authenticated")
+            throw BadCredentialsException("Notebook doesn't belong to current user authenticated")
         }
     }
 

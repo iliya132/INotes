@@ -7,3 +7,11 @@ create table if not exists notes (
     notebook bigint not null references notebooks (id),
     content text null
 );
+
+--changeset iliya132:added-cascade-deletion
+ALTER TABLE notes
+DROP CONSTRAINT notes_notebook_fkey,
+ADD CONSTRAINT notes_notebook_fkey
+FOREIGN KEY (notebook)
+REFERENCES notebooks(id)
+ON DELETE CASCADE;
