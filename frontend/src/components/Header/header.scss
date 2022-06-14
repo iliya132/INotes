@@ -1,4 +1,4 @@
-@import "../../Misc/colors.scss";
+@import '../../Misc/colors.scss';
 
 .favicon-img {
     width: 50px;
@@ -14,8 +14,7 @@
     padding-left: 0;
 }
 
-
-.menu-list >li {
+.menu-list > li {
     display: inline-block;
     font-weight: bold;
     font-size: 20px;
@@ -23,7 +22,7 @@
     vertical-align: middle;
 }
 
-.menu-list >li >img{
+.menu-list > li > img {
     margin: auto auto;
 }
 
@@ -37,13 +36,14 @@
     text-align: right;
 }
 
-.nav-link{
+.nav-link {
     text-decoration: none;
     color: $TextColor;
     user-select: none;
+    cursor: pointer;
 }
 
-.avatar{
+.avatar {
     border-radius: 11px;
     width: 44px;
     height: 44px;
@@ -54,21 +54,23 @@
     margin-left: 16px;
 }
 
-.header-row{
+.header-row {
     padding-top: 15px;
     display: flex;
     justify-content: space-between;
 }
 
-.user-name-link{
+.user-name-link {
     display: inline-block;
     margin: auto 0;
 }
 
 .context-field {
     text-align: left;
-    padding: 15px;
-    background-color: GrayTransparent(0.8);
+    padding: 5px 0;
+    background-color: $Gray;
+    border: 1px solid $G2;
+    border-radius: 6px;
 }
 
 .profile-context-header {
@@ -82,31 +84,35 @@
 }
 
 .profile-context-option {
+    padding: 5px 15px;
     font-size: 14px;
     font-weight: normal;
     margin: 10px auto;
     cursor: pointer;
+    &:hover {
+        background-color: rgb(200, 200, 200);
+    }
 }
 
 @keyframes anvil {
     0% {
-      transform: scale(1) translateY(0px);
-      opacity: 0;
-      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        transform: scale(1) translateY(0px);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
     }
     1% {
-      transform: scale(0.96) translateY(10px);
-      opacity: 0;
-      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        transform: scale(0.96) translateY(10px);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
     }
     100% {
-      transform: scale(1) translateY(0px);
-      opacity: 1;
-      box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+        transform: scale(1) translateY(0px);
+        opacity: 1;
+        box-shadow: 0 0 500px rgba(241, 241, 241, 0);
     }
-  }
-  
+}
 
-  .popup-content {
+.popup-content {
     -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
-  }
+    animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}

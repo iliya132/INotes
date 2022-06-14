@@ -6,18 +6,34 @@
     height: 30px;
     grid-template-columns: 1fr 50px;
     border-bottom: 1px solid $TextColor;
+    .input {
+        width: 100%;
+        height: 30px;
+        background-color: transparent;
+        border: none;
+    
+        font-size: 13px;
+        color: $TextColor;
+        line-height: 13px;
+        outline: none;
+    }
 }
 
-.input-container .input {
+.input-container-without-img{
     width: 100%;
     height: 30px;
-    background-color: transparent;
-    border: none;
-
-    font-size: 13px;
-    color: $TextColor;
-    line-height: 13px;
-    outline: none;
+    border-bottom: 1px solid $TextColor;
+    .input {
+        width: 100%;
+        height: 30px;
+        background-color: transparent;
+        border: none;
+    
+        font-size: 13px;
+        color: $TextColor;
+        line-height: 13px;
+        outline: none;
+    }
 }
 
 .eye-icon {

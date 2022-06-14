@@ -1,16 +1,6 @@
-import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select";
+import { GroupBase, StylesConfig } from "react-select";
 
-export const options: OptionsOrGroups<{
-    value: string;
-    label: string;
-}, GroupBase<{
-    value: string;
-    label: string;
-}>> | undefined=  [
-    {value: "first", label: "Личная записная книжка"}
-]
-
-export const selectStyle : StylesConfig<{
+export const selectStyle: StylesConfig<{
     value: string;
     label: string;
 }, false, GroupBase<{
@@ -32,7 +22,6 @@ export const selectStyle : StylesConfig<{
     ),
     menu: (provided) => ({
         ...provided,
-        backgroundColor: "rgb(218, 215, 205, 0.8)"
+        backgroundColor: "rgb(218, 215, 205, 1)",
     }),
-    
 }

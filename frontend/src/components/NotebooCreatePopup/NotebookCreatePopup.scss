@@ -1,0 +1,14 @@
+@import '../../Misc/colors.scss';
+
+.notebook-create-popup-container {
+    background-color: $Gray;
+    border: 1px solid $G2;
+    padding: 15px;
+    display: flex;
+    min-width: 500px;
+}
+
+.notebook-create-btn {
+    border-radius: 4px;
+    margin-left: 15px;
+}

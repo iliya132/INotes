@@ -33,13 +33,13 @@ const slice = createSlice(
                 state.isAuth = false;
                 state.error = action.payload
             },
-            validationError: (state:AuthState, action: PayloadAction<ValidationResult>) => {
+            validationError: (state: AuthState, action: PayloadAction<ValidationResult>) => {
                 state.isAuth = false;
                 state.validation = action.payload;
             },
             removeAuthErrors: (state: AuthState) => {
                 state.error = "",
-                state.validation = {isSucceded: true, errors: undefined}
+                state.validation = { isSucceded: true, errors: undefined }
             },
             logout: (state: AuthState) => {
                 state.isAuth = false;
@@ -55,4 +55,4 @@ export default slice.reducer;
 export const currentUser = (state: RootState) => state.authReducer.user;
 export const isAuth = (state: RootState) => state.authReducer.isAuth;
 export const authErrors = (state: RootState) => state.authReducer.error;
-export const validationErrors = (state:RootState) => state.authReducer.validation;
+export const validationErrors = (state: RootState) => state.authReducer.validation;

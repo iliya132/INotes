@@ -8,9 +8,8 @@ import App from './App';
 import './Misc/root.scss';
 import { store } from './store/store';
 import authController from './controllers/AuthController';
-// import { store } from './store/store';
 
-authController.getUser();
+authController.getUser()
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -23,5 +22,5 @@ root.render(
                 </ErrorBoundary>
             </Provider>
         </BrowserRouter>
-    </React.StrictMode>,
+    </React.StrictMode>
 );

@@ -1,19 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=6.0, minimum-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="description" content="game bugoville" />
-    <meta name="keywords" content="game, bugoville, play" />
-    <meta name="theme-color" content="#191919" />
-    <link rel="icon" href="/Favicon.png" type="image/svg" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>INotes</title>
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=6.0, minimum-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="description" content="game bugoville" />
+        <meta name="keywords" content="game, bugoville, play" />
+        <meta name="theme-color" content="#191919" />
+        <link rel="icon" href="/Favicon.png" type="image/svg" />
+        <link rel="manifest" href="/manifest.json" />
+        <title>INotes</title>
+        <style>
+            @keyframes anvil {
+                0% {
+                    transform: scale(1) translateY(0px);
+                    opacity: 0;
+                    box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+                }
+                1% {
+                    transform: scale(0.96) translateY(10px);
+                    opacity: 0;
+                    box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+                }
+                100% {
+                    transform: scale(1) translateY(0px);
+                    opacity: 1;
+                    box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+                }
+            }
 
-  <body>
-    <div id="root" style="width: 100%; height: 100%"></div>
-    <section id="scripts-section"></section>
-  </body>
+            .popup-content {
+                -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+                animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+            }
+
+            .hljs {
+                display: block;
+                overflow-x: auto;
+                padding: 0.5em;
+                color: #333;
+                background: #f8f8f8;
+            }
+
+            pre code.hljs {
+                display: block;
+                overflow-x: auto;
+                padding: 1em;
+            }
+            code.hljs {
+                padding: 3px 5px;
+            }
+            .hljs {
+                background: #fff;
+                color: #000;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="root" style="width: 100%; height: 100%"></div>
+        <section id="scripts-section"></section>
+    </body>
 </html>

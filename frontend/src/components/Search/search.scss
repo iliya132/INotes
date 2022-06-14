@@ -1,13 +1,11 @@
-@import "../../Misc/colors.scss";
+@import '../../Misc/colors.scss';
 
-.search-container{
+.search-container {
     display: grid;
     grid-template-columns: 1fr 50px;
-    padding: 5px;
 }
 
 .search-field {
-    
     width: 100%;
     height: 30px;
     border: none;
@@ -21,7 +19,7 @@
 }
 
 .input-container {
-    width: 100%;
+    width: 98%;
     display: grid;
     height: 30px;
     background-color: rgb(218, 215, 205, 0.8) !important;
@@ -32,9 +30,8 @@
 .eye-icon {
     width: 48px;
     height: 48px;
-    position:relative;
+    position: relative;
     grid-column: 2;
     margin-top: -8px;
     cursor: pointer;
 }
-
