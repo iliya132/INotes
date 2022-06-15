@@ -46,6 +46,10 @@ module.exports = {
                     from: path.resolve(__dirname, '../manifest.json'),
                     to: path.resolve(__dirname, '../dist'),
                 },
+                {
+                    from: path.resolve(__dirname, '../src/server/server.js'),
+                    to: path.resolve(__dirname, '../dist/server.js')
+                }
             ],
         }),
     ],
