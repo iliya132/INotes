@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../Button';
 import SmallButton from '../SmallButton';
 import { Icons } from '../Svg/types';
@@ -41,19 +41,33 @@ export function Workfield(props: IWorkfieldProps) {
 
     const handleChange = handleTextAreaValueChanged(setRendered, setInput, md);
 
-    const handleKeyDown = handleTextAreaKeyDown(textAreaRef, input);
+    const render = (text: string) => {
+        setInput(text);
+        setRendered(md.render(text));
+    };
+
+    const handleKeyDown = handleTextAreaKeyDown(textAreaRef, input, render);
 
     const handleWfAction = (strategy: WfAction) => {
         const textAreaElem = textAreaRef!.current!;
         const startPos = textAreaElem.selectionStart;
         const EndPos = textAreaElem.selectionEnd;
+        const len = EndPos - startPos;
         const selectedValue = textAreaElem?.value.substring(startPos, EndPos);
         const startValue = textAreaElem?.value.substring(0, startPos);
         const endValue = textAreaElem?.value.substring(EndPos);
         const result = startValue + processText(strategy, selectedValue) + endValue;
         textAreaElem.value = result;
-        textAreaElem.selectionStart = textAreaElem.value.indexOf(selectedValue);
-        textAreaElem.selectionEnd = textAreaElem.selectionStart + selectedValue.length;
+        let st = textAreaElem.value.indexOf(selectedValue);
+        let end = st + len;
+        console.log(st, end, len);
+        if (len === 0) {
+            st = startPos;
+            end = startPos;
+        }
+        textAreaElem.select();
+        textAreaElem.setSelectionRange(st, end);
+        render(result);
     };
 
     const handleSaveChanges = () => {
@@ -212,14 +226,15 @@ function handleTextAreaValueChanged(
     };
 }
 
-function handleTextAreaKeyDown(textAreaRef: React.LegacyRef<HTMLTextAreaElement>, input: string | undefined) {
+function handleTextAreaKeyDown(
+    textAreaRef: React.LegacyRef<HTMLTextAreaElement>,
+    input: string | undefined,
+    renderFunc: (text: string) => void,
+) {
     return (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Tab') {
             event.preventDefault();
-            const textAreaElem = (textAreaRef! as unknown as RefObject<HTMLTextAreaElement>).current;
-            if (!textAreaElem) {
-                return;
-            }
+            const textAreaElem = textAreaRef!.current;
             const startPos = textAreaElem.selectionStart;
             const EndPos = textAreaElem.selectionEnd;
             if (startPos === EndPos) {
@@ -249,12 +264,14 @@ function handleTextAreaKeyDown(textAreaRef: React.LegacyRef<HTMLTextAreaElement>
                     }
                 }
             }
-            const result = resultStr.trimEnd();
+            const trimmed = resultStr.trimEnd();
+            const result = textAreaElem.value.substring(0, startPos) + trimmed + textAreaElem.value.substring(EndPos);
 
-            textAreaElem.value =
-                textAreaElem.value.substring(0, startPos) + result + textAreaElem.value.substring(EndPos);
+            textAreaElem.value = result;
+
             textAreaElem.selectionStart = startPos != EndPos ? startPos : resultCaretPos;
             textAreaElem.selectionEnd = resultCaretPos;
+            renderFunc(result);
         }
     };
 }
