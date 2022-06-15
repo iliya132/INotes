@@ -50,8 +50,12 @@ const slice = createSlice({
                 selectDefaultIfNeeded(state);
             }
         },
-        removeNote: (state: NotebooksState, action: PayloadAction<INote>) => {
-            state.allNotes = [...state.allNotes.filter(it => it.id !== action.payload.id)]
+        removeNote: (state: NotebooksState, action: PayloadAction<number>) => {
+            state.allNotes = [...state.allNotes.filter(it => it.id !== action.payload)]
+            state.currentNotebookNotes = state.allNotes.filter(it => it.parent.id === state.selectedNotebook?.id)
+            if (state.selectedNote?.id === action.payload) {
+                state.selectedNote = undefined
+            }
         },
         selectNotebook: (state: NotebooksState, action: PayloadAction<number>) => {
             state.selectedNotebook = state.notebooks.filter(it => it.id === action.payload)[0];

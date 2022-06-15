@@ -70,6 +70,12 @@ export function Workfield(props: IWorkfieldProps) {
         render(result);
     };
 
+    const handleNoteRemove = () => {
+        if(note){
+            notesController.removeNote(note?.id);
+        }
+    }
+
     const handleSaveChanges = () => {
         if (note && nameRef?.current) {
             console.log(input);
@@ -103,7 +109,7 @@ export function Workfield(props: IWorkfieldProps) {
                     <SmallButton icon={Icons.Copy} />
                     <SmallButton icon={Icons.Tag} />
                     <SmallButton icon={Icons.Share} />
-                    <SmallButton icon={Icons.Remove} />
+                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove}/>
                 </div>
             </div>
             <div className={styles['workfield-content']}>
@@ -229,8 +235,10 @@ function handleTextAreaValueChanged(
 function handleTextAreaKeyDown(
     textAreaRef: React.LegacyRef<HTMLTextAreaElement>,
     input: string | undefined,
+    // eslint-disable-next-line no-unused-vars
     renderFunc: (text: string) => void,
 ) {
+    //TODO refactor this
     return (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Tab') {
             event.preventDefault();
