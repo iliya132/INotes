@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "react";
 import { addNotebook } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
-import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, updateNoteThunk } from "../store/thunks/notesThunks";
+import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, removeNoteThunk, updateNoteThunk } from "../store/thunks/notesThunks";
 import { INotebook, INoteDTO } from "../store/types";
 import BaseController from "./base/BaseController";
 import { NotebookDTO } from "./types";
@@ -52,8 +52,12 @@ class NotesController extends BaseController {
 
     updateNote(note: INoteDTO) {
         if (note) {
-            this.dispatchStore(updateNoteThunk(note))
+            this.dispatchStore(updateNoteThunk(note));
         }
+    }
+
+    removeNote(noteId: number){
+        this.dispatchStore(removeNoteThunk(noteId));
     }
 }
 

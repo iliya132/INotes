@@ -43,3 +43,27 @@
     display: none;
     cursor: pointer;
 }
+
+
+.context-container {
+    padding: 5px;
+    border: 1px solid $G2;
+    border-radius: 6px;
+    background-color: $Gray;
+}
+
+.context-container-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        box-sizing: border-box;
+        padding: 5px 15px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(200 200 200);
+        }
+    }
+}

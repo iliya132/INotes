@@ -1,6 +1,6 @@
 import axios from "axios";
 import properties from "../../properties/properties";
-import { addNote, removeNotebook, setState, updateNote } from "../reducers/notebooksReducer";
+import { addNote, removeNote, removeNotebook, setState, updateNote } from "../reducers/notebooksReducer";
 import { AppDispatch, store } from "../store";
 import { INote, INotebook, INotebookWithNotes, INoteDTO } from "../types";
 
@@ -76,6 +76,24 @@ export function updateNoteThunk(note: INoteDTO) {
             .then(response => {
                 if (response.status === 200) {
                     dispatch(updateNote(note))
+                } else {
+                    //TODO обработка ошибок
+                    console.error(response);
+                }
+            })
+            .catch(reason => {
+                //TODO обработка ошибок
+                console.error(reason);
+            })
+    }
+}
+
+export function removeNoteThunk(noteId: number) {
+    return async function removeNoteThunk(dispatch: AppDispatch) {
+        axios.delete(`${notebookurl}remove-note/${noteId}`, { withCredentials: true })
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(removeNote(noteId));
                 } else {
                     //TODO обработка ошибок
                     console.error(response);
