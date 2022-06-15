@@ -13,7 +13,7 @@ export function NotebookPopup(props: IFormInputProps) {
         setValue(event.target.value);
     };
 
-    const handleSubmit = (_) => {
+    const handleSubmit = () => {
         notesController.createNotebook(value);
         afterClick();
     };

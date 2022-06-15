@@ -58,7 +58,7 @@ class AuthController extends BaseController {
 
     public logout() {
         return axios.post(this.authUrl + "logout", null, { withCredentials: true })
-            .then(_ => {
+            .then(() => {
                 this.dispatchStore(logout());
             }).catch(reason => {
                 console.error(reason.message);

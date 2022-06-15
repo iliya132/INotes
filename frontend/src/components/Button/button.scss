@@ -1,22 +1,22 @@
 @import '../../Misc/colors.scss';
 
 .primary-button {
-    background-color: $G3;
-    border: none;
-    border-radius: 37px;
+    display: block;
     min-width: 170px;
     height: 41px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    border-radius: 37px;
+    background-color: $G3;
     color: $Gray;
     font-size: 18px;
+    font-style: normal;
     font-weight: 500;
     line-height: 40px;
     text-align: center;
-    font-style: normal;
-    display: block;
     text-transform: lowercase;
-    padding-left: 15px;
-    padding-right: 15px;
     cursor: pointer;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     user-select: none;
+    filter: drop-shadow(0 4px 4px rgb(0 0 0 / 25%));
 }

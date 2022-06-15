@@ -1,4 +1,5 @@
 {
+    "root": true,
     "env": {
         "browser": true,
         "es2021": true
@@ -13,15 +14,15 @@
             "jsx": true
         },
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": ["./tsconfig.json"]
     },
     "plugins": [
         "react",
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": ["error", 4]
-
+        "indent": ["warn", 4, { "SwitchCase": 1 }]
     },
     "settings": {
         "react": {

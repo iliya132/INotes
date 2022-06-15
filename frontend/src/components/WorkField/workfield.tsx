@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import Button from '../Button';
 import SmallButton from '../SmallButton';
 import { Icons } from '../Svg/types';
@@ -21,7 +21,7 @@ export function Workfield(props: IWorkfieldProps) {
 
     const textAreaRef: React.LegacyRef<HTMLTextAreaElement> = useRef(null);
     const nameRef: React.LegacyRef<HTMLInputElement> = useRef(null);
-    const md = configureMarkdownIt(md);
+    const md = configureMarkdownIt();
     useEffect(() => {
         if (props.note) {
             if (currentNoteId !== props.note.id) {
@@ -179,7 +179,7 @@ export function Workfield(props: IWorkfieldProps) {
         </div>
     );
 }
-function configureMarkdownIt(md: any) {
+function configureMarkdownIt() {
     return new markdown({
         html: true,
         linkify: true,
@@ -216,7 +216,10 @@ function handleTextAreaKeyDown(textAreaRef: React.LegacyRef<HTMLTextAreaElement>
     return (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Tab') {
             event.preventDefault();
-            const textAreaElem = textAreaRef!.current;
+            const textAreaElem = (textAreaRef! as unknown as RefObject<HTMLTextAreaElement>).current;
+            if (!textAreaElem) {
+                return;
+            }
             const startPos = textAreaElem.selectionStart;
             const EndPos = textAreaElem.selectionEnd;
             if (startPos === EndPos) {
@@ -258,27 +261,27 @@ function handleTextAreaKeyDown(textAreaRef: React.LegacyRef<HTMLTextAreaElement>
 
 function processText(action: WfAction, text: string) {
     switch (action) {
-    case WfAction.Bold:
-        return `**${text}**`;
-    case WfAction.Italic:
-        return `*${text}*`;
-    case WfAction.Underscoped:
-        return `_${text}_`;
-    case WfAction.Dotted:
-        return `* ${text}`;
-    case WfAction.Number:
-        return `1. ${text}`;
-    case WfAction.H1:
-        return `# ${text}`;
-    case WfAction.H2:
-        return `## ${text}`;
-    case WfAction.H3:
-        return `### ${text}`;
-    case WfAction.Code:
-        return `\`\`\`\n${text}\n\`\`\``;
-    case WfAction.Table:
-        return `| column1 | column2 |\n|-----|-----|\n| value | value |\n${text}`;
-    default:
-        return text;
+        case WfAction.Bold:
+            return `**${text}**`;
+        case WfAction.Italic:
+            return `*${text}*`;
+        case WfAction.Underscoped:
+            return `_${text}_`;
+        case WfAction.Dotted:
+            return `* ${text}`;
+        case WfAction.Number:
+            return `1. ${text}`;
+        case WfAction.H1:
+            return `# ${text}`;
+        case WfAction.H2:
+            return `## ${text}`;
+        case WfAction.H3:
+            return `### ${text}`;
+        case WfAction.Code:
+            return `\`\`\`\n${text}\n\`\`\``;
+        case WfAction.Table:
+            return `| column1 | column2 |\n|-----|-----|\n| value | value |\n${text}`;
+        default:
+            return text;
     }
 }
