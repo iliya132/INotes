@@ -14,7 +14,9 @@ class AuthEntryPoint : AuthenticationEntryPoint {
         authException: AuthenticationException?
     ) {
         if (authException!=null) {
-            log.error(authException.message)
+            log.error("${authException.message}, uri:${request.requestURI}, url:${request.requestURL}, " +
+                    "context-path:${request.contextPath}, ${request.queryString}")
+
             response.status = HttpServletResponse.SC_FORBIDDEN;
             response.writer.println("Unauthorized");
         }
