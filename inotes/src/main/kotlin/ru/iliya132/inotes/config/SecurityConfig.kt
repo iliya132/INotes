@@ -1,5 +1,6 @@
 package ru.iliya132.inotes.config
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
-import org.springframework.security.web.header.writers.StaticHeadersWriter
+import org.springframework.web.cors.CorsConfiguration
 import ru.iliya132.inotes.security.AppAuthFailHandler
 import ru.iliya132.inotes.security.AppAuthSuccessHandler
 import ru.iliya132.inotes.security.AppLogoutSuccessHandler
@@ -60,7 +61,15 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-            .cors()
+            .cors().configurationSource { request ->
+                log.info(request.getHeader("Origin"))
+                val config = CorsConfiguration()
+                config.allowedOrigins = ALLOWED_ORIGINS
+                config.allowCredentials = true
+                config.allowedMethods = listOf("*")
+                config.addAllowedHeader("*")
+                config
+            }
             .and()
             .authorizeRequests()
             .antMatchers("/api*").hasRole("user")
@@ -82,24 +91,12 @@ class SecurityConfig {
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-
-        setupStaticHeaders(http)
         return http.build()
     }
 
-    private fun setupStaticHeaders(http: HttpSecurity) {
-        addHeader(http, "Access-Control-Allow-Origin", "https://www.i-note.online")
-        addHeader(http, "Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT")
-        addHeader(http, "Access-Control-Max-Age", "3600")
-        addHeader(
-            http, "Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, " +
-                    "x-requested-with, Cache-Control"
-        )
-        addHeader(http, "Access-Control-Allow-Credentials", "true")
+    companion object {
+        val log = LoggerFactory.getLogger(SecurityConfig::class.java)
+        val ALLOWED_ORIGINS = listOf("http://localhost:3000", "http://localhost:80", "https://localhost:443",
+            "http://i-note.online", "https://i-note.online", "https://www.i-note.online", "http://www.i-note.online")
     }
-
-    private fun addHeader(http: HttpSecurity, header: String, value: String) {
-        http.headers().addHeaderWriter(StaticHeadersWriter(header, value))
-    }
-
 }
