@@ -6,11 +6,14 @@ import { useSelector } from 'react-redux';
 import { currentUser, isAuth } from '../../store/reducers/authReduces';
 import Popup from 'reactjs-popup';
 import authController from '../../controllers/AuthController';
+import avatarImg from "../../../static/assets/avatar.png";
 
 export function Header() {
     const isAuthenticated = useSelector(isAuth);
     const user = useSelector(currentUser);
     const [contextVisible, setContextVisible] = useState(false);
+
+    const avatar = user?.avatar ? `data:image/jpeg;base64,${user.avatar}` : avatarImg; 
 
     const handleLogout = () => {
         authController.logout();
@@ -50,9 +53,9 @@ export function Header() {
                         }}>
                         <Popup
                             trigger={
-                                <div>
+                                <div className={styles["popup-container"]}>
                                     <div className={styles['user-name-link']}>{user?.userName}</div>
-                                    <div className={styles.avatar}></div>
+                                    <img src={avatar} className={styles["avatar-img"]}/>
                                 </div>
                             }
                             mouseLeaveDelay={300}
@@ -61,7 +64,7 @@ export function Header() {
                             position="bottom left">
                             <div className={styles['context-field']}>
                                 <div className={styles['profile-context-header']}>Профиль</div>
-                                <div className={styles['profile-context-option']}>Редактировать</div>
+                                <div className={styles['profile-context-option']}><NavLink to={"/profile"}> Редактировать </NavLink></div>
                                 <div className={styles['profile-context-option']} onClick={handleLogout}>
                                     Выйти
                                 </div>

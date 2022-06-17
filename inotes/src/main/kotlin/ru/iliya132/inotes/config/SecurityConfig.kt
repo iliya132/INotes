@@ -61,8 +61,7 @@ class SecurityConfig {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-            .cors().configurationSource { request ->
-                log.info(request.getHeader("Origin"))
+            .cors().configurationSource {
                 val config = CorsConfiguration()
                 config.allowedOrigins = ALLOWED_ORIGINS
                 config.allowCredentials = true

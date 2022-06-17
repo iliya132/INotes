@@ -2,7 +2,7 @@ import { ValidationResult } from "../controllers/types";
 
 export interface User {
     userName: string;
-    avatar?: string;
+    avatar?: byte[];
     roles: string[];
 }
 

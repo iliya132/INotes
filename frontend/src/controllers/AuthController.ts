@@ -66,6 +66,15 @@ class AuthController extends BaseController {
             })
     }
 
+    public uploadAvatar(formData: FormData) {
+        axios.post(this.authUrl + "avatar", formData, { withCredentials: true })
+            .then(() => {
+                console.log("uploaded avatar")
+            }).catch((reason) => {
+                console.error(reason);
+            })
+    }
+
     private validate(username: string, password: string, confirmPassword: string): ValidationResult {
         var result: ValidationResult = { isSucceded: true, errors: {} }
         if (!username) {

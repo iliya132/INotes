@@ -1,0 +1,127 @@
+@import '../../Misc/colors.scss';
+
+.centered-container {
+    position: absolute;
+    display: flex;
+    top: 20%;
+    left: 40%;
+    min-width: 600px;
+    min-height: 800px;
+    border-radius: 12px;
+    background-color: rgb(218 215 205 / 50%);
+    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
+}
+
+.text-centered {
+    text-align: center;
+}
+
+.silenced {
+    align-content: flex-start;
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 9px;
+    user-select: none;
+}
+
+.profile-form {
+    margin: auto;
+    min-width: 450px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    *{
+        padding: 5px 0;
+    }
+}
+
+.save-btn {
+    width: 100%;
+    margin: 30px auto 15px;
+    border-radius: 6px;
+    font-family: 'Montserrat SemiBold';
+    font-size: 14px;
+    letter-spacing: 0.1;
+    text-transform: none;
+}
+
+.save-btn:hover {
+    background-color: $G3Hover;
+}
+
+.cancel-btn {
+    width: 100%;
+    margin-right: 11px;
+    border-radius: 6px;
+    background-color: $Gray;
+    color: $TextColor;
+    text-transform: none;
+
+    &:hover {
+        background-color: #bebcb5;
+    }
+}
+
+.nav-link {
+    display: inline-block;
+    width: 100%;
+    color: $TextColor;
+    font-family: 'Montserrat SemiBold';
+    font-size: 11px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+}
+
+.login-header {
+    user-select: none;
+}
+
+.user-name{
+    text-align: center;
+    display: block;
+    
+}
+
+.centered{
+    text-align: center;
+}
+
+.avatar-img{
+    padding: 1px;
+    max-width: 140px;
+    margin: 5px auto 15px auto;
+    background-color: GrayTransparent(0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4)  ;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.avatar-input{
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.avatar-upload-label{
+    font-weight: bold;
+    display: block;
+    padding: 10px 15px;
+    background-color: GrayTransparent(0.8);
+    max-width: 200px;
+    margin: 0 auto 15px auto;
+    border-radius: 6px;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+    cursor: pointer;
+    &:hover{
+        background-color: #bebcb5;
+    }
+}
+
+.avatar-container{
+    text-align: center;
+}

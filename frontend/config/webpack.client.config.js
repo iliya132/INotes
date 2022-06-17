@@ -6,8 +6,10 @@ const styleLoaders = require('./loaders/style.loaders.js');
 const assetsLoaders = require('./loaders/assets.loaders.js');
 const tsLoaders = require('./loaders/typescript.loaders.js');
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 
 const isDev = process.env.NODE_ENV === 'development';
+const api = isDev ? "http://localhost:8080/" : "https://www.i-note.online/"
 
 module.exports = {
     mode: isDev ? 'development' : 'production',
@@ -28,6 +30,7 @@ module.exports = {
     },
     devtool: isDev ? 'source-map' : false,
     plugins: [
+        new DefinePlugin({"process.env.API_URL": JSON.stringify(api)}),
         new HtmlWebpackPlugin({
             template: './static/index.html',
             minify: {

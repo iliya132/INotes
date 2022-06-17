@@ -7,39 +7,43 @@ import ru.iliya132.inotes.dto.SimpleUserDTO
 import ru.iliya132.inotes.dto.UserDTO
 import ru.iliya132.inotes.models.RegistrationResponse
 import ru.iliya132.inotes.models.User
+import ru.iliya132.inotes.repositories.ImageRepository
 import ru.iliya132.inotes.repositories.RolesRepository
 import ru.iliya132.inotes.repositories.UserRepository
 import java.security.Principal
 
 @Service
 class UserService(
-		val userRepository: UserRepository,
-		val rolesRepository: RolesRepository,
-		val encoder: PasswordEncoder
-                 ) {
+    val userRepository: UserRepository,
+    val rolesRepository: RolesRepository,
+    val imageRepository: ImageRepository,
+    val encoder: PasswordEncoder
+) {
 
-	fun register(user: UserDTO): RegistrationResponse {
-		if (isExists(user.userName)) {
-			return RegistrationResponse(false, "Пользователь с таким логином уже зарегистрирован в системе")
-		}
-		val newUser =
-			User(
-				0, user.userName, encoder.encode(user.password), true, rolesRepository.findByName("ROLE_USER")
-			    )
-		userRepository.save(newUser)
-		return RegistrationResponse(true, null)
-	}
+    fun register(user: UserDTO): RegistrationResponse {
+        if (isExists(user.userName)) {
+            return RegistrationResponse(false, "Пользователь с таким логином уже зарегистрирован в системе")
+        }
+        val newUser =
+            User(
+                0, user.userName, encoder.encode(user.password), true, rolesRepository.findByName
+                    ("ROLE_USER")
+            )
+        userRepository.save(newUser)
+        return RegistrationResponse(true, null)
+    }
 
-	private fun isExists(userName: String): Boolean {
-		return userRepository.existsByUserName(userName)
-	}
+    private fun isExists(userName: String): Boolean {
+        return userRepository.existsByUserName(userName)
+    }
 
-	fun getUser(principal: Principal): SimpleUserDTO {
-		val user = userRepository.findByUserName(principal.name) ?: throw NotFoundException()
-		return SimpleUserDTO(user.username, user.authorities.map { it.authority })
-	}
+    fun getUser(principal: Principal): SimpleUserDTO {
+        val user = userRepository.findByUserName(principal.name) ?: throw NotFoundException()
+        val avatar = imageRepository.findByUserId(user.id).orElse(null)
+        return SimpleUserDTO(user.username, user.authorities.map { it.authority }, avatar?.blob)
+    }
 
-	fun getUserFull(principal: Principal): User {
-		return userRepository.findByUserName(principal.name) ?: throw NotFoundException()
-	}
+    fun getUserFull(principal: Principal): User {
+        return userRepository.findByUserName(principal.name) ?: throw NotFoundException()
+    }
 }
