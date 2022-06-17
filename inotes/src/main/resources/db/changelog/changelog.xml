@@ -7,4 +7,5 @@
     <include file="migrations/schema.sql" relativeToChangelogFile="true"/>
     <include file="migrations/notebook.sql" relativeToChangelogFile="true"/>
     <include file="migrations/note.sql" relativeToChangelogFile="true"/>
+    <include file="migrations/avatars.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

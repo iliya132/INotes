@@ -1,3 +1,3 @@
 export default {
-    apiUrl: "https://www.i-note.online/"
+    apiUrl: process.env.API_URL
 };

@@ -7,11 +7,13 @@ import GettingStarted from './pages/GettingStarted';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 import Notes from './pages/Notes';
+import Profile from './pages/Profile';
 import Register from './pages/Register';
-import { isAuth } from './store/reducers/authReduces';
+import { currentUser, isAuth } from './store/reducers/authReduces';
 
 export default function App() {
     const isAuthenticated = useSelector(isAuth);
+    const activeUser = useSelector(currentUser);
 
     return isAuthenticated === undefined ? null : (
         <Routes>
@@ -45,6 +47,14 @@ export default function App() {
                 element={
                     <GuardRoute canActivate={!isAuthenticated} redirectTo="/">
                         <Register />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path="/profile"
+                element={
+                    <GuardRoute canActivate={isAuthenticated && activeUser !== undefined} redirectTo="/login">
+                        <Profile user={activeUser!} />
                     </GuardRoute>
                 }
             />
