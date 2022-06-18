@@ -6,7 +6,7 @@ import ru.iliya132.inotes.utils.validation.EmailValidator
 data class SimpleUserDTO(
     val userName: String = "",
     val roles: Collection<String> = listOf(),
-    val avatar: ByteArray?
+    val avatarUrl: String?
 ) : IValidatedEntity {
     override fun validate(): Boolean {
         return EmailValidator.validateEmail(userName) && roles.isNotEmpty()

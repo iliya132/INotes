@@ -7,11 +7,14 @@
 }
 
 .menu-list {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     margin-top: auto;
     margin-bottom: auto;
     padding-left: 0;
     list-style: none;
+    justify-content: flex-start;
+    flex-grow: 1;
 }
 
 .menu-list > li {
@@ -31,6 +34,8 @@
     margin-top: auto;
     margin-bottom: auto;
     float: right;
+    justify-content: flex-end;
+    flex-grow: 1;
     font-size: 16px;
     font-weight: bold;
     text-align: right;
@@ -138,4 +143,9 @@
 .popup-content {
     animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
     animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.search-element{
+   flex-grow: 10 !important;
+    display: flex !important;
 }

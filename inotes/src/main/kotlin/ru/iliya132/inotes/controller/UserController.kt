@@ -1,10 +1,12 @@
 package ru.iliya132.inotes.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import ru.iliya132.inotes.dto.ChangePasswordRequest
+import ru.iliya132.inotes.dto.ChangePasswordResponse
 import ru.iliya132.inotes.dto.SimpleUserDTO
 import ru.iliya132.inotes.dto.UserDTO
 import ru.iliya132.inotes.models.Avatar
@@ -12,6 +14,7 @@ import ru.iliya132.inotes.models.RegistrationResponse
 import ru.iliya132.inotes.repositories.ImageRepository
 import ru.iliya132.inotes.services.security.UserService
 import ru.iliya132.inotes.utils.validation.CustomValidationException
+import ru.iliya132.inotes.utils.validation.PasswordValidator
 import java.security.Principal
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -46,6 +49,21 @@ class UserController {
         return result
     }
 
+    @PatchMapping("/change-pass")
+    fun changePassword(@RequestBody request: ChangePasswordRequest, principal: Principal): ResponseEntity<ChangePasswordResponse> {
+        if (request.newPassword!=request.newPasswordConfirm) {
+            return ResponseEntity.badRequest().body(ChangePasswordResponse(targets = arrayOf("new", "confirm"),
+                message = "Новый пароль и подтверждение нового пароля не совпадают"))
+        }
+        if (!PasswordValidator.validatePassword(request.newPassword)) {
+            return ResponseEntity.badRequest().body(ChangePasswordResponse(targets = arrayOf("new"),
+                message = "Новый пароль не соответствует политике безопасности"))
+        }
+        val userId = userService.getUserId(principal)
+
+        return userService.changePassword(userId, request.currentPassword, request.newPassword)
+    }
+
     @PostMapping("/avatar")
     @Transactional
     fun uploadAvatar(@RequestBody avatar: MultipartFile, principal: Principal): Long {
@@ -55,13 +73,6 @@ class UserController {
         }
         val dbAvatar = Avatar(0, avatar.bytes, user.id)
         return imageRepository.save(dbAvatar).id
-    }
-
-    @GetMapping("/avatar")
-    fun getAvatar(principal: Principal): ByteArrayResource {
-        val user = userService.getUserFull(principal)
-        val img: ByteArray = imageRepository.findByUserId(user.id).map { it.blob }.orElse(ByteArray(0))
-        return ByteArrayResource(img)
     }
 
     companion object {

@@ -24,4 +24,8 @@ export const selectStyle: StylesConfig<{
         ...provided,
         backgroundColor: "rgb(218, 215, 205, 1)",
     }),
+    container: (provided) => ({
+        ...provided,
+        flexGrow: 5
+    })
 }

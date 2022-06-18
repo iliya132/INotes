@@ -6,7 +6,7 @@ import { Icons } from '../Svg/types';
 import classNames from 'classnames';
 
 export function Input(props: IInputProps) {
-    const { type, id, autocomplete, error, className, onChange, placeholder, defaultValue } = props;
+    const { type, id, autocomplete, error, className, onChange, placeholder, defaultValue, accept, name } = props;
     const [isPasswordShown, setPasswordShown] = useState(false);
     const inputType = type === 'password' && isPasswordShown ? 'text' : type;
     const internalClassName = error
@@ -21,6 +21,8 @@ export function Input(props: IInputProps) {
                 <input
                     className={internalClassName}
                     id={id}
+                    accept={accept}
+                    name={name}
                     type={inputType}
                     onChange={onChange}
                     autoComplete={autocomplete}

@@ -9,7 +9,7 @@ export function Page(props: IPageProps) {
     const { children, isFullWidth } = props;
     return (
         <div className={isFullWidth ? styles['container-full'] : styles.container}>
-            <div className={isFullWidth ? styles['header-container'] : undefined}>
+            <div className={styles["header-container"]}>
                 <div className={rootStyles.row}>
                     <Header />
                 </div>

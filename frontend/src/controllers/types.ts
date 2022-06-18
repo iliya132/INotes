@@ -16,3 +16,14 @@ export interface NoteDTO {
     parent: number;
     isNew: boolean
 }
+
+export interface PasswordChange {
+    currentPassword: string,
+    newPassword: string,
+    newPasswordConfirm: string
+}
+
+export interface PasswordChangeResponse {
+    isSuccessfull: boolean;
+    errors: { targets: string[], message: string }
+}

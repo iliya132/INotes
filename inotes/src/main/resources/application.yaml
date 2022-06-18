@@ -7,9 +7,15 @@ spring:
     url: jdbc:postgresql://rc1b-enk036iglr1em2qx.mdb.yandexcloud.net:6432/inotes
     username: iliya132
     driverClassName: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 logging:
   level:
     org.springframework.web: ERROR
     ru.iliya132: DEBUG
   file:
     name: logs/i-note.log
+i-note.host-address: http://localhost:8080

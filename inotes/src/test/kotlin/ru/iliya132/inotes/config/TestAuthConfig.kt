@@ -5,6 +5,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Profile
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import ru.iliya132.inotes.models.Role
 import ru.iliya132.inotes.models.User
@@ -36,7 +37,8 @@ class TestAuthConfig {
         imageRepository: ImageRepository,
         passwordEncoder: PasswordEncoder
     ): UserService {
-        val defaultUser = User(0, "defaultUser@test.ru", "defaultPassword123!", true, listOf(Role(0, "ROLE_USER")))
+        val defaultUser = User(0, "defaultUser@test.ru", BCryptPasswordEncoder().encode("defaultPassword123!"),
+            true, listOf(Role(0, "ROLE_USER")))
         userRepository.save(defaultUser)
         return UserService(userRepository, rolesRepository, imageRepository, passwordEncoder)
     }
