@@ -18,7 +18,7 @@ cd inotes
 echo "MVN: building"
 mvn install
 echo "starting backend"
-nohup java -jar -Dspring.profiles.active=production  ./target/inotes-0.0.1-SNAPSHOT.jar > /dev/null 2>%1 &
+nohup java -jar -Dspring.profiles.active=production  ./target/inotes-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
 
 #build & run frontend
 echo "installing node_modules"
