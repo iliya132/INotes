@@ -3,6 +3,7 @@
 .centered-container {
     position: absolute;
     display: flex;
+    flex-direction: column;
     top: 20%;
     left: 40%;
     min-width: 600px;

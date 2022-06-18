@@ -16,8 +16,8 @@
 }
 
 .nav-commands {
-    display: grid;
-    grid-template-columns: 1fr 30px;
+    display: flex;
+    align-items: center;
     padding: 5px;
 }
 
@@ -50,4 +50,42 @@
     height: 100%;
     margin: auto;
     cursor: pointer;
+}
+
+.context-field {
+    padding: 5px 0;
+    border: 1px solid $G2;
+    border-radius: 6px;
+    background-color: $Gray;
+    text-align: left;
+    top: 0
+}
+
+.notebook-context-header {
+    display: block;
+    margin: 5px auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $G4;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.notebook-context-option {
+    margin: 10px auto;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+    a{
+        outline: none;
+        text-decoration: none;
+        &:visited{
+            color:inherit;
+        }
+    }
+
+    &:hover {
+        background-color: rgb(200 200 200);
+    }
 }

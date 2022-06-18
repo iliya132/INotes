@@ -20,6 +20,8 @@ import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
 import ToolTip from '../../components/Tooltip';
 import notesController from '../../controllers/NotesController';
+import Popup from 'reactjs-popup';
+import NotebookPopup from '../../components/NotebooCreatePopup';
 
 export default function Notes() {
     const dispatch = useAppDispatch();
@@ -31,9 +33,9 @@ export default function Notes() {
     const selectedNotebook = useSelector(selectedNotebookState);
     const defaultSelectednotebook = selectedNotebook
         ? {
-            value: selectedNotebook.id.toString(),
-            label: selectedNotebook.name,
-        }
+              value: selectedNotebook.id.toString(),
+              label: selectedNotebook.name,
+          }
         : undefined;
 
     const handleNotebookChange = (event: { value: string; label: string }) => {
@@ -46,14 +48,20 @@ export default function Notes() {
         }
     };
 
+    const handleNoteRemove = () => {
+        if (selectedNote) {
+            notesController.removeNote(selectedNote.id);
+        }
+    };
+
+    const handleNoteCreate = () => {
+        notesController.createNote('Заметка от ' + new Date().toLocaleDateString());
+    };
+
     return (
         <Page isFullWidth={true}>
             <div className={styles['notes-container']}>
                 <div className={styles['notes-nav']}>
-                    <div className={styles['nav-commands']}>
-                        <Search />
-                        <AddComponent />
-                    </div>
                     <div className={styles['nav-commands']}>
                         <Select
                             options={options}
@@ -61,13 +69,27 @@ export default function Notes() {
                             onChange={handleNotebookChange}
                             value={defaultSelectednotebook}
                         />
-                        <ToolTip tooltip="Удалить записную книжку">
-                            <Svg
-                                icon={Icons.Remove}
-                                className={styles['remove-notebook-btn']}
-                                onClick={handleNotebookRemoval}
-                            />
-                        </ToolTip>
+                        <Popup trigger={<Svg icon={Icons.Dots} className={styles['more-btn']} />} position="top left">
+                            <div className={styles['context-field']}>
+                                <div className={styles['notebook-context-option']} onClick={handleNoteCreate}>
+                                    Добавить заметку
+                                </div>
+                                <div className={styles['notebook-context-option']}>
+                                    <Popup
+                                        trigger={<span>Добавить записную книжку</span>}
+                                        nested
+                                        position="bottom left">
+                                        <NotebookPopup afterClick={() => close()} />
+                                    </Popup>
+                                </div>
+                                <div className={styles['notebook-context-option']} onClick={handleNoteRemove}>
+                                    Удалить заметку
+                                </div>
+                                <div className={styles['notebook-context-option']} onClick={handleNotebookRemoval}>
+                                    удалить записную книжку
+                                </div>
+                            </div>
+                        </Popup>
                     </div>
 
                     <div className={styles['notes-list']}>

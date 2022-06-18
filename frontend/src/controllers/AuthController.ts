@@ -7,7 +7,7 @@ import { fetchUser } from "../store/thunks/authThunks";
 import { fetchNotesThunk } from "../store/thunks/notesThunks";
 import { User } from "../store/types";
 import BaseController from "./base/BaseController";
-import { ValidationResult as ValidationResult } from "./types";
+import { PasswordChange, PasswordChangeResponse, ValidationResult as ValidationResult } from "./types";
 
 class AuthController extends BaseController {
     private authUrl = this.baseUrl + "auth/";
@@ -69,7 +69,7 @@ class AuthController extends BaseController {
     public uploadAvatar(formData: FormData) {
         axios.post(this.authUrl + "avatar", formData, { withCredentials: true })
             .then(() => {
-                console.log("uploaded avatar")
+                this.getUser()
             }).catch((reason) => {
                 console.error(reason);
             })
@@ -102,6 +102,21 @@ class AuthController extends BaseController {
             result.errors.password = "Пароль должен быть длинной не менее 8 символов, содержать заглавные и прописные буквы и хотя бы одну цифру";
         }
         return result;
+    }
+
+    public updateUser(passwordChange: PasswordChange): Promise<PasswordChangeResponse> {
+        if (passwordChange.newPassword !== passwordChange.newPasswordConfirm) {
+            return Promise.resolve({ isSuccessfull: false, errors: { targets: ["new", "confirm"], message: "Пароли не совпадают" }})
+        }
+        return axios.patch(`${this.authUrl}change-pass`, passwordChange, { withCredentials: true })
+            .then((resp) => {
+                console.debug("successfully updated password", resp)
+                return Promise.resolve({ isSuccessfull: true, errors: {targets: [""], message: ""} })
+            }).catch((reason) => {
+                console.error("ERROR:", reason);
+                const errors = reason.response.data as {targets: string[], message: string}
+                return Promise.resolve({isSuccessfull: false, errors} as PasswordChangeResponse)
+            })
     }
 }
 

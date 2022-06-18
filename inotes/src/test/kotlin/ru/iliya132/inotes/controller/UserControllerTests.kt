@@ -3,6 +3,8 @@ package ru.iliya132.inotes.controller
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.entity.UrlEncodedFormEntity
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.io.entity.EntityUtils
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.message.BasicNameValuePair
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +19,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import ru.iliya132.inotes.config.SecurityConfig
 import ru.iliya132.inotes.config.TestAuthConfig
+import ru.iliya132.inotes.dto.ChangePasswordRequest
 import ru.iliya132.inotes.dto.UserDTO
+import ru.iliya132.inotes.models.Role
+import ru.iliya132.inotes.models.User
+import ru.iliya132.inotes.repositories.UserRepository
 import ru.iliya132.inotes.services.security.UserService
 
 
@@ -29,9 +35,25 @@ class UserControllerTests : BaseControllerTest() {
     lateinit var mvcMock: MockMvc
 
     val expectedUserError = UserController.INVALID_USER_ATTRIBUTES
+    val defaultUser = User(1, "defaultUserControllerTest@test.ru",
+        "defaultPassword123!",
+        true, listOf(Role(0, "ROLE_USER")))
 
     @Autowired
     lateinit var userService: UserService
+
+    @Autowired
+    lateinit var userRepository: UserRepository
+
+    @Before
+    fun startup() {
+        userService.register(UserDTO(defaultUser.userName, defaultUser.password))
+    }
+
+    @After
+    fun tearDown() {
+        userRepository.deleteById(defaultUser.id)
+    }
 
     @Test
     fun `can register`() {
@@ -135,6 +157,37 @@ class UserControllerTests : BaseControllerTest() {
             .andExpect(status().isOk)
             .andExpect { content().contentType(MediaType.APPLICATION_JSON) }
             .andExpect { content().json("{\"userName\":\"defaultUser@test.ru\",\"roles\":[]}") }
+    }
+
+    @Test
+    @WithUserDetails(defaultUserName)
+    fun `can change password`() {
+
+        val changePassReq = ChangePasswordRequest(defaultUser.password, "newCanChangePassword123!", "newCanChangePassword123!")
+        val changePassReqBack = ChangePasswordRequest("newCanChangePassword123!", defaultUser.password, defaultUser.password)
+
+        mvcMock.perform(MockMvcRequestBuilders.patch("$AUTH_URL/change-pass")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(changePassReq)))
+            .andExpect(status().isOk)
+
+        mvcMock.perform(MockMvcRequestBuilders.patch("$AUTH_URL/change-pass")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(changePassReqBack)))
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    @WithUserDetails(defaultUserName)
+    fun `can't change password when current is invalid`() {
+        val changePassReq = ChangePasswordRequest("invalidPassword123!",
+            "newCanChangePassword123!", "newCanChangePassword123!")
+
+        mvcMock.perform(MockMvcRequestBuilders.patch("$AUTH_URL/change-pass")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(changePassReq)))
+            .andExpect(status().isBadRequest)
+            .andExpect(content().json("{ \"targets\": [ \"old\" ], \"message\": \"Неверно указан текущий пароль\" }"))
     }
 
     private fun buildRegisterRequest(user: UserDTO?): ResultActions {

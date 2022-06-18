@@ -10,5 +10,7 @@ export default interface IInputProps{
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
     icon?: Icons,
     placeholder?: string,
-    defaultValue?: string
+    defaultValue?: string,
+    accept?: string,
+    name?: string
 }

@@ -9,6 +9,9 @@ import java.util.*
 
 interface ImageRepository : JpaRepository<Avatar, Long> {
     fun findByUserId(userId: Long): Optional<Avatar>
+
+    @Query("select id from avatars where user_id = :user_id limit 1", nativeQuery = true)
+    fun findFirstIdByUserId(@Param("user_id") userId: Long): Optional<Long>
     fun existsByUserId(userId: Long): Boolean
 
     @Modifying

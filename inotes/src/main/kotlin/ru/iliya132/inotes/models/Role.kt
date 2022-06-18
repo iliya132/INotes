@@ -5,11 +5,11 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "roles")
-data class Role(
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	override val id: Long = 0,
-	override val name: String = "",
-	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-	val users: Collection<User>? = null
+class Role(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long = 0,
+    override var name: String = "",
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    var users: Collection<User>? = null
 ) : NamedEntity, java.io.Serializable
