@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Note from '../../components/Note';
 import { Page } from '../../components/Page/page';
-import { Search } from '../../components/Search/search';
 import styles from './notes.scss';
 import Select from 'react-select';
 import { selectStyle } from './notes.constants';
@@ -12,30 +11,43 @@ import {
     notebooks,
     selectedNote as selectedNoteState,
     selectedNotebook as selectedNotebookState,
+    selectNote,
     selectNotebook,
 } from '../../store/reducers/notebooksReducer';
-import AddComponent from '../../components/AddComponent';
 import { useAppDispatch } from '../../store/store.hooks';
 import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
-import ToolTip from '../../components/Tooltip';
 import notesController from '../../controllers/NotesController';
 import Popup from 'reactjs-popup';
 import NotebookPopup from '../../components/NotebooCreatePopup';
+import { INote } from '../../store/types';
 
 export default function Notes() {
     const dispatch = useAppDispatch();
+    const [isContextChanged, setContextChanged] = useState(false);
     const options = useSelector(notebooks).map((it) => {
         return { value: it.id.toString(), label: it.name };
     });
+
+    useEffect(() => {
+        window.onbeforeunload = function(){
+            if(isContextChanged){
+                return "Вы не сохранили внесенные изменения. Если вы перейдете на другую страницу они будут потеряны"
+            }
+        }
+        return function cleanup(){
+            window.onbeforeunload = null
+        }
+    })
+    
     const notes = useSelector(currentNotes);
     const selectedNote = useSelector(selectedNoteState);
     const selectedNotebook = useSelector(selectedNotebookState);
     const defaultSelectednotebook = selectedNotebook
         ? {
-              value: selectedNotebook.id.toString(),
-              label: selectedNotebook.name,
-          }
+            value: selectedNotebook.id.toString(),
+            label: selectedNotebook.name,
+        }
         : undefined;
 
     const handleNotebookChange = (event: { value: string; label: string }) => {
@@ -57,6 +69,24 @@ export default function Notes() {
     const handleNoteCreate = () => {
         notesController.createNote('Заметка от ' + new Date().toLocaleDateString());
     };
+
+    const handleNoteSelected = (note: INote) => {
+        if(isContextChanged){
+            if(!confirm("Вы не сохранили внесенные изменения. При переходе они будут потеряны. Продолжить?")){
+                return;
+            }
+        }
+        setContextChanged(false)
+        dispatch(selectNote(note));
+    };
+
+    const handleNoteChange = () => {
+        setContextChanged(true);
+    }
+
+    const handleNoteSave = () => {
+        setContextChanged(false);
+    }
 
     return (
         <Page isFullWidth={true}>
@@ -95,12 +125,12 @@ export default function Notes() {
                     <div className={styles['notes-list']}>
                         <>
                             {notes.map((it) => (
-                                <Note key={it.id} note={it} isSelected={it.id === selectedNote?.id} />
+                                <Note key={it.id} note={it} isSelected={it.id === selectedNote?.id} onClick={() => handleNoteSelected(it)}/>
                             ))}
                         </>
                     </div>
                 </div>
-                <Workfield note={selectedNote} />
+                <Workfield note={selectedNote} onChange={handleNoteChange} onSave={handleNoteSave}/>
             </div>
         </Page>
     );

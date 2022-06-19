@@ -13,7 +13,7 @@ import notesController from '../../controllers/NotesController';
 import { INoteDTO } from '../../store/types';
 
 export function Workfield(props: IWorkfieldProps) {
-    const { note } = props;
+    const { note, onChange, onSave } = props;
     const name = note ? note.name : '';
     const [currentNoteId, setCurrentNoteId] = useState(-1);
     const [rendered, setRendered] = useState('');
@@ -39,7 +39,12 @@ export function Workfield(props: IWorkfieldProps) {
         }
     });
 
-    const handleChange = handleTextAreaValueChanged(setRendered, setInput, md);
+    const handleChange = () => {
+        handleTextAreaValueChanged(setRendered, setInput, md);
+        if(onChange){
+            onChange()
+        }
+    }
 
     const render = (text: string) => {
         setInput(text);
@@ -86,6 +91,9 @@ export function Workfield(props: IWorkfieldProps) {
                 notebookId: note?.parent.id,
             };
             notesController.updateNote(noteToUpdate);
+        }
+        if(onSave){
+            onSave();
         }
     };
 
