@@ -22,11 +22,13 @@ export default function Login() {
         const formElements = form.elements as typeof form.elements & {
             login: HTMLInputElement;
             password: HTMLInputElement;
+            rememberMe: HTMLInputElement;
         };
         let username: string = formElements.login.value;
         let password: string = formElements.password.value;
+        let rememberMe: boolean = formElements.rememberMe.checked
         if (username && password) {
-            authController.login(username, password);
+            authController.login(username, password, rememberMe);
         } else {
             dispatch(
                 validationError({
@@ -53,6 +55,10 @@ export default function Login() {
                     <br />
                     <span className={styles['silenced']}>Пароль</span>
                     <Input type="password" id="password" autocomplete="current-password" error={passwordErrors} />
+                    <div className={styles["checkbox-container"]}>
+                        <input type="checkbox" id="rememberMe" className={styles["remember-me"]}/>
+                        <label htmlFor="remember-me" className={styles["remember-me-label"]}>Запомнить меня</label>
+                    </div>             
                     <Button title="Авторизоваться" className={styles['login-btn']} />
                     <NavLink to={'/register'} className={styles['nav-link']}>
                         Нет аккаунта?

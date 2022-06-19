@@ -13,10 +13,11 @@ class AuthController extends BaseController {
     private authUrl = this.baseUrl + "auth/";
     private dispatchStore = store.dispatch as typeof store.dispatch | Dispatch<any>
 
-    public login(username: string, password: string) {
+    public login(username: string, password: string, rememberMe: boolean) {
         var formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
+        formData.append("remember-me", rememberMe.toString())
         return axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {

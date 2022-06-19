@@ -1,7 +1,7 @@
 package ru.iliya132.inotes.config
 
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -32,6 +32,9 @@ class SecurityConfig {
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService)
     }
+
+    @Value("\${i-note.remember-me.key}")
+    val rememberMeKey: String = "test-key"
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -85,6 +88,10 @@ class SecurityConfig {
             .invalidateHttpSession(true)
             .deleteCookies("JSESSIONID", "SESSION")
             .and()
+            .rememberMe()
+            .key(rememberMeKey)
+            .alwaysRemember(true)
+            .and()
             .exceptionHandling()
             .authenticationEntryPoint(authEntryPoint())
             .and()
@@ -94,7 +101,6 @@ class SecurityConfig {
     }
 
     companion object {
-        val log = LoggerFactory.getLogger(SecurityConfig::class.java)
         val ALLOWED_ORIGINS = listOf("http://localhost:3000", "http://localhost:80", "https://localhost:443",
             "http://i-note.online", "https://i-note.online", "https://www.i-note.online", "http://www.i-note.online")
     }
