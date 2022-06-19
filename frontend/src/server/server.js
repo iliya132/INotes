@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-app.get(/\.(js|css|map|ico|json|png|svg)$/, express.static(path.resolve(__dirname, './')));
+app.get(/\.(js|css|map|ico|json|png|svg|html)$/, express.static(path.resolve(__dirname, './')));
 
 app.use(express.static("./"));
 
