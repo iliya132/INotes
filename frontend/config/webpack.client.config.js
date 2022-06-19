@@ -52,6 +52,10 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, '../src/server/server.js'),
                     to: path.resolve(__dirname, '../dist/server.js')
+                },
+                {
+                    from: path.resolve(__dirname, '../static/yandex_ce9c0611e641b63b.html'),
+                    to: path.resolve(__dirname, '../dist/yandex_ce9c0611e641b63b.html')
                 }
             ],
         }),
