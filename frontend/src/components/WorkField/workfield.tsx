@@ -39,10 +39,10 @@ export function Workfield(props: IWorkfieldProps) {
         }
     });
 
-    const handleChange = () => {
-        handleTextAreaValueChanged(setRendered, setInput, md);
+    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        handleTextAreaValueChanged(setRendered, setInput, md)(event);
         if(onChange){
-            onChange()
+            onChange();
         }
     }
 
@@ -187,7 +187,7 @@ export function Workfield(props: IWorkfieldProps) {
                     </div>
                     <div className={styles['workfield-content-edit-field-textarea']} key={`text-area${note?.id}`}>
                         <textarea
-                            onChange={handleChange}
+                            onChange={(event) => handleChange(event)}
                             onKeyDown={handleKeyDown}
                             ref={textAreaRef}
                             disabled={!note}
