@@ -41,7 +41,9 @@ export enum Icons {
     H3 = "h3-icon",
     Code = "code-icon",
     Table = "table-icon",
-    Markup = "markup-icon"
+    Markup = "markup-icon",
+    Save = "save-icon",
+    Read = "read-icon"
 }
 
 export const ICONS_DATA: TIconsData = {
@@ -67,4 +69,6 @@ export const ICONS_DATA: TIconsData = {
     [Icons.Markup]: { color: colors.TextColor, width: 25, height: 25 },
     [Icons.Underscoped]: { color: colors.TextColor, width: 25, height: 25 },
     [Icons.NumberList]: { color: colors.TextColor, width: 25, height: 25 },
+    [Icons.Save]: { color: colors.TextColor, width: 25, height: 25 },
+    [Icons.Read]: { color: colors.TextColor, width: 25, height: 25 },
 };

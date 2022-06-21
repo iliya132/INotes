@@ -45,9 +45,9 @@ export default function Notes() {
     const selectedNotebook = useSelector(selectedNotebookState);
     const defaultSelectednotebook = selectedNotebook
         ? {
-              value: selectedNotebook.id.toString(),
-              label: selectedNotebook.name,
-          }
+            value: selectedNotebook.id.toString(),
+            label: selectedNotebook.name,
+        }
         : undefined;
 
     const handleNotebookChange = (event: { value: string; label: string }) => {
@@ -102,7 +102,7 @@ export default function Notes() {
                         <Popup
                             trigger={
                                 <div>
-                                    <Svg icon={Icons.Dots} className={styles["more-icon"]}/>
+                                    <Svg icon={Icons.Dots} className={styles['more-icon']} />
                                 </div>
                             }
                             nested

@@ -6,4 +6,9 @@ export interface ISmallButtonProps {
     size?: number;
     disabled?: boolean;
     onClick?: () => void;
+    tooltip?: string
+}
+
+export interface IMediumButtonProps extends ISmallButtonProps {
+    title: string;
 }
