@@ -35,7 +35,7 @@ class NotesController extends BaseController {
             id: 0,
             name: name,
             notebookId: selectedNotebook.id,
-            content: "",
+            content: `## ${name}\n\n---\n\n`,
         }
         this.dispatchStore(createNoteThunk(newNote))
     }

@@ -2,18 +2,15 @@
 
 .work-field {
     display: grid;
-    grid-template-rows: 50px 1fr 50px;
+    grid-template-rows: 50px 1fr;
     min-height: 100px;
-    padding: 5px 20px;
     border-radius: 9px;
     border-radius: 9px;
-    background-color: $Background-light;
-    box-shadow: 0 4px 10px rgb(0 0 0 / 25%);
 }
 
 .workfield-actions {
-    display: grid;
-    grid-template-columns: 1fr 250px;
+    display: flex;
+    justify-content: space-between;
     font-size: 18px;
     font-weight: 500;
 }
@@ -48,6 +45,7 @@
 }
 
 .apply-changes-btn {
+    margin: 5px;
     border-radius: 6px;
     text-transform: none;
 
@@ -61,20 +59,23 @@
     grid-template-columns: 1fr 1fr;
 }
 
+.workfield-content-read-mode {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
 .workfield-content-edit-field {
     display: grid;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 1fr;
 }
 
 .workfield-content-edit-field-actions {
+    margin-left: 5px;
     display: flex;
-    margin-left: auto;
 }
 
 .wf-action-btn {
-    width: 30px;
-    height: 30px;
-    border: 1px solid $Gray;
+    margin-right: 3px;
 }
 
 .workfield-content-display-field {
@@ -83,7 +84,8 @@
 }
 
 .workfield-content-edit-field-textarea {
-    margin: 0 0 5px;
+    margin: 5px 5px 0 5px;
+    border-radius: 5px;
 
     textarea {
         box-sizing: border-box;
@@ -93,7 +95,7 @@
         padding: 15px;
         border: none;
         border: 1px solid grey;
-        border-radius: 4px;
+        border-radius: 5px;
         outline: none;
         background-color: rgb(243 243 243);
         box-shadow: 0 8px 8px rgb(0 0 0 / 25%);
@@ -127,4 +129,18 @@
     font-size: 20px;
     line-height: 18px;
     text-align: left;
+}
+
+.save-btn{
+    background-color: $Background-light;
+}
+
+.render-mode{
+    width: 60%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.reader-mode-invisible{
+    display: none;
 }

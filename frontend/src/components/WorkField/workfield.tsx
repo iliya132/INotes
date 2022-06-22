@@ -11,16 +11,17 @@ import 'highlight.js/styles/github.css';
 import PrettyMarkup from '../PrettyMarkup';
 import notesController from '../../controllers/NotesController';
 import { INoteDTO } from '../../store/types';
+import { MediumButton } from '../SmallButton/MediumButton';
+import classNames from 'classnames';
 
 export function Workfield(props: IWorkfieldProps) {
     const { note, onChange, onSave } = props;
-    const name = note ? note.name : '';
     const [currentNoteId, setCurrentNoteId] = useState(-1);
     const [rendered, setRendered] = useState('');
     const [input, setInput] = useState(note?.content);
+    const [isReadMode, setReadMode] = useState(false);
 
     const textAreaRef: React.LegacyRef<HTMLTextAreaElement> = useRef(null);
-    const nameRef: React.LegacyRef<HTMLInputElement> = useRef(null);
     const md = configureMarkdownIt();
     useEffect(() => {
         if (props.note) {
@@ -32,7 +33,6 @@ export function Workfield(props: IWorkfieldProps) {
                 setCurrentNoteId(props.note.id);
             }
         } else {
-            console.log('def');
             setInput('');
             setRendered('');
             textAreaRef.current!.value = '';
@@ -41,10 +41,10 @@ export function Workfield(props: IWorkfieldProps) {
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         handleTextAreaValueChanged(setRendered, setInput, md)(event);
-        if(onChange){
+        if (onChange) {
             onChange();
         }
-    }
+    };
 
     const render = (text: string) => {
         setInput(text);
@@ -75,53 +75,45 @@ export function Workfield(props: IWorkfieldProps) {
         render(result);
     };
 
+    const handleSwitchReadMode = () => {
+        setReadMode(!isReadMode);
+    };
+
     const handleNoteRemove = () => {
-        if(note){
+        if (note) {
             notesController.removeNote(note?.id);
         }
-    }
+    };
 
     const handleSaveChanges = () => {
-        if (note && nameRef?.current) {
+        if (note) {
             console.log(input);
             const noteToUpdate: INoteDTO = {
                 content: input!,
                 id: note.id,
-                name: nameRef.current.value,
+                name: getTitle(input!),
                 notebookId: note?.parent.id,
             };
             notesController.updateNote(noteToUpdate);
         }
-        if(onSave){
+        if (onSave) {
             onSave();
         }
     };
 
+    function getTitle(content: string) {
+        const contentSplitted = content.replace(/#/g, '').replace(/_/g, '').trim().split('\n');
+        if (contentSplitted.length > 0) {
+            return contentSplitted[0];
+        } else {
+            return 'Без названия';
+        }
+    }
+
     return (
         <div className={styles['work-field']}>
             <div className={styles['workfield-actions']}>
-                <div key={`name-container ${note?.id}`}>
-                    <input
-                        className={styles['note-name-edit-field']}
-                        type="text"
-                        autoComplete="disabled"
-                        placeholder={!note ? '' : 'Введите название заметки'}
-                        id="note-name"
-                        defaultValue={name}
-                        ref={nameRef}
-                        disabled={!note}
-                    />
-                </div>
-                <div className={styles['workfield-actions-container']}>
-                    <SmallButton icon={Icons.Pencil} />
-                    <SmallButton icon={Icons.Copy} />
-                    <SmallButton icon={Icons.Tag} />
-                    <SmallButton icon={Icons.Share} />
-                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove}/>
-                </div>
-            </div>
-            <div className={styles['workfield-content']}>
-                <div className={styles['workfield-content-edit-field']}>
+                {!isReadMode ? (
                     <div className={styles['workfield-content-edit-field-actions']}>
                         <SmallButton
                             size={15}
@@ -185,6 +177,20 @@ export function Workfield(props: IWorkfieldProps) {
                         />
                         <SmallButton size={15} className={styles['wf-action-btn']} icon={Icons.Markup} />
                     </div>
+                ) : null}
+
+                <div className={styles['workfield-actions-container']}>
+                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку" />
+                    <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" />
+                    <SmallButton icon={Icons.Tag} tooltip="Задать тэг" />
+                    <SmallButton icon={Icons.Share} tooltip="Поделиться" />
+                    <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} />
+                    <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" />
+                </div>
+            </div>
+
+            <div className={!isReadMode ? styles['workfield-content'] : styles["workfield-content-read-mode"]}>
+                <div className={classNames(styles['workfield-content-edit-field'], isReadMode ? styles["reader-mode-invisible"]: null)}>
                     <div className={styles['workfield-content-edit-field-textarea']} key={`text-area${note?.id}`}>
                         <textarea
                             onChange={(event) => handleChange(event)}
@@ -194,15 +200,7 @@ export function Workfield(props: IWorkfieldProps) {
                             defaultValue={input}></textarea>
                     </div>
                 </div>
-                <PrettyMarkup renderedValue={rendered} />
-            </div>
-            <div className={styles['workfield-buttons']}>
-                <Button title="Отложить изменения" className={styles['stash-changes-btn']} />
-                <Button
-                    title="Сохранить изменения"
-                    className={styles['apply-changes-btn']}
-                    onClick={handleSaveChanges}
-                />
+                <PrettyMarkup renderedValue={rendered} className={isReadMode ? styles["render-mode"] : undefined}/>
             </div>
         </div>
     );
