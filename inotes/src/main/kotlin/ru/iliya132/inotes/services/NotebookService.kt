@@ -1,6 +1,7 @@
 package ru.iliya132.inotes.services
 
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ru.iliya132.inotes.dto.NoteDTO
 import ru.iliya132.inotes.dto.NotebookDTO
 import ru.iliya132.inotes.dto.NotebookWithNotesDTO
@@ -21,6 +22,7 @@ class NotebookService(
 
         val notebooks = notebookRepository.findAllByOwner(id)
         val notes = noteRepository.findAllByNotebookIds(notebooks.map { it.id }).groupBy { it.notebook }
+        notes.values.forEach { ensureNotesHasPublicIdWithNote(it) }
         return notebooks.map {
             NotebookWithNotesDTO(
                 it.id,
@@ -31,11 +33,41 @@ class NotebookService(
     }
 
     fun getNotes(notebookId: Long): List<NoteDTO> {
-        return noteRepository.findAllByNotebookIds(listOf(notebookId)).map { it.toDto() }
+        val notes = noteRepository.findAllByNotebookIds(listOf(notebookId)).map { it.toDto() }
+        ensureNotesHasPublicId(notes)
+        return notes
+    }
+
+    private fun ensureNotesHasPublicId(notes: List<NoteDTO>) {
+        if (!notes.all { it.publicUrl!=null && it.publicUrl.isNotEmpty() }) {
+            val updatedNotes = notes.filter { it.publicUrl==null || it.publicUrl.isEmpty() }
+                .map {
+                    it.copy(publicUrl = UUID.randomUUID().toString())
+                        .fromDTO()
+                }
+            noteRepository.saveAll(updatedNotes)
+        }
+    }
+
+    private fun ensureNotesHasPublicIdWithNote(notes: List<Note>) {
+        if (!notes.all { it.publicId!=null && it.publicId!!.isNotEmpty() }) {
+            val updatedNotes = notes.filter { it.publicId==null || it.publicId!!.isEmpty() }
+                .map {
+                    it.copy(publicId = UUID.randomUUID().toString())
+                }
+            noteRepository.saveAll(updatedNotes)
+        }
     }
 
     fun save(notebook: NotebookDTO): Notebook {
         return notebookRepository.save(notebook.fromDTO())
+    }
+
+    @Transactional
+    fun addNote(note: NoteDTO): Note {
+        val newNote = noteRepository.save(note.fromDTO())
+        newNote.publicId = UUID.randomUUID().toString()
+        return noteRepository.save(newNote)
     }
 
     fun saveNote(note: NoteDTO): Note {
@@ -56,6 +88,20 @@ class NotebookService(
 
     fun removeNote(noteId: Long) {
         noteRepository.deleteById(noteId)
+    }
+
+    fun sharePublicUrl(noteId: Long, isEnabled: Boolean): String? {
+        val note = noteRepository.findById(noteId).orElseThrow()
+        note.isPublicUrlShared = isEnabled
+        if (isEnabled) {
+            note.publicId = UUID.randomUUID().toString()
+        }
+        noteRepository.save(note)
+        return note.publicId
+    }
+
+    fun getShared(noteUrl: String): Note {
+        return noteRepository.findByPublicUrl(noteUrl);
     }
 }
 

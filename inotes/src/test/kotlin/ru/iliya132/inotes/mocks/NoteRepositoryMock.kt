@@ -21,4 +21,9 @@ class NoteRepositoryMock : GenericCrudMock<Note>(), NoteRepository {
         val allById = super.findAll().groupBy { it.notebook }
         return notebookIds.filter { allById.containsKey(it) }.flatMap { allById[it]!! }
     }
+
+    override fun findByPublicUrl(noteUrl: String): Note {
+        return super.findAll().filter { it.publicId==noteUrl }.first()
+
+    }
 }

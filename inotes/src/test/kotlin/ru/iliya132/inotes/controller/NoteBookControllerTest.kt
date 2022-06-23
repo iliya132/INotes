@@ -131,7 +131,7 @@ class NoteBookControllerTest : BaseControllerTest() {
     @Test
     @WithUserDetails(defaultUserName)
     fun `can add note`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
         val notebook = NotebookDTO(0, "can add note", "red", 0)
         notebookService.save(notebook)
 
@@ -143,7 +143,7 @@ class NoteBookControllerTest : BaseControllerTest() {
 
     @Test
     fun `can't add note when not authenticated`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
 
         mvcMock.perform(MockMvcRequestBuilders.post("$NOTEBOOK_API_URL/add-note")
             .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +154,7 @@ class NoteBookControllerTest : BaseControllerTest() {
     @Test
     @WithUserDetails(defaultUserName)
     fun `can't add wrong note`() {
-        val note = NoteDTO(0, "", "", 0L)
+        val note = NoteDTO(0, "", "", 0L, false, "123")
         val notebook = NotebookDTO(0, "can add note", "red", 0)
         notebookService.save(notebook)
 
@@ -167,7 +167,7 @@ class NoteBookControllerTest : BaseControllerTest() {
     @Test
     @WithUserDetails(defaultUserName)
     fun `can remove note`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
         val notebook = NotebookDTO(0, "can add note", "red", 0)
         notebookService.save(notebook)
         notebookService.saveNote(note)
@@ -181,7 +181,7 @@ class NoteBookControllerTest : BaseControllerTest() {
 
     @Test
     fun `can't remove note when not authenticated`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
         notebookService.saveNote(note)
 
         mvcMock.perform(MockMvcRequestBuilders.delete("$NOTEBOOK_API_URL/remove-note/0"))
@@ -195,7 +195,7 @@ class NoteBookControllerTest : BaseControllerTest() {
     @Test
     @WithUserDetails(defaultUserName)
     fun `can get notes`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
         val notebook = NotebookDTO(0, "can add note", "red", 0)
         notebookService.save(notebook)
         notebookService.saveNote(note)
@@ -207,7 +207,7 @@ class NoteBookControllerTest : BaseControllerTest() {
 
     @Test
     fun `can't get notes when not authenticated`() {
-        val note = NoteDTO(0, "can add note", "any content goes here", 0L)
+        val note = NoteDTO(0, "can add note", "any content goes here", 0L, false, "123")
         notebookService.saveNote(note)
 
         mvcMock.perform(MockMvcRequestBuilders.get("$NOTEBOOK_API_URL/get-notes/0"))

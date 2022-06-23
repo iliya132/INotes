@@ -1,6 +1,6 @@
 import axios from "axios";
 import properties from "../../properties/properties";
-import { addNote, removeNote, removeNotebook, setState, updateNote } from "../reducers/notebooksReducer";
+import { addNote, removeNote, removeNotebook, setShared, setState, updateNote } from "../reducers/notebooksReducer";
 import { AppDispatch, store } from "../store";
 import { INote, INotebook, INotebookWithNotes, INoteDTO } from "../types";
 
@@ -55,6 +55,8 @@ export function createNoteThunk(note: INoteDTO) {
                         content: newNote.content,
                         isNew: false,
                         name: newNote.name,
+                        isPublicUrlShared: newNote.isShared,
+                        publicUrl: newNote.publicUrl,
                         parent: store.getState().notebooksReducer.notebooks.filter(it => it.id === newNote.notebookId)[0]
                     }
                     dispatch(addNote(noteToAdd))
@@ -94,6 +96,24 @@ export function removeNoteThunk(noteId: number) {
             .then(response => {
                 if (response.status === 200) {
                     dispatch(removeNote(noteId));
+                } else {
+                    //TODO обработка ошибок
+                    console.error(response);
+                }
+            })
+            .catch(reason => {
+                //TODO обработка ошибок
+                console.error(reason);
+            })
+    }
+}
+
+export function setPublicUrlShared(noteId: number, isShared: boolean) {
+    return async function setPublicUrlShared(dispatch: AppDispatch) {
+        axios.post(`${notebookurl}share-note/${noteId}/${isShared}`, undefined, { withCredentials: true })
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(setShared({noteId, isShared}));
                 } else {
                     //TODO обработка ошибок
                     console.error(response);

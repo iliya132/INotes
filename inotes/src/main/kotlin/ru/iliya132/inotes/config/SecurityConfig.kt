@@ -75,6 +75,7 @@ class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/api*").hasRole("user")
+            .antMatchers("/api/notebook/shared-note/*").permitAll()
             .antMatchers("/auth/login*").permitAll()
             .antMatchers("/auth/register*").permitAll()
             .anyRequest().authenticated()

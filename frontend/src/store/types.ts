@@ -17,7 +17,6 @@ export interface NotebooksState {
     selectedNotebook?: INotebook;
     notebooks: INotebook[];
     allNotes: INote[];
-    currentNotebookNotes: INote[];
     selectedNote?: INote;
 }
 
@@ -33,6 +32,8 @@ export interface INote {
     content: string;
     parent: INotebook;
     isNew: boolean;
+    isPublicUrlShared: boolean;
+    publicUrl: string;
 }
 
 export interface INoteDTO {
@@ -40,6 +41,8 @@ export interface INoteDTO {
     name: string;
     content: string;
     notebookId: number;
+    isShared: boolean;
+    publicUrl: string;
 }
 
 export interface INotebookWithNotes {
@@ -47,4 +50,9 @@ export interface INotebookWithNotes {
     name: string;
     color: string;
     notes: INote[]
+}
+
+export interface INoteSharedState {
+    noteId: number;
+    isShared: boolean;
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "react";
 import { addNotebook } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
-import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, removeNoteThunk, updateNoteThunk } from "../store/thunks/notesThunks";
+import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, removeNoteThunk, setPublicUrlShared, updateNoteThunk } from "../store/thunks/notesThunks";
 import { INotebook, INoteDTO } from "../store/types";
 import BaseController from "./base/BaseController";
 import { NotebookDTO } from "./types";
@@ -36,6 +36,8 @@ class NotesController extends BaseController {
             name: name,
             notebookId: selectedNotebook.id,
             content: `## ${name}\n\n---\n\n`,
+            isShared: false,
+            publicUrl: ""
         }
         this.dispatchStore(createNoteThunk(newNote))
     }
@@ -58,6 +60,10 @@ class NotesController extends BaseController {
 
     removeNote(noteId: number){
         this.dispatchStore(removeNoteThunk(noteId));
+    }
+
+    setShared(noteId: number, isShared: boolean){
+        this.dispatchStore(setPublicUrlShared(noteId, isShared));
     }
 }
 

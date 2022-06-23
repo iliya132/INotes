@@ -9,6 +9,7 @@ import Login from './pages/Login/login';
 import Notes from './pages/Notes';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
+import Shared from './pages/Shared';
 import { currentUser, isAuth } from './store/reducers/authReduces';
 
 export default function App() {
@@ -50,6 +51,7 @@ export default function App() {
                     </GuardRoute>
                 }
             />
+            <Route path="/Shared/:sharedUrl" element={<Shared />} />
             <Route
                 path="/profile"
                 element={
