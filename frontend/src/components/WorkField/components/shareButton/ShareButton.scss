@@ -1,0 +1,44 @@
+@import "../../../../Misc/colors.scss";
+
+.popup-container{
+    display: flex;
+    background-color: $Gray;
+    min-width: 500px;
+    min-height: 200px;
+    padding: 20px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 12px;
+    
+    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
+}
+
+.public-url-container{
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    margin: auto;
+    font-size: 14px;
+}
+
+.input-wrapper{
+    display: flex;
+    cursor: pointer;
+    &:hover{
+        background-color: rgba(158, 158, 158, 0.5);
+    }
+}
+
+.copy-ico{
+
+    padding: 5px;
+
+}
+
+.fake-textarea{
+    display: none;
+}

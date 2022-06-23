@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Button from '../Button';
 import SmallButton from '../SmallButton';
 import { Icons } from '../Svg/types';
 import { IWorkfieldProps, WfAction } from './types';
 import styles from './workfield.scss';
-import markdown from 'markdown-it';
-import underline from 'markdown-it-underline';
-import hightlightjs from 'highlight.js';
-import 'highlight.js/styles/github.css';
 import PrettyMarkup from '../PrettyMarkup';
 import notesController from '../../controllers/NotesController';
 import { INoteDTO } from '../../store/types';
 import { MediumButton } from '../SmallButton/MediumButton';
 import classNames from 'classnames';
+import { ShareButton } from './components/shareButton/ShareButton';
+import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
 
 export function Workfield(props: IWorkfieldProps) {
     const { note, onChange, onSave } = props;
@@ -183,7 +180,9 @@ export function Workfield(props: IWorkfieldProps) {
                     <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку" />
                     <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" />
                     <SmallButton icon={Icons.Tag} tooltip="Задать тэг" />
-                    <SmallButton icon={Icons.Share} tooltip="Поделиться" />
+                    <div>
+                    <ShareButton/>
+                    </div>
                     <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} />
                     <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" />
                 </div>
@@ -204,27 +203,6 @@ export function Workfield(props: IWorkfieldProps) {
             </div>
         </div>
     );
-}
-function configureMarkdownIt() {
-    return new markdown({
-        html: true,
-        linkify: true,
-        typographer: true,
-        highlight: function (str, lang) {
-            if (lang && hightlightjs.getLanguage(lang)) {
-                try {
-                    return (
-                        `<pre class="hljs ${lang ? `language-${lang}` : null}"><code>` +
-                        hightlightjs.highlightAuto(str).value +
-                        `</code></pre>`
-                    );
-                } catch (ex) {
-                    console.debug(ex);
-                }
-            }
-            return '<pre class="hljs"><code>' + markdown().utils.escapeHtml(str) + '</code></pre>';
-        },
-    }).use(underline);
 }
 
 function handleTextAreaValueChanged(

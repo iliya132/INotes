@@ -46,7 +46,7 @@ class NotebookController(private val notebookService: NotebookService) {
             throw CustomValidationException("provided note is not valid")
         }
         return isUserOwnedOrBadRequest(note.notebookId, authentication) {
-            return@isUserOwnedOrBadRequest ResponseEntity.ok().body(notebookService.saveNote(note).toDto())
+            return@isUserOwnedOrBadRequest ResponseEntity.ok().body(notebookService.addNote(note).toDto())
         }
     }
 
@@ -83,6 +83,22 @@ class NotebookController(private val notebookService: NotebookService) {
         }
     }
 
+    @PostMapping("/share-note/{noteId}/{isEnabled}")
+    fun shareNote(@PathVariable noteId: Long, @PathVariable isEnabled: Boolean, auth: Authentication): ResponseEntity<String?> {
+        return isUserOwnedOrBadRequest(noteId, auth) {
+            ResponseEntity.ok(notebookService.sharePublicUrl(noteId, isEnabled))
+        }
+    }
+
+    @GetMapping("/shared-note/{noteUrl}")
+    fun getSharedNote(@PathVariable noteUrl: String): ResponseEntity<String> {
+        val sharedNote = notebookService.getShared(noteUrl)
+        if (!sharedNote.isPublicUrlShared) {
+            return ResponseEntity.notFound().build()
+        }
+        return ResponseEntity.ok(sharedNote.content)
+    }
+
     private fun <T> isUserOwnedOrBadRequest(
         notebookId: Long,
         auth: Authentication,
@@ -91,6 +107,20 @@ class NotebookController(private val notebookService: NotebookService) {
         val currentUser = auth.principal as User
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             action()
+        } else {
+            throw BadCredentialsException("Notebook doesn't belong to current user authenticated")
+        }
+    }
+
+    private fun isUserOwnedOrBadRequestUnit(
+        notebookId: Long,
+        auth: Authentication,
+        action: () -> Unit
+    ): ResponseEntity<String> {
+        val currentUser = auth.principal as User
+        return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
+            action()
+            ResponseEntity.ok().build()
         } else {
             throw BadCredentialsException("Notebook doesn't belong to current user authenticated")
         }

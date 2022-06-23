@@ -9,6 +9,7 @@ import authController from '../../controllers/AuthController';
 import { authErrors, removeAuthErrors, validationError, validationErrors } from '../../store/reducers/authReduces';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './login.scss';
+import rootStyles from '../../Misc/root.scss';
 
 export default function Login() {
     const dispatch = useAppDispatch();
@@ -55,9 +56,9 @@ export default function Login() {
                     <br />
                     <span className={styles['silenced']}>Пароль</span>
                     <Input type="password" id="password" autocomplete="current-password" error={passwordErrors} />
-                    <div className={styles["checkbox-container"]}>
-                        <input type="checkbox" id="rememberMe" className={styles["remember-me"]}/>
-                        <label htmlFor="remember-me" className={styles["remember-me-label"]}>Запомнить меня</label>
+                    <div className={rootStyles["checkbox-container"]}>
+                        <input type="checkbox" id="rememberMe" className={rootStyles["checkbox-common"]}/>
+                        <label htmlFor="remember-me" className={rootStyles["checkbox-common-label"]}>Запомнить меня</label>
                     </div>             
                     <Button title="Авторизоваться" className={styles['login-btn']} />
                     <NavLink to={'/register'} className={styles['nav-link']}>

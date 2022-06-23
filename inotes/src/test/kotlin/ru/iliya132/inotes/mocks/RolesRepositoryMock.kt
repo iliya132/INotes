@@ -16,13 +16,14 @@ class RolesRepositoryMock : RolesRepository {
         if (entity.id==0L || !cache.containsKey(entity.id)) {
             entity.id = incrementId++
             cache[entity.id] = entity
-            return entity as S
+            return entity
         } else {
             throw org.springframework.dao.DuplicateKeyException("Key $entity.id already exists")
         }
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <S : Role?> saveAll(entities: MutableIterable<S>): MutableIterable<S> {
         return entities.mapNotNull { save(it as Role) as S }.toMutableList()
     }
