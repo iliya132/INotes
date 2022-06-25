@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+        body {
+            background-color: #a3b18a;
+            
+        }
+        .container-centered {
+            min-width: 500px;
+            width: 40%;
+            height: 50%;
+            min-height: 400px;
+            background-color: #bac4a7;
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            border-radius: 12px;
+            background-color: rgb(218 215 205 / 50%);
+            box-shadow: 0 0 91px rgb(0 0 0 / 14%);
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .message-container{
+            text-align: center;
+        }
+
+        span {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .error-code{
+            font-size: 150px;
+            text-align: center;
+            margin: auto;
+            height: 250px;
+            margin-top: 100px
+        }
+        .back-link-container{
+            width: 100%;
+            text-align: center;
+        }
+
+        .back-link{
+            display: inline-block;
+            margin: 0 auto;
+            text-decoration: none;
+            color: #dad7cd;
+            font-size: 20px;
+            border-radius: 6px;
+            padding: 10px;
+            background-color: #344e41;
+            text-align: center;
+
+        }
+        .back-link:hover{
+            background-color: #26392f;
+        }
+    </style>
+    <body>
+        <div class="container-centered">
+            <h1>Ой, кажется, всё сломалось</h1>
+            <div class="message-container">
+                <span>Мы уже работаем над тем, что бы всё починить</span>
+            </div>
+            <div class="error-code">
+                500
+            </div>
+            <div class="back-link-container">
+                <a href="/" class="back-link">Вернуться на сайт</a>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+    <title>INotes</title>
+    <g class="currentLayer">
+        <title>Layer 1</title>
+        <rect fill="#344e41" stroke-width="2" stroke-linejoin="round" id="svg_10" x="0" y="0" width="120" height="120" style="color: rgb(0, 0, 0);" class="" rx="29" ry="29" />
+        <foreignObject fill="#ffffff" stroke-width="2" stroke-linejoin="round" font-size="80" font-family="Arial Black" word-spacing="0" id="svg_12" x="0" y="15" width="120" height="120" style="color: rgb(255, 255, 255); text-align: center;" >
+            <p xmlns="http://www.w3.org/1999/xhtml" style="border: none;outline: none;font-size: inherit;line-height: 1em;padding:0;margin:0;">IN</p>
+        </foreignObject>
+    </g>
+</svg>

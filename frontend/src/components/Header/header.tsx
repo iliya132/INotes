@@ -26,7 +26,7 @@ export function Header() {
                 <ul className={styles['menu-list']}>
                     <li>
                         <NavLink className={styles['nav-link']} to="/">
-                            <img src="/Favicon.png"></img>
+                            <img src="/Favicon.svg"></img>
                         </NavLink>
                     </li>
                     <li>
