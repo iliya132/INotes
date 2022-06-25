@@ -7,6 +7,7 @@ import GettingStarted from './pages/GettingStarted';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 import Notes from './pages/Notes';
+import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Shared from './pages/Shared';
@@ -60,6 +61,9 @@ export default function App() {
                     </GuardRoute>
                 }
             />
+            <Route path="*" element={
+                <NotFound/>
+            }/>
         </Routes>
     );
 }

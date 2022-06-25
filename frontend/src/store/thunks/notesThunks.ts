@@ -113,7 +113,7 @@ export function setPublicUrlShared(noteId: number, isShared: boolean) {
         axios.post(`${notebookurl}share-note/${noteId}/${isShared}`, undefined, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
-                    dispatch(setShared({noteId, isShared}));
+                    dispatch(setShared({ noteId, isShared }));
                 } else {
                     //TODO обработка ошибок
                     console.error(response);
@@ -123,5 +123,11 @@ export function setPublicUrlShared(noteId: number, isShared: boolean) {
                 //TODO обработка ошибок
                 console.error(reason);
             })
+    }
+}
+
+export function loadSharedNote(sharedUrl: string) {
+    return async function loadSharedNote(dispatch: AppDispatch) {
+        axios.get(`${notebookurl}/shared-note/${sharedUrl}`)
     }
 }
