@@ -56,7 +56,11 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, '../static/yandex_ce9c0611e641b63b.html'),
                     to: path.resolve(__dirname, '../dist/yandex_ce9c0611e641b63b.html')
-                }
+                },
+                {
+                    from: path.resolve(__dirname, '../static/500.html'),
+                    to: path.resolve(__dirname, '../dist/500.html')
+                },
             ],
         }),
     ],
