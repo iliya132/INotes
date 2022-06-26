@@ -61,6 +61,14 @@ module.exports = {
                     from: path.resolve(__dirname, '../static/500.html'),
                     to: path.resolve(__dirname, '../dist/500.html')
                 },
+                {
+                    from: path.resolve(__dirname, '../static/502.html'),
+                    to: path.resolve(__dirname, '../dist/502.html')
+                },
+                {
+                    from: path.resolve(__dirname, '../static/404.html'),
+                    to: path.resolve(__dirname, '../dist/404.html')
+                },
             ],
         }),
     ],
