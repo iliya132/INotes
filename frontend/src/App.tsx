@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
 import Faq from './pages/FAQ';
 import GettingStarted from './pages/GettingStarted';
@@ -62,7 +62,7 @@ export default function App() {
                 }
             />
             <Route path="*" element={
-                <NotFound/>
+                <Navigate to={"/notFound"} replace={true}/>
             }/>
         </Routes>
     );
