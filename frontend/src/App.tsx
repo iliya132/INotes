@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
+import ReloadPage from './components/ReloadPage/ReloadPage';
 import Faq from './pages/FAQ';
 import GettingStarted from './pages/GettingStarted';
 import Home from './pages/Home/home';
@@ -61,6 +62,9 @@ export default function App() {
                     </GuardRoute>
                 }
             />
+            <Route path="/notFound" element={
+                <ReloadPage/>
+            }/>
             <Route path="*" element={
                 <Navigate to={"/notFound"} replace={true}/>
             }/>
