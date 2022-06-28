@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch } from "react";
 import { REG_EXP_VALIDATE_PASSWORD } from "../Misc/regexp";
 import { auth, authError, logout, validationError } from "../store/reducers/authReduces";
+import { clearNotesState } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
 import { fetchUser } from "../store/thunks/authThunks";
 import { fetchNotesThunk } from "../store/thunks/notesThunks";
@@ -55,12 +56,15 @@ class AuthController extends BaseController {
     public getUser() {
         this.dispatchStore(fetchUser())
         this.dispatchStore(fetchNotesThunk());
+
     }
 
     public logout() {
+
         return axios.post(this.authUrl + "logout", null, { withCredentials: true })
             .then(() => {
                 this.dispatchStore(logout());
+                this.dispatchStore(clearNotesState());
             }).catch(reason => {
                 console.error(reason.message);
                 this.dispatchStore(logout());
@@ -107,16 +111,16 @@ class AuthController extends BaseController {
 
     public updateUser(passwordChange: PasswordChange): Promise<PasswordChangeResponse> {
         if (passwordChange.newPassword !== passwordChange.newPasswordConfirm) {
-            return Promise.resolve({ isSuccessfull: false, errors: { targets: ["new", "confirm"], message: "Пароли не совпадают" }})
+            return Promise.resolve({ isSuccessfull: false, errors: { targets: ["new", "confirm"], message: "Пароли не совпадают" } })
         }
         return axios.patch(`${this.authUrl}change-pass`, passwordChange, { withCredentials: true })
             .then((resp) => {
                 console.debug("successfully updated password", resp)
-                return Promise.resolve({ isSuccessfull: true, errors: {targets: [""], message: ""} })
+                return Promise.resolve({ isSuccessfull: true, errors: { targets: [""], message: "" } })
             }).catch((reason) => {
                 console.error("ERROR:", reason);
-                const errors = reason.response.data as {targets: string[], message: string}
-                return Promise.resolve({isSuccessfull: false, errors} as PasswordChangeResponse)
+                const errors = reason.response.data as { targets: string[], message: string }
+                return Promise.resolve({ isSuccessfull: false, errors } as PasswordChangeResponse)
             })
     }
 }

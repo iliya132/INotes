@@ -1,3 +1,5 @@
+import { INote, INotebook } from "../store/types";
+
 export interface ValidationResult {
     isSucceded: boolean,
     errors: any
@@ -26,4 +28,19 @@ export interface PasswordChange {
 export interface PasswordChangeResponse {
     isSuccessfull: boolean;
     errors: { targets: string[], message: string }
+}
+
+export interface ISearchResult {
+    notebooks: IFoundNotebook[];
+    notes: IFoundNote[];
+}
+
+export interface IFoundNote {
+    note: INote;
+    context: string;
+}
+
+export interface IFoundNotebook{
+    notebook: INotebook;
+    context: string;
 }
