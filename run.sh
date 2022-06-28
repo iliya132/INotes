@@ -2,8 +2,8 @@
 #cleanup
 cd /home/iliya132/inotes/INotes
 
-cp robots.txt /www/html/robots.txt
-cp sitemap.xml /www/html/sitemap.xml
+cp ./robots.txt /www/html/robots.txt
+cp ./sitemap.xml /www/html/sitemap.xml
 
 echo "stopping backend"
 pkill java

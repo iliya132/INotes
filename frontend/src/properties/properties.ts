@@ -5,4 +5,3 @@ export default {
     searchContextOffset: 5,
     minSearchContextOffset: 100
 };
-
