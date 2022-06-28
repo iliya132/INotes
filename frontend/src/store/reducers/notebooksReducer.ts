@@ -60,6 +60,7 @@ const slice = createSlice({
         },
         selectNote: (state: NotebooksState, action: PayloadAction<INote>) => {
             state.selectedNote = action.payload;
+            state.selectedNotebook = state.notebooks.filter(it => it.id === action.payload.parent.id)[0]
         },
         setState: (state: NotebooksState, action: PayloadAction<INotebookWithNotes[]>) => {
             state.notebooks = action.payload.map(it => { return { id: it.id, name: it.name, color: it.color } })
@@ -71,12 +72,18 @@ const slice = createSlice({
             if(note !== undefined){
                 note.isPublicUrlShared = action.payload.isShared;
             }
+        },
+        clearNotesState: (state: NotebooksState) => {
+            state.allNotes = [];
+            state.notebooks = [];
+            state.selectedNote = undefined;
+            state.selectedNotebook = undefined;
         }
 
     }
 });
 
-export const { addNotebook, addNote, updateNotebook, updateNote, removeNotebook, removeNote, selectNotebook, selectNote, setState, setShared } = slice.actions;
+export const { addNotebook, addNote, updateNotebook, updateNote, removeNotebook, removeNote, selectNotebook, selectNote, setState, setShared, clearNotesState } = slice.actions;
 export default slice.reducer;
 
 export const notebooks = (state: RootState) => state.notebooksReducer.notebooks;

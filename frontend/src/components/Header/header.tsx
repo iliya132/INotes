@@ -26,7 +26,7 @@ export function Header() {
                 <ul className={styles['menu-list']}>
                     <li>
                         <NavLink className={styles['nav-link']} to="/">
-                            <img src="/favicon.svg" width={"50px"}></img>
+                            <img src="/favicon.svg" width={'50px'}></img>
                         </NavLink>
                     </li>
                     <li>
@@ -44,20 +44,22 @@ export function Header() {
                             FAQ
                         </NavLink>
                     </li>
-                    <li className={styles["search-element"]}>
-                        <Search />
-                    </li>
+                    {isAuthenticated ? (
+                        <li className={styles['search-element']}>
+                            <Search />
+                        </li>
+                    ) : undefined}
                 </ul>
                 {isAuthenticated ? (
                     <div
-                        className={classNames(styles['profile-info'], styles['nav-link'])}
+                        className={styles['profile-info']}
                         onClick={(e) => {
                             setContextVisible(!contextVisible);
                             e.stopPropagation();
                         }}>
                         <Popup
                             trigger={
-                                <div className={styles['popup-container']}>
+                                <div className={classNames(styles['popup-container'], styles['nav-link'])}>
                                     <div className={styles['user-name-link']}>{user?.userName}</div>
                                     <img src={avatar} className={styles['avatar-img']} />
                                 </div>
