@@ -15,7 +15,6 @@ class NotesController extends BaseController {
     private notebookurl = this.baseUrl + "api/notebook/"
     private dispatchStore = store.dispatch as typeof store.dispatch | Dispatch<any>
 
-
     createNotebook(name: string) {
         const newNotebook: NotebookDTO = {
             id: 0,
