@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Popup from 'reactjs-popup';
 import notesController from '../../controllers/NotesController';
 import { ISearchResult } from '../../controllers/types';
@@ -13,6 +13,7 @@ import ISearchProps from './types';
 export function Search(props: ISearchProps) {
     const dispatch = useAppDispatch();
     const { onChange } = props;
+    const inputRef = useRef(null);
     const [foundResults, setFoundResults] = useState({
         notebooks: [],
         notes: [],
@@ -31,6 +32,10 @@ export function Search(props: ISearchProps) {
         setOpen(false);
     };
 
+    const clearSearchInput = () => {
+        inputRef.current.value = "";
+    }
+
     return (
         <Popup
             onClose={handleClose}
@@ -38,6 +43,7 @@ export function Search(props: ISearchProps) {
             trigger={
                 <div className={styles['input-container']}>
                     <input
+                        ref={inputRef}
                         id="search"
                         type="text"
                         className={styles['search-field']}
@@ -61,6 +67,7 @@ export function Search(props: ISearchProps) {
                                 key={`notebook_result_${notebook.notebook.id}`}
                                 onClick={() => {
                                     close();
+                                    clearSearchInput();
                                     dispatch(selectNotebook(notebook.notebook.id));
                                 }}
                             />
@@ -72,6 +79,7 @@ export function Search(props: ISearchProps) {
                                 key={`note_result_${note.note.id}`}
                                 onClick={() => {
                                     close();
+                                    clearSearchInput();
                                     dispatch(selectNote(note.note));
                                 }}
                             />
