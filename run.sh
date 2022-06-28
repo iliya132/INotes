@@ -2,6 +2,12 @@
 #cleanup
 cd /home/iliya132/inotes/INotes
 
+#fetch
+echo "GIT: checkout main branch"
+git checkout main
+echo "GIT: pulling changes"
+git pull
+
 cp ./robots.txt /www/html/robots.txt
 cp ./sitemap.xml /www/html/sitemap.xml
 
@@ -10,12 +16,6 @@ pkill java
 echo "stopping docker container"
 docker stop i_note
 docker rm i_note
-
-#fetch
-echo "GIT: checkout main branch"
-git checkout main
-echo "GIT: pulling changes"
-git pull
 
 #build & run backend
 cd inotes
