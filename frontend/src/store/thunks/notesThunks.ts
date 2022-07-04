@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import properties from "../../properties/properties";
 import { addNote, removeNote, removeNotebook, setShared, setState, updateNote } from "../reducers/notebooksReducer";
 import { AppDispatch, store } from "../store";
@@ -78,14 +79,17 @@ export function updateNoteThunk(note: INoteDTO) {
             .then(response => {
                 if (response.status === 200) {
                     dispatch(updateNote(note))
+                    toast.success("Изменения успешно сохранены")
                 } else {
                     //TODO обработка ошибок
                     console.error(response);
+                    toast.error("Что-то пошло не так. Попробуйте повторить.")
                 }
             })
             .catch(reason => {
                 //TODO обработка ошибок
                 console.error(reason);
+                toast.error("Что-то пошло не так. Попробуйте повторить.")
             })
     }
 }
