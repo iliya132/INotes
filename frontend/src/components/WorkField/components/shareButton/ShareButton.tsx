@@ -11,6 +11,7 @@ import notesController from '../../../../controllers/NotesController';
 import properties from '../../../../properties/properties';
 import Svg from '../../../Svg';
 import clipboardCopy from 'clipboard-copy';
+import { toast } from 'react-toastify';
 
 export function ShareButton() {
     const note = useSelector(selectedNote);
@@ -29,6 +30,7 @@ export function ShareButton() {
 
     const handleCopy = () => {
         clipboardCopy(url);
+        toast.success("Ссылка скопирована", {autoClose: 1000});
     }
 
     return (

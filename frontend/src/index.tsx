@@ -6,8 +6,10 @@ import { Provider } from 'react-redux';
 import ErrorFallback from './pages/ErrorFallback/errorFallback';
 import App from './App';
 import './Misc/root.scss';
+import 'react-toastify/dist/ReactToastify.css';
 import { store } from './store/store';
 import authController from './controllers/AuthController';
+import { ToastContainer } from 'react-toastify';
 
 authController.getUser()
 
@@ -19,6 +21,7 @@ root.render(
             <Provider store={store}>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
                     <App />
+                    <ToastContainer position='bottom-right' autoClose={3000}/>
                 </ErrorBoundary>
             </Provider>
         </BrowserRouter>
