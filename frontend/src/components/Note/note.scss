@@ -1,5 +1,10 @@
 @import '../../Misc/colors.scss';
 
+.more-actions {
+    display: none;
+    cursor: pointer;
+}
+
 .note-container {
     display: flex;
     justify-content: space-between;
@@ -8,7 +13,7 @@
     padding: 5px;
     border: 1px solid $Background;
     border-radius: 6px;
-    background-color: graytransparent(0.7);
+    background-color: white;
     color: $TextColor;
     font-size: 12px;
     font-weight: bold;
@@ -39,10 +44,6 @@
     display: flex;
 }
 
-.more-actions {
-    display: none;
-    cursor: pointer;
-}
 
 
 .context-container {

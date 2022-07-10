@@ -1,0 +1,91 @@
+@import '../../../../Misc/colors.scss';
+
+.notebook-container {
+    margin-top: 15px;
+    margin-left: 15px;
+    color: white;
+}
+
+.notebook-notes {
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+.notebook-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    cursor: pointer;
+
+    &:hover .notebook-options-dots {
+        visibility: visible;
+    }
+}
+
+.notebook-note-container {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 2px 0;
+    font-family: Montserrat;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: rgb(107 107 107);
+}
+
+.notebook-title {
+    font-family: 'Montserrat medium';
+    font-size: 16px;
+}
+
+.circle {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-top: auto;
+    margin-right: 14px;
+    margin-bottom: auto;
+    border-radius: 25px;
+    background-color: $Gray;
+}
+
+.expanded {
+    width: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-bottom: 3px solid white;
+}
+
+.notebook-options-dots {
+    visibility: hidden;
+    margin-right: 3px;
+    margin-left: auto;
+}
+
+.notebook-options-popup-container {
+    min-width: 150px;
+    padding: 15px 0;
+    border: 1px solid $BlackCommon;
+    background-color: white;
+    text-align: center;
+
+    & span {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    & ul {
+        margin: 0;
+        margin: auto;
+        padding: 5px 0;
+        list-style: none;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $Gray;
+        }
+    }
+}

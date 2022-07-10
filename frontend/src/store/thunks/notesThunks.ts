@@ -131,7 +131,7 @@ export function setPublicUrlShared(noteId: number, isShared: boolean) {
 }
 
 export function loadSharedNote(sharedUrl: string) {
-    return async function loadSharedNote(dispatch: AppDispatch) {
+    return async function loadSharedNote() {
         axios.get(`${notebookurl}/shared-note/${sharedUrl}`)
     }
 }

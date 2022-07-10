@@ -29,8 +29,8 @@ class UserController {
     private lateinit var imageRepository: ImageRepository
 
     @GetMapping("/user")
-    fun retrievePrincipal(principal: Principal): SimpleUserDTO {
-        return userService.getUser(principal)
+    fun retrievePrincipal(principal: Principal, request: HttpServletRequest): SimpleUserDTO {
+        return userService.getUser(principal, request)
     }
 
     @PostMapping("/register")

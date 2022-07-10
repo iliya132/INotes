@@ -1,44 +1,43 @@
-@import "../../Misc/colors.scss";
+@import '../../Misc/colors.scss';
 
 .container {
+    display: flex;
     position: absolute;
-    min-width: 700px;
-    min-height: 500px;
-    background-color: GrayTransparent(0.8);
     top: 50%;
     left: 50%;
-    transform: translateX(-350px) translateY(-300px);
-    text-align: center;
-    font-size: 18px;
-    font-family: Montserrat;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
-    display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 700px;
+    min-height: 500px;
+    padding: 20px;
+    transform: translateX(-350px) translateY(-300px);
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
+    font-family: Montserrat;
+    font-size: 18px;
+    text-align: center;
 }
 
-
 .error-code {
+    margin: 40px 0;
     font-size: 100px;
     font-weight: bold;
-    margin: 40px 0;
 }
 
 .back-link-container {
-    text-align: center;
     min-height: 70px;
+    text-align: center;
 }
 
 .back-link {
     padding: 10px;
-    background-color: $G3;
-    text-decoration: none;
-    color: $Gray;
     border-radius: 6px;
+    background-color: $BlackCommon;
+    color: white;
+    text-decoration: none;
 
-    &:hover{
-        background-color: $G3Hover;
+    &:hover {
+        background-color: rgb(56 56 56);
     }
 }

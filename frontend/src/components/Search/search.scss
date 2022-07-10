@@ -21,11 +21,10 @@
 .input-container {
     display: grid;
     grid-template-columns: 1fr 50px;
-    width: 98%;
+    width: 100%;
     max-width: 400px;
     height: 100%;
-    border-radius: 6px;
-    background-color: rgb(218 215 205 / 80%) !important;
+    background-color: white !important;
 }
 
 .eye-icon {
@@ -37,25 +36,28 @@
     cursor: pointer;
 }
 
-.popup-container{
-    position: relative;
+.popup-container {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    box-sizing: border-box;
     width: 400px;
     // min-height: 400px;
     max-height: 600px;
-    top: 5px;
-    border-radius: 6px;
-    background-color: $Gray;
     padding: 0;
-    
     overflow: scroll;
+    border: 1px solid $Gray;
+    border-radius: 4px;
+    background-color: white;
+
     &::-webkit-scrollbar {
         width: 5px;
-        cursor: all-scroll;
         height: 100%;
+        cursor: all-scroll;
     }
 
     &::-webkit-scrollbar-track {
-        background: graytransparent(0.2);
+        background: white;
     }
 
     &::-webkit-scrollbar-thumb {

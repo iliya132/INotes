@@ -2,6 +2,7 @@ package ru.iliya132.inotes.services.security
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -14,6 +15,7 @@ import ru.iliya132.inotes.repositories.ImageRepository
 import ru.iliya132.inotes.repositories.RolesRepository
 import ru.iliya132.inotes.repositories.UserRepository
 import java.security.Principal
+import javax.servlet.http.HttpServletRequest
 
 @Service
 class UserService(
@@ -27,7 +29,7 @@ class UserService(
 
     fun register(user: UserDTO): RegistrationResponse {
         if (isExists(user.userName)) {
-            return RegistrationResponse(false, "Пользователь с таким логином уже зарегистрирован в системе")
+            return RegistrationResponse(false, null, "Пользователь с таким логином уже зарегистрирован в системе")
         }
         val newUser =
             User(
@@ -35,7 +37,7 @@ class UserService(
                     ("ROLE_USER")
             )
         userRepository.save(newUser)
-        return RegistrationResponse(true, null)
+        return RegistrationResponse(true, SimpleUserDTO(newUser.userName, newUser.roles.map { it.name }, null), null)
     }
 
     fun changePassword(userId: Long, oldPassword: String, password: String): ResponseEntity<ChangePasswordResponse> {
@@ -55,13 +57,17 @@ class UserService(
         return userRepository.existsByUserName(userName)
     }
 
-    fun getUser(principal: Principal): SimpleUserDTO {
+    fun getUser(principal: Principal, request: HttpServletRequest): SimpleUserDTO {
         val user = userRepository.findByUserName(principal.name) ?: throw NotFoundException()
-        val avatar = imageRepository.findFirstIdByUserId(user.id).orElse(-1)
-        return SimpleUserDTO(user.username, user.authorities.map { it.authority }, generateAvatarUrl(avatar))
+        val avatar = imageRepository.findFirstIdByUserId(user.id).orElse(NULL_AVATAR)
+        return SimpleUserDTO(user.username, user.authorities.map { it.authority }, generateAvatarUrl(avatar, request))
     }
 
-    private fun generateAvatarUrl(avatarId: Long): String {
+    private fun generateAvatarUrl(avatarId: Long, request: HttpServletRequest): String {
+        if (avatarId==NULL_AVATAR) {
+            val origin = request.getHeader(HttpHeaders.ORIGIN);
+            return "$origin/avatar.png"
+        }
         return "$host/api/static/img/$avatarId"
     }
 
@@ -75,5 +81,9 @@ class UserService(
 
     fun validatePassword(user: User, currentPassword: String): Boolean {
         return encoder.matches(currentPassword, user.password)
+    }
+
+    companion object {
+        private val NULL_AVATAR: Long = -1L
     }
 }

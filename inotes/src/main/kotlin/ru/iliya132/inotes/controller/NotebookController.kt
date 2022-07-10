@@ -23,7 +23,8 @@ class NotebookController(private val notebookService: NotebookService) {
         if (!notebook.validate()) {
             throw CustomValidationException("provided data is invalid")
         }
-        return ResponseEntity.ok().body(notebookService.save(notebook).toDTO())
+        val currentUser = authentication.principal as User
+        return ResponseEntity.ok().body(notebookService.save(notebook.copy(owner = currentUser.id)).toDTO())
     }
 
     @GetMapping("/")
@@ -85,7 +86,12 @@ class NotebookController(private val notebookService: NotebookService) {
 
     @PostMapping("/share-note/{noteId}/{isEnabled}")
     fun shareNote(@PathVariable noteId: Long, @PathVariable isEnabled: Boolean, auth: Authentication): ResponseEntity<String?> {
-        return isUserOwnedOrBadRequest(noteId, auth) {
+        val notebookId = notebookService.findNoteById(noteId)
+        if (!notebookId.isPresent) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return isUserOwnedOrBadRequest(notebookId.get().notebook, auth) {
             ResponseEntity.ok(notebookService.sharePublicUrl(noteId, isEnabled))
         }
     }
@@ -93,7 +99,7 @@ class NotebookController(private val notebookService: NotebookService) {
     @GetMapping("/shared-note/{noteUrl}")
     fun getSharedNote(@PathVariable noteUrl: String): ResponseEntity<String> {
         val sharedNote = notebookService.getShared(noteUrl)
-        if (!sharedNote.isPublicUrlShared) {
+        if (sharedNote==null || !sharedNote.isPublicUrlShared) {
             return ResponseEntity.notFound().build()
         }
         return ResponseEntity.ok(sharedNote.content)
@@ -105,6 +111,7 @@ class NotebookController(private val notebookService: NotebookService) {
         action: () -> ResponseEntity<T>
     ): ResponseEntity<T> {
         val currentUser = auth.principal as User
+
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             action()
         } else {
