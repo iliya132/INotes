@@ -1,16 +1,16 @@
-import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
-import { Input } from '../../components/Input/Input';
-import { Page } from '../../components/Page/page';
+import Svg from '../../components/Svg';
+import { Icons } from '../../components/Svg/types';
 import authController from '../../controllers/AuthController';
 import { ValidationResult } from '../../controllers/types';
 import { REG_EXP_VALIDATE_PASSWORD } from '../../Misc/regexp';
 import { authErrors, removeAuthErrors } from '../../store/reducers/authReduces';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './register.scss';
+import lockSvg from '../../../static/assets/lock.svg';
 
 export default function Register() {
     const [validityState, setValidity] = useState({isSucceded: true, errors: {}} as ValidationResult)
@@ -44,23 +44,54 @@ export default function Register() {
     };
 
     return (
-        <Page>
-            <div className={styles['centered-container']}>
-                <form action="#" className={styles['register-form']} onSubmit={handleSubmit}>
-                    <h3 className={classNames(styles['text-centered'], styles['register-header'])}>Регистрация</h3>
-                    <span className={styles['silenced']}>Email</span>
-                    <Input type="email" id="login" autocomplete="email" error={validityState.errors.login}/><br/>
-                    <span className={styles['silenced']}>Пароль</span>
-                    <Input type="password" id="password" autocomplete="new-password" error={validityState.errors.password}/><br/>
-                    <span className={styles['silenced']}>Повторите пароль</span>
-                    <Input type="password" id="confirmPassword" autocomplete="new-password" error={validityState.errors.confirmPassword}/>
-                    <Button title="Зарегистрироваться" className={styles['register-btn']} />
-                    <NavLink to={'/login'} className={styles['nav-link']}>
-                        Уже есть аккаунт?
-                    </NavLink>
+        <div className={styles.container}>
+            <div className={styles['column']}>
+                <a href="/" className={styles['logo-link']}>
+                    <h1 className={styles.logo}>I-Note</h1>
+                </a>
+
+                <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
+                    <div className={styles["login-form"]}>
+                        <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
+                        <div className={styles['login-input']}>
+                            <Svg icon={Icons.Email} className={styles['email-ico']} />
+                            <input type="email" autoComplete="email" id="login" placeholder='E-mail...'/>
+                        </div>
+                        <label className={styles['error-label']} htmlFor="login">
+                            {validityState.errors.login}
+                        </label>
+                        <br />
+                        <div className={styles['login-input']}>
+                            <Svg icon={Icons.Key} className={styles['email-ico']} />
+                            <input type="password" autoComplete="new-password" id="password" placeholder='Password...'/>
+                        </div>
+                        <label className={styles['error-label']} htmlFor="password">
+                            {validityState.errors.password}
+                        </label>
+                        <br />
+                        <div className={styles['login-input']}>
+                            <Svg icon={Icons.Key} className={styles['email-ico']} />
+                            <input type="password" autoComplete="new-password" id="confirmPassword" placeholder='Confirm password...'/>
+                        </div>
+                        <label className={styles['error-label']} htmlFor="confirmPassword">
+                            {validityState.errors.confirmPassword}
+                        </label>
+
+                    </div>
+                    <div className={styles['submit-area']}>
+                        <div className={styles["oauth-btns"]}>
+                            <button className={styles["ya-btn"]}><Svg icon={Icons.YaLogo}/></button>
+                            <button className={styles["g-btn"]}><Svg icon={Icons.GoogleLogo}/></button>
+                        </div>
+
+                        <Button title="REGISTER" className={styles['login-btn']} />
+                        <NavLink to={'/login'} className={styles['nav-link']} >
+                            Already have an account?
+                        </NavLink>
+                    </div>
                 </form>
             </div>
-        </Page>
+        </div>
     );
 }
 

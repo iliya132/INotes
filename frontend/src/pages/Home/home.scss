@@ -1,13 +1,28 @@
 @import '../../Misc/colors.scss';
 
-.back-img-tree {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 800px;
-    height: 900px;
-    background-image: url('../../../static/assets/tree.png');
-    background-repeat: no-repeat;
+.column {
+    max-width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.logo {
+    margin: 0;
+    color: $TextColor;
+    font-size: 4em;
+    text-decoration: none;
+    user-select: none;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.container {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 30px;
+    background: linear-gradient(288.67deg, #484848 0%, #484848 36%, #fff 36.03%, #fff 100%);
 }
 
 .offer-container {

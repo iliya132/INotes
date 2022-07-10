@@ -1,4 +1,4 @@
-$Background: #a3b18a;
+$Background: white;
 $Background-light: #bac4a7;
 $Gray: #dad7cd;
 $G2: #588157;
@@ -7,6 +7,9 @@ $G3Hover: #26392f;
 $G4: #344e41;
 $TextColor: #272727;
 $Error: #b41313;
+
+$BlackCommon: #424242;
+$BlackCommonHover: rgb(55 55 55 / 100%);
 
 @function GrayTransparent($transparent) {
     @return rgb(218, 215, 205, $transparent);

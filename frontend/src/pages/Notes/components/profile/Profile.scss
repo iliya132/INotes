@@ -1,0 +1,71 @@
+@import '../../../../Misc/colors.scss';
+
+.profile-container {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    height: 55px;
+    margin-top: 5px;
+    margin-right: 25px;
+    margin-left: 25px;
+}
+
+.profile-userame {
+    margin: auto;
+    color: white;
+    font-family: 'Montserrat medium';
+    font-size: 16px;
+}
+
+.profile-avatar {
+    width: 55px;
+    height: 55px;
+    border: 1px solid white;
+    border-radius: 1000px;
+    object-fit: cover;
+}
+
+.profile-arrow-down-container {
+    margin: auto;
+}
+
+.profile-arrow-down {
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
+
+.context-field {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 1px solid $Gray;
+    border-radius: 3px;
+    background-color: $Background;
+    color: $TextColor;
+}
+
+.profile-context-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.profile-context-option {
+    margin-top: 5px;
+    padding-top: 3px;
+    padding-right: 15px;
+    padding-bottom: 3px;
+    padding-left: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(210 210 210);
+    }
+
+    & a {
+        outline: none;
+        color: $TextColor;
+        text-decoration: none;
+    }
+}

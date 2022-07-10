@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import notesController from '../../controllers/NotesController';
 import { ISearchResult } from '../../controllers/types';
-import { selectNote, selectNotebook } from '../../store/reducers/notebooksReducer';
-import { useAppDispatch } from '../../store/store.hooks';
+import { allNotes } from '../../store/reducers/notebooksReducer';
 import Svg from '../Svg';
 import { Icons } from '../Svg/types';
 import FoundResult from './components';
@@ -11,9 +12,10 @@ import styles from './search.scss';
 import ISearchProps from './types';
 
 export function Search(props: ISearchProps) {
-    const dispatch = useAppDispatch();
     const { onChange } = props;
     const inputRef = useRef(null);
+    const nav = useNavigate();
+    const allNotesState = useSelector(allNotes);
     const [foundResults, setFoundResults] = useState({
         notebooks: [],
         notes: [],
@@ -33,13 +35,26 @@ export function Search(props: ISearchProps) {
     };
 
     const clearSearchInput = () => {
-        inputRef.current.value = "";
+        (inputRef!.current! as HTMLInputElement).value = '';
+        setFoundResults({ notebooks: [], notes: [] });
+    };
+
+    const handleSelectNote = (noteId: number) => {
+        nav("/" + noteId);
     }
+
+    const handleSelectNotebook = (notebookId: number) => {
+        const firstNote = allNotesState.filter(it=> it.parent.id === notebookId)[0];
+        handleSelectNote(firstNote.id);
+    }
+
+    const isAnyResultsFound = foundResults.notebooks.length > 0 || foundResults.notes.length > 0;
 
     return (
         <Popup
             onClose={handleClose}
             open={isOpen}
+            position="bottom left"
             trigger={
                 <div className={styles['input-container']}>
                     <input
@@ -58,7 +73,7 @@ export function Search(props: ISearchProps) {
             }
             arrow={false}>
             {(close) => {
-                return (
+                return !isAnyResultsFound ? undefined : (
                     <div className={styles['popup-container']}>
                         {foundResults.notebooks.map((notebook) => (
                             <FoundResult
@@ -68,7 +83,7 @@ export function Search(props: ISearchProps) {
                                 onClick={() => {
                                     close();
                                     clearSearchInput();
-                                    dispatch(selectNotebook(notebook.notebook.id));
+                                    handleSelectNotebook(notebook.notebook.id);
                                 }}
                             />
                         ))}
@@ -80,7 +95,7 @@ export function Search(props: ISearchProps) {
                                 onClick={() => {
                                     close();
                                     clearSearchInput();
-                                    dispatch(selectNote(note.note));
+                                    handleSelectNote(note.note.id);
                                 }}
                             />
                         ))}

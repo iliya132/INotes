@@ -1,7 +1,7 @@
 import markdown from 'markdown-it';
 import underline from 'markdown-it-underline';
 import hightlightjs from 'highlight.js';
-import 'highlight.js/styles/github.css';
+import 'highlight.js/styles/androidstudio.css';
 
 export default function configureMarkdownIt() {
     return new markdown({

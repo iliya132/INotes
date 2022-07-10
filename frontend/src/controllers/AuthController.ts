@@ -36,13 +36,10 @@ class AuthController extends BaseController {
     public register(username: string, password: string, confirmPassword: string) {
         let validity = this.validate(username, password, confirmPassword);
         if (validity.isSucceded) {
-            let formData = new FormData();
-            formData.append("userName", username);
-            formData.append("password", password);
-            axios.postForm(this.authUrl + "register", formData).then(
+            axios.post(this.authUrl + "register", {userName: username, password: password}).then(
                 response => {
                     if (response.status === 200) {
-                        this.dispatchStore(auth(response.data as User))
+                        this.dispatchStore(auth(response.data.user as User))
                     }
                 }
             ).catch(reason => {

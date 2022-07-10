@@ -1,15 +1,21 @@
 @import '../../Misc/colors.scss';
 
+.profile-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(288.67deg, #484848 0%, #484848 36%, #fff 36.03%, #fff 100%);
+}
+
 .centered-container {
-    position: absolute;
     display: flex;
-    flex-direction: column;
+    position: absolute;
     top: 20%;
     left: 40%;
+    flex-direction: column;
     min-width: 600px;
     min-height: 800px;
-    border-radius: 12px;
-    background-color: rgb(218 215 205 / 50%);
+    border-radius: 4px;
+    background-color: white;
     box-shadow: 0 0 91px rgb(0 0 0 / 14%);
 }
 
@@ -26,12 +32,13 @@
 }
 
 .profile-form {
-    margin: auto;
-    min-width: 450px;
-    min-height: 500px;
     display: flex;
     flex-direction: column;
-    *{
+    min-width: 450px;
+    min-height: 500px;
+    margin: auto;
+
+    * {
         padding: 5px 0;
     }
 }
@@ -78,51 +85,51 @@
     user-select: none;
 }
 
-.user-name{
-    text-align: center;
+.user-name {
     display: block;
-    
-}
-
-.centered{
     text-align: center;
 }
 
-.avatar-img{
-    padding: 1px;
-    max-width: 140px;
-    margin: 5px auto 15px auto;
-    background-color: GrayTransparent(0.8);
-    border-radius: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4)  ;
+.centered {
+    text-align: center;
 }
 
-input[type="file"] {
+.avatar-img {
+    max-width: 140px;
+    margin: 5px auto 15px;
+    padding: 1px;
+    border-radius: 20px;
+    background-color: graytransparent(0.8);
+    box-shadow: 0 0 15px rgb(0 0 0 / 40%);
+}
+
+input[type='file'] {
     display: none;
 }
 
-.avatar-input{
-    border: 1px solid #ccc;
+.avatar-input {
     display: inline-block;
     padding: 6px 12px;
+    border: 1px solid #ccc;
     cursor: pointer;
 }
 
-.avatar-upload-label{
-    font-weight: bold;
+.avatar-upload-label {
     display: block;
-    padding: 10px 15px;
-    background-color: GrayTransparent(0.8);
     max-width: 200px;
-    margin: 0 auto 15px auto;
+    margin: 0 auto 15px;
+    padding: 10px 15px;
     border-radius: 6px;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+    background-color: graytransparent(0.8);
+    font-weight: bold;
     cursor: pointer;
-    &:hover{
+    filter: drop-shadow(0 4px 4px rgb(0 0 0 / 25%));
+
+    &:hover {
         background-color: #bebcb5;
     }
 }
 
-.avatar-container{
+.avatar-container {
     text-align: center;
 }

@@ -2,7 +2,7 @@
 import { INote } from "../../store/types";
 
 export interface IWorkfieldProps {
-    note?: INote;
+    note: INote | null | undefined;
     onChange?: () => void;
     onSave?: () => void;
 }

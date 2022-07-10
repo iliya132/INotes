@@ -1,0 +1,14 @@
+@import '../../Misc/colors.scss';
+
+.checkbox-container {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: $BlackCommon;
+}
+
+.share-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    user-select: none;
+}

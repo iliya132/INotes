@@ -2,6 +2,7 @@ import React from 'react';
 import { IPrettyMarkupProps } from './types';
 import styles from './PrettyMarkup.scss';
 import classNames from 'classnames';
+import './PrettyMarkupStatic.css';
 
 export function PrettyMarkup(props: IPrettyMarkupProps) {
     const { renderedValue, className } = props;
