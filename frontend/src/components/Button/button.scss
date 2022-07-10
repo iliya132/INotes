@@ -8,15 +8,20 @@
     padding-left: 15px;
     border: none;
     border-radius: 37px;
-    background-color: $G3;
+    background-color: $BlackCommon;
     color: $Gray;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
     line-height: 40px;
     text-align: center;
+    text-transform: uppercase;
     text-transform: lowercase;
     cursor: pointer;
     user-select: none;
     filter: drop-shadow(0 4px 4px rgb(0 0 0 / 25%));
+
+    &:hover {
+        background-color: $BlackCommonHover;
+    }
 }

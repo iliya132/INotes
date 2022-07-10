@@ -1,5 +1,5 @@
-@use 'sass:math';
 @import '../../Misc/colors.scss';
+@use 'sass:math';
 
 @mixin has-tooltip($tooltip-transition-in-duration: 0.3s) {
     position: relative;
@@ -27,7 +27,6 @@
     $tooltip-border-color: transparent,
     $tooltip-transition-out-duration: 0.3s
 ) {
-
     // Animated properties.
     visibility: hidden;
     position: absolute;
@@ -91,7 +90,7 @@
 .tooltip {
     min-width: 15em;
     padding: 0.9em 0.1em;
-    box-shadow: 0 0.05em 0.15em rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.05em 0.15em rgb(0 0 0 / 10%);
     font-size: 14px;
 }
 

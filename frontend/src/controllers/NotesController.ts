@@ -30,8 +30,8 @@ class NotesController extends BaseController {
             })
     }
 
-    createNote(name: string) {
-        const selectedNotebook = store.getState().notebooksReducer.selectedNotebook;
+    createNote(name: string, notebookId: number) {
+        const selectedNotebook = store.getState().notebooksReducer.notebooks.filter(it => it.id === notebookId)[0];
         if (!selectedNotebook) {
             throw Error("Cant create note without binding to parent");
         }

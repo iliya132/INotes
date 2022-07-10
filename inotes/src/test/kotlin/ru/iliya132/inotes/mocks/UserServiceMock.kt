@@ -14,6 +14,7 @@ import ru.iliya132.inotes.repositories.RolesRepository
 import ru.iliya132.inotes.repositories.UserRepository
 import ru.iliya132.inotes.services.security.UserService
 import java.security.Principal
+import javax.servlet.http.HttpServletRequest
 
 class UserServiceMock : UserService(
     Mockito.mock(UserRepository::class.java),
@@ -26,17 +27,17 @@ class UserServiceMock : UserService(
 
     override fun register(user: UserDTO): RegistrationResponse {
         if (isExists(user.userName)) {
-            return RegistrationResponse(false, "Пользователь с таким логином уже зарегистрирован в системе")
+            return RegistrationResponse(false, null, "Пользователь с таким логином уже зарегистрирован в системе")
         }
         val newUser =
             User(
                 0, user.userName, encoder.encode(user.password), true, listOf(Role(0, "ROLE_USER"))
             )
         cache[user.userName] = newUser
-        return RegistrationResponse(true, null)
+        return RegistrationResponse(true, null, null)
     }
 
-    override fun getUser(principal: Principal): SimpleUserDTO {
+    override fun getUser(principal: Principal, request: HttpServletRequest): SimpleUserDTO {
         val user = cache[principal.name] ?: throw NotFoundException()
         return SimpleUserDTO(user.username, user.authorities.map { it.authority }, null)
     }

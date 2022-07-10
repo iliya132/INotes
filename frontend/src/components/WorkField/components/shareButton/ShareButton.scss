@@ -2,16 +2,14 @@
 
 .popup-container{
     display: flex;
-    background-color: $Gray;
+    background-color: white;
+    border: 1px solid $BlackCommon;
     min-width: 500px;
     min-height: 200px;
     padding: 20px;
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
-    border-radius: 12px;
-    
-    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
 }
 
 .public-url-container{

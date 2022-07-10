@@ -93,15 +93,17 @@ class NotebookService(
     fun sharePublicUrl(noteId: Long, isEnabled: Boolean): String? {
         val note = noteRepository.findById(noteId).orElseThrow()
         note.isPublicUrlShared = isEnabled
-        if (isEnabled) {
-            note.publicId = UUID.randomUUID().toString()
-        }
         noteRepository.save(note)
         return note.publicId
     }
 
-    fun getShared(noteUrl: String): Note {
-        return noteRepository.findByPublicUrl(noteUrl);
+    fun getShared(noteUrl: String): Note? {
+        return try {
+            noteRepository.findByPublicUrl(noteUrl)
+        } catch (e: Exception) {
+            return null
+        }
+
     }
 }
 

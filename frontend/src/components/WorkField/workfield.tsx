@@ -10,6 +10,7 @@ import { MediumButton } from '../SmallButton/MediumButton';
 import classNames from 'classnames';
 import { ShareButton } from './components/shareButton/ShareButton';
 import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
+import Popup from 'reactjs-popup';
 
 export function Workfield(props: IWorkfieldProps) {
     const { note, onChange, onSave } = props;
@@ -62,7 +63,6 @@ export function Workfield(props: IWorkfieldProps) {
         textAreaElem.value = result;
         let st = textAreaElem.value.indexOf(selectedValue);
         let end = st + len;
-        console.log(st, end, len);
         if (len === 0) {
             st = startPos;
             end = startPos;
@@ -84,12 +84,13 @@ export function Workfield(props: IWorkfieldProps) {
 
     const handleSaveChanges = () => {
         if (note) {
-            console.log(input);
             const noteToUpdate: INoteDTO = {
                 content: input!,
                 id: note.id,
                 name: getTitle(input!),
                 notebookId: note?.parent.id,
+                isShared: note.isPublicUrlShared,
+                publicUrl: note.publicUrl
             };
             notesController.updateNote(noteToUpdate);
         }
@@ -172,7 +173,32 @@ export function Workfield(props: IWorkfieldProps) {
                             icon={Icons.Table}
                             onClick={() => handleWfAction(WfAction.Table)}
                         />
-                        <SmallButton size={15} className={styles['wf-action-btn']} icon={Icons.Markup} />
+                        <Popup
+                            trigger={
+                                <div>
+                                    <SmallButton size={15} className={styles['wf-action-btn']} icon={Icons.Markup} />
+                                </div>
+                            }>
+                            <div className={styles["markdown-help-container"]}>
+                                <ul>
+                                    <li>Жирный текст <div className={styles["markdown-help-container-example"]}>**Text**</div></li><hr/>
+                                    <li>Курсивный текст <div className={styles["markdown-help-container-example"]}>*Text*</div></li><hr/>
+                                    <li>Подчеркнутый текст <div className={styles["markdown-help-container-example"]}>_Text_</div></li><hr/>
+                                    <li>Заголовок 1 уровня <div className={styles["markdown-help-container-example"]}># Text</div></li><hr/>
+                                    <li>Заголовок 2 уровня <div className={styles["markdown-help-container-example"]}>## Text</div></li><hr/>
+                                    <li>Заголовок 3 уровня <div className={styles["markdown-help-container-example"]}>### Text</div></li><hr/>
+                                    <li>Список с точками <div className={styles["markdown-help-container-example"]}>* Text</div></li><hr/>
+                                    <li>Список с цифрами <div className={styles["markdown-help-container-example"]}>1. Text</div></li><hr/>
+                                    <li>Блок кода <div className={styles["markdown-help-container-example"]}>``` javascript <br/> Text <br/>```</div></li><hr/>
+                                    <li>Однострочный код <div className={styles["markdown-help-container-example"]}>`Text`</div></li><hr/>
+                                    <li>Таблица <div className={styles["markdown-help-container-example"]}>
+                                        | header1 | header2 | <br/> |-----|-----| <br/>| value1 | value2 |</div></li><hr/>
+                                    <li>Ссылка <div className={styles["markdown-help-container-example"]}>[shown text](http://link_here.com)</div></li><hr/>
+                                    <li>Горизонтальная линия <div className={styles["markdown-help-container-example"]}>---</div></li><hr/>
+                                    <li>Цитирование <div className={styles["markdown-help-container-example"]}> Text</div></li><hr/>
+                                </ul>
+                            </div>
+                        </Popup>
                     </div>
                 ) : null}
 
@@ -181,15 +207,19 @@ export function Workfield(props: IWorkfieldProps) {
                     <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" />
                     <SmallButton icon={Icons.Tag} tooltip="Задать тэг" />
                     <div>
-                    <ShareButton/>
+                        <ShareButton />
                     </div>
                     <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} />
                     <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" />
                 </div>
             </div>
 
-            <div className={!isReadMode ? styles['workfield-content'] : styles["workfield-content-read-mode"]}>
-                <div className={classNames(styles['workfield-content-edit-field'], isReadMode ? styles["reader-mode-invisible"]: null)}>
+            <div className={!isReadMode ? styles['workfield-content'] : styles['workfield-content-read-mode']}>
+                <div
+                    className={classNames(
+                        styles['workfield-content-edit-field'],
+                        isReadMode ? styles['reader-mode-invisible'] : null,
+                    )}>
                     <div className={styles['workfield-content-edit-field-textarea']} key={`text-area${note?.id}`}>
                         <textarea
                             onChange={(event) => handleChange(event)}
@@ -199,7 +229,7 @@ export function Workfield(props: IWorkfieldProps) {
                             defaultValue={input}></textarea>
                     </div>
                 </div>
-                <PrettyMarkup renderedValue={rendered} className={isReadMode ? styles["render-mode"] : undefined}/>
+                <PrettyMarkup renderedValue={rendered} className={isReadMode ? styles['render-mode'] : undefined} />
             </div>
         </div>
     );
@@ -237,8 +267,6 @@ function handleTextAreaKeyDown(
                 return;
             }
             const value = textAreaElem.value;
-            const valueFromInput = input;
-            console.log(valueFromInput);
             const editedPart = value.substring(startPos, EndPos);
             let resultStr = '';
             const lines = editedPart.split('\n');

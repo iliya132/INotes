@@ -1,14 +1,43 @@
 @import '../../Misc/colors.scss';
 
 .centered-container {
+    display: flex;
     position: absolute;
     top: 30%;
     left: 40%;
-    min-width: 389px;
-    min-height: 389px;
-    border-radius: 12px;
-    background-color: rgb(218 215 205 / 50%);
-    box-shadow: 0 0 91px rgb(0 0 0 / 14%);
+    flex-direction: column;
+    width: 410px;
+    height: 490px;
+}
+
+.container {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 30px;
+    background: linear-gradient(279.04deg, #fff 0%, #fff 65%, #484848 65.1%, #484848 100%);
+}
+
+.column {
+    max-width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.logo {
+    margin: 0;
+    color: $Background;
+    font-size: 4em;
+    text-decoration: none;
+    user-select: none;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.lock-img {
+    display: block;
+    margin: 23px auto 50px auto;
 }
 
 .text-centered {
@@ -24,29 +53,58 @@
 }
 
 .login-form {
-    margin: 75px 55px 55px;
+    padding-right: 35px;
+    padding-bottom: 38px;
+    padding-left: 35px;
+    background-color: $Background;
+    box-shadow: 0 0 35px 1px rgb(0 0 0 / 15%);
 }
 
 .login-btn {
     width: 100%;
+    height: 51px;
     margin: 30px auto 15px;
     border-radius: 6px;
+    color: white;
     font-family: 'Montserrat SemiBold';
     font-size: 14px;
     letter-spacing: 0.1;
     text-transform: none;
 }
 
-.login-btn:hover {
-    background-color: $G3Hover;
+.login-input {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    width: 100%;
+    padding-left: 10px;
+    border-bottom: 1px solid $BlackCommon;
+
+    & .email-ico {
+        margin: auto;
+    }
+
+    & input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+        padding-left: 10px;
+        border: none;
+        outline: none;
+        font-family: 'Montserrat Medium';
+        font-size: 16px;
+    }
 }
 
 .nav-link {
     display: inline-block;
     width: 100%;
     color: $TextColor;
-    font-family: 'Montserrat SemiBold';
-    font-size: 11px;
+    color: $TextColor;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: bold;
     text-align: center;
     text-decoration: none;
     user-select: none;
@@ -54,4 +112,80 @@
 
 .login-header {
     user-select: none;
+}
+
+.optins-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.forget-password-link {
+    font-family: Montserrat;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.remember-me {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.remember-me-checkbox {
+    display: block;
+    margin: auto;
+}
+
+.remember-me-title {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 6px;
+    font-size: 10px;
+    font-weight: regular;
+}
+
+.oauth-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.ya-btn {
+    width: 200px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: #ed1f24;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #e11d22;
+    }
+}
+
+.g-btn {
+    width: 200px;
+    height: 40px;
+    border: 1px solid $Gray;
+    outline: none;
+    background-color: white;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f2f2f2;
+    }
+}
+
+.error-label {
+    display: block;
+    max-height: 100%;
+    color: $Error;
+    font-size: 12px;
+    font-weight: 400;
+    overflow-wrap: break-word;
 }

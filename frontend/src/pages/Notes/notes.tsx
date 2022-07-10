@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import Note from '../../components/Note';
-import { Page } from '../../components/Page/page';
 import styles from './notes.scss';
-import Select from 'react-select';
-import { selectStyle } from './notes.constants';
 import Workfield from '../../components/WorkField';
+import Profile from './components/profile';
+import { Search } from '../../components/Search/search';
 import { useSelector } from 'react-redux';
-import {
-    currentNotes,
-    notebooks,
-    selectedNote as selectedNoteState,
-    selectedNotebook as selectedNotebookState,
-    selectNote,
-    selectNotebook,
-} from '../../store/reducers/notebooksReducer';
-import { useAppDispatch } from '../../store/store.hooks';
+import { allNotes, notebooks } from '../../store/reducers/notebooksReducer';
+import { Notebook } from './components/notebook/Notebook';
+import { INote, INotebookWithNotes } from '../../store/types';
+import { NavLink, useParams } from 'react-router-dom';
 import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
-import notesController from '../../controllers/NotesController';
-import Popup from 'reactjs-popup';
 import NotebookPopup from '../../components/NotebooCreatePopup';
-import { INote } from '../../store/types';
+import Popup from 'reactjs-popup';
 
-export default function Notes() {
-    const dispatch = useAppDispatch();
+export function NotesPage() {
+    const notebooksArr = useSelector(notebooks);
+    const notes = useSelector(allNotes);
     const [isContextChanged, setContextChanged] = useState(false);
-    const options = useSelector(notebooks).map((it) => {
-        return { value: it.id.toString(), label: it.name };
-    });
+
+    const urlParams = useParams();
+    const selectedNote = Number(urlParams.selectedNote);
+    let currentNote: INote | null = null;
+    if (selectedNote !== -1) {
+        currentNote = notes.filter((it) => it.id === selectedNote)[0];
+    }
 
     useEffect(() => {
         window.onbeforeunload = function () {
@@ -40,46 +36,6 @@ export default function Notes() {
         };
     });
 
-    const notes = useSelector(currentNotes);
-    const selectedNote = useSelector(selectedNoteState);
-    const selectedNotebook = useSelector(selectedNotebookState);
-    const defaultSelectednotebook = selectedNotebook
-        ? {
-            value: selectedNotebook.id.toString(),
-            label: selectedNotebook.name,
-        }
-        : undefined;
-
-    const handleNotebookChange = (event: { value: string; label: string }) => {
-        dispatch(selectNotebook(Number.parseInt(event.value)));
-    };
-
-    const handleNotebookRemoval = () => {
-        if (selectedNotebook) {
-            notesController.removeNotebook(selectedNotebook);
-        }
-    };
-
-    const handleNoteRemove = () => {
-        if (selectedNote) {
-            notesController.removeNote(selectedNote.id);
-        }
-    };
-
-    const handleNoteCreate = () => {
-        notesController.createNote('Заметка от ' + new Date().toLocaleDateString());
-    };
-
-    const handleNoteSelected = (note: INote) => {
-        if (isContextChanged) {
-            if (!confirm('Вы не сохранили внесенные изменения. При переходе они будут потеряны. Продолжить?')) {
-                return;
-            }
-        }
-        setContextChanged(false);
-        dispatch(selectNote(note));
-    };
-
     const handleNoteChange = () => {
         setContextChanged(true);
     };
@@ -88,81 +44,49 @@ export default function Notes() {
         setContextChanged(false);
     };
 
-    return (
-        <Page isFullWidth={true}>
-            <div className={styles['notes-container']}>
-                <div className={styles['notes-nav']}>
-                    <div className={styles['nav-commands']}>
-                        <Select
-                            options={options}
-                            styles={selectStyle}
-                            onChange={handleNotebookChange}
-                            value={defaultSelectednotebook}
-                        />
-                        <Popup
-                            trigger={
-                                <div>
-                                    <Svg icon={Icons.Dots} className={styles['more-icon']} />
-                                </div>
-                            }
-                            nested
-                            position="bottom left">
-                            {(close) => {
-                                return (
-                                    <div className={styles['context-field']}>
-                                        <div
-                                            className={styles['notebook-context-option']}
-                                            onClick={() => {
-                                                handleNoteCreate();
-                                                close();
-                                            }}>
-                                            Добавить заметку
-                                        </div>
-                                        <div className={styles['notebook-context-option']}>
-                                            <Popup
-                                                trigger={<span>Добавить записную книжку</span>}
-                                                nested
-                                                position="bottom left">
-                                                <NotebookPopup afterClick={() => close()} />
-                                            </Popup>
-                                        </div>
-                                        <div
-                                            className={styles['notebook-context-option']}
-                                            onClick={() => {
-                                                handleNoteRemove();
-                                                close();
-                                            }}>
-                                            Удалить заметку
-                                        </div>
-                                        <div
-                                            className={styles['notebook-context-option']}
-                                            onClick={() => {
-                                                handleNotebookRemoval();
-                                                close();
-                                            }}>
-                                            удалить записную книжку
-                                        </div>
-                                    </div>
-                                );
-                            }}
-                        </Popup>
-                    </div>
+    const notebooksWithNotes = notebooksArr.map((it) => {
+        return {
+            id: it.id,
+            name: it.name,
+            color: it.color,
+            notes: notes.filter((note) => note.parent.id === it.id),
+        } as INotebookWithNotes;
+    });
 
-                    <div className={styles['notes-list']}>
-                        <>
-                            {notes.map((it) => (
-                                <Note
-                                    key={it.id}
-                                    note={it}
-                                    isSelected={it.id === selectedNote?.id}
-                                    onClick={() => handleNoteSelected(it)}
-                                />
-                            ))}
-                        </>
-                    </div>
+    return (
+        <div className={styles['notes-page-container']}>
+            <div className={styles['notes-page-navbar']}>
+                <div className={styles['notes-page-navbar-logo']}>
+                    <NavLink to="/" className={styles['notes-page-navbar-logo-link']}>
+                        I-Note
+                    </NavLink>
                 </div>
-                <Workfield note={selectedNote} onChange={handleNoteChange} onSave={handleNoteSave} />
+                <div className={styles['notes-page-navbar-profile']}>
+                    <Profile />
+                </div>
+                <div className={styles['notes-page-navbar-search']}>
+                    <Search />
+                </div>
+                <div className={styles['notes-page-navbar-notes']}>
+                    {notebooksWithNotes.map((it) => (
+                        <Notebook key={`notebook_container#${it.id}`} notebook={it} />
+                    ))}
+                    <Popup
+                        trigger={
+                            <div className={styles['notebook-row']}>
+                                <Svg icon={Icons.Notebook} className={styles['notebook-row-notebook-icon']} />
+                                <span className={styles['notebook-title']}>Создать новый</span>
+                            </div>
+                        }
+                        nested
+                        position="bottom left">
+                        {(close) => {
+                            return <NotebookPopup afterClick={() => close()} />;
+                        }}
+                    </Popup>
+                </div>
             </div>
-        </Page>
+            <Workfield note={currentNote} onChange={handleNoteChange} onSave={handleNoteSave} />
+        </div>
     );
 }

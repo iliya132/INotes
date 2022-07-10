@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { Input } from '../../components/Input/Input';
-import { Page } from '../../components/Page/page';
 import styles from './Profile.scss';
 import { IProfileProps } from './types';
 import avatarImg from '../../../static/assets/avatar.png';
@@ -15,10 +14,25 @@ export function Profile(props: IProfileProps) {
     const { user } = props;
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({} as PasswordChange);
-    const [errors, setErrors] = useState({isSuccessfull: true, errors: {targets: [""], message:""}} as PasswordChangeResponse)
-    const oldPassErrors = errors.isSuccessfull ? "" : errors.errors.targets.includes("old") ? errors.errors.message : ""
-    const newPassErrors = errors.isSuccessfull ? "" : errors.errors.targets.includes("new") ? errors.errors.message : ""
-    const confirmPassErrors = errors.isSuccessfull ? "" : errors.errors.targets.includes("confirm") ? errors.errors.message : ""
+    const [errors, setErrors] = useState({
+        isSuccessfull: true,
+        errors: { targets: [''], message: '' },
+    } as PasswordChangeResponse);
+    const oldPassErrors = errors.isSuccessfull
+        ? ''
+        : errors.errors.targets.includes('old')
+            ? errors.errors.message
+            : '';
+    const newPassErrors = errors.isSuccessfull
+        ? ''
+        : errors.errors.targets.includes('new')
+            ? errors.errors.message
+            : '';
+    const confirmPassErrors = errors.isSuccessfull
+        ? ''
+        : errors.errors.targets.includes('confirm')
+            ? errors.errors.message
+            : '';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,7 +40,7 @@ export function Profile(props: IProfileProps) {
             if (resp.isSuccessfull) {
                 navigate('/');
             } else {
-                setErrors(resp)
+                setErrors(resp);
             }
         });
     };
@@ -51,12 +65,12 @@ export function Profile(props: IProfileProps) {
     const avatar = user.avatarUrl ? `${user.avatarUrl}` : avatarImg;
 
     return (
-        <Page>
+        <div className={styles['profile-container']}>
             <div className={styles['centered-container']}>
                 <h3 className={classNames(styles['text-centered'], styles['login-header'])}>Профиль</h3>
                 <span className={classNames(styles['user-name'], styles['centered'])}>{user.userName}</span>
                 <br />
-                <img src={avatar} className={styles['avatar-img']}/>
+                <img src={avatar} className={styles['avatar-img']} />
                 <div className={styles['avatar-container']}>
                     <label htmlFor="avatar-upload" className={styles['avatar-upload-label']}>
                         Сменить аватар
@@ -108,6 +122,6 @@ export function Profile(props: IProfileProps) {
                     />
                 </form>
             </div>
-        </Page>
+        </div>
     );
 }

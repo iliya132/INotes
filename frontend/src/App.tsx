@@ -3,12 +3,9 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
 import ReloadPage from './components/ReloadPage/ReloadPage';
-import Faq from './pages/FAQ';
-import GettingStarted from './pages/GettingStarted';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
-import Notes from './pages/Notes';
-import NotFound from './pages/NotFound';
+import { NotesPage } from './pages/Notes/notes';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Shared from './pages/Shared';
@@ -20,14 +17,24 @@ export default function App() {
 
     return isAuthenticated === undefined ? null : (
         <Routes>
-            <Route
-                path="/"
-                element={
-                    <GuardRoute canActivate={isAuthenticated} redirectTo="/home">
-                        <Notes />
-                    </GuardRoute>
-                }></Route>
-
+            <Route path="/">
+                <Route
+                    index={true}
+                    element={
+                        <GuardRoute canActivate={isAuthenticated} redirectTo="/home">
+                            <NotesPage />
+                        </GuardRoute>
+                    }
+                />
+                <Route
+                    path=":selectedNote"
+                    element={
+                        <GuardRoute canActivate={isAuthenticated} redirectTo="/home">
+                            <NotesPage />
+                        </GuardRoute>
+                    }
+                />
+            </Route>
             <Route
                 path="/home"
                 element={
@@ -43,8 +50,6 @@ export default function App() {
                         <Login />
                     </GuardRoute>
                 }></Route>
-            <Route path="/getting-started" element={<GettingStarted />} />
-            <Route path="/faq" element={<Faq />} />
             <Route
                 path="/register"
                 element={
@@ -62,12 +67,8 @@ export default function App() {
                     </GuardRoute>
                 }
             />
-            <Route path="/notFound" element={
-                <ReloadPage/>
-            }/>
-            <Route path="*" element={
-                <Navigate to={"/notFound"} replace={true}/>
-            }/>
+            <Route path="/notFound" element={<ReloadPage />} />
+            <Route path="*" element={<Navigate to={'/notFound'} replace={true} />} />
         </Routes>
     );
 }

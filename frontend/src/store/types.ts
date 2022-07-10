@@ -14,10 +14,8 @@ export interface AuthState {
 }
 
 export interface NotebooksState {
-    selectedNotebook?: INotebook;
     notebooks: INotebook[];
     allNotes: INote[];
-    selectedNote?: INote;
 }
 
 export interface INotebook {
