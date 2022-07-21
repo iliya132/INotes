@@ -10,9 +10,11 @@ import lockSvg from '../../../static/assets/lock.svg';
 import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
 import Checkbox from '../../components/Checkbox';
+import properties from '../../properties/properties';
 
 export default function Login() {
     const dispatch = useAppDispatch();
+    const hostUrl = properties.apiUrl
     const location = useLocation();
     useEffect(() => {
         dispatch(removeAuthErrors());
@@ -89,10 +91,10 @@ export default function Login() {
                     </div>
                     <div className={styles['submit-area']}>
                         <div className={styles['oauth-btns']}>
-                            <a className={styles['ya-btn']} href="http://localhost:8080/oauth2/authorization/yandex">
+                            <a className={styles['ya-btn']} href={`${hostUrl }oauth2/authorization/yandex`}>
                                 <Svg icon={Icons.yandexBtn} />
                             </a>
-                            <a className={styles['g-btn']} href="http://localhost:8080/oauth2/authorization/google">
+                            <a className={styles['g-btn']} href={`${hostUrl}oauth2/authorization/google`}>
                                 <div className={styles["google-btn"]}>
                                     <div className={styles["google-icon-wrapper"]}>
                                         <img
