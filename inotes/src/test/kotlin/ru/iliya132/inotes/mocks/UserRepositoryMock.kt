@@ -14,12 +14,24 @@ class UserRepositoryMock : UserRepository {
         return cache.values.firstOrNull { it.username==username }
     }
 
+    override fun findByExternalUserName(username: String): User? {
+        TODO("Not yet implemented")
+    }
+
     override fun existsByUserName(username: String): Boolean {
         return findByUserName(username)!=null
     }
 
+    override fun existsByExternalUserName(username: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun findFirstIdByUserName(username: String): Long? {
         return findByUserName(username)?.id
+    }
+
+    override fun findFirstIdByExternalUserName(username: String): Long? {
+        TODO("Not yet implemented")
     }
 
     override fun changePassword(newPassword: String, userId: Long) {

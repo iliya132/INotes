@@ -155,30 +155,23 @@
 
 .ya-btn {
     width: 200px;
-    height: 40px;
+    height: 44px;
     border: none;
     outline: none;
-    background-color: #ed1f24;
-    color: white;
     cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2);
+    transition: all 400ms ease 0s;
 
-    &:hover {
-        background-color: #e11d22;
+    &:hover{
+        box-shadow: 0 5px 10px rgba(117, 117, 117, .7);
     }
 }
 
 .g-btn {
     width: 200px;
-    height: 40px;
-    border: 1px solid $Gray;
+    height: 44px;
     outline: none;
-    background-color: white;
-    color: white;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #f2f2f2;
-    }
 }
 
 .error-label {
@@ -188,4 +181,60 @@
     font-size: 12px;
     font-weight: 400;
     overflow-wrap: break-word;
+}
+
+.google-btn {
+    width: 200px;
+    height: 44px;
+    background-color: #fcfcfc;
+    border-radius: 2px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2);
+    cursor: pointer;
+    cursor: hand;
+    align-self: center;
+    user-select: none;
+    display: flex;
+    transition: all 400ms ease 0s;
+
+    & .google-icon-wrapper {
+        position: absolute;
+        margin-top: 1px;
+        margin-left: 1px;
+        width: 40px;
+        height: 40px;
+        border-radius: 2px;
+        user-select: none
+    }
+
+    & .google-icon-svg {
+        position: absolute;
+        margin-top: 11px;
+        margin-left: 11px;
+        width: 18px;
+        height: 18px;
+        user-select: none
+    }
+
+    & .btn-text {
+        float: right;
+        font-family: Montserrat;
+        font-weight: regular;
+        margin: auto 30px auto auto;
+        color: #757575;
+        font-size: 12px;
+        letter-spacing: .2px;
+        user-select: none
+    }
+
+    &:hover {
+        box-shadow: 0 5px 10px rgba(117, 117, 117, .7);
+        user-select: none
+    }
+
+    &:active {
+        box-shadow: 0 1px 1px #757575;
+        background: #F8F8F8;
+        color: #fff;
+        user-select: none
+    }
 }

@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
@@ -18,7 +15,10 @@ import ru.iliya132.inotes.security.AppAuthFailHandler
 import ru.iliya132.inotes.security.AppAuthSuccessHandler
 import ru.iliya132.inotes.security.AppLogoutSuccessHandler
 import ru.iliya132.inotes.security.AuthEntryPoint
+import ru.iliya132.inotes.services.security.OAuthUserService
+import ru.iliya132.inotes.services.security.OIdcUserService
 import ru.iliya132.inotes.services.security.UserDetailsService
+import ru.iliya132.inotes.services.security.UserService
 
 @Configuration
 @EnableWebSecurity
@@ -28,18 +28,10 @@ class SecurityConfig {
     lateinit var userDetailsService: UserDetailsService
 
     @Autowired
-    @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userDetailsService)
-    }
+    lateinit var userService: UserService
 
     @Value("\${i-note.remember-me.key}")
     val rememberMeKey: String = "test-key"
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
 
     @Bean
     fun appAuthSuccessHandler(): AppAuthSuccessHandler? {
@@ -62,6 +54,16 @@ class SecurityConfig {
     }
 
     @Bean
+    fun oauthUserService(): OAuthUserService {
+        return OAuthUserService(userService)
+    }
+
+    @Bean
+    fun oidcUserService(): OIdcUserService {
+        return OIdcUserService(userService)
+    }
+
+    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
             .cors().configurationSource {
@@ -77,7 +79,10 @@ class SecurityConfig {
             .antMatchers("/api*").hasRole("user")
             .antMatchers("/api/notebook/shared-note/*").permitAll()
             .antMatchers("/auth/login*").permitAll()
+            .antMatchers("/login*").permitAll()
+            .antMatchers("/oauth2*").permitAll()
             .antMatchers("/auth/register*").permitAll()
+            .antMatchers("/", "/error**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -85,6 +90,13 @@ class SecurityConfig {
             .successHandler(appAuthSuccessHandler())
             .failureHandler(appAuthFailureHandler())
             .and()
+            .oauth2Login {
+                it.defaultSuccessUrl("http://localhost:3000/")
+                it.successHandler(appAuthSuccessHandler())
+                it.failureHandler(appAuthFailureHandler())
+                it.userInfoEndpoint().userService(oauthUserService())
+                it.userInfoEndpoint().oidcUserService(oidcUserService())
+            }
             .logout().logoutUrl("/auth/logout").permitAll().logoutSuccessHandler(appLogoutSuccessHandler())
             .invalidateHttpSession(true)
             .deleteCookies("JSESSIONID", "SESSION")

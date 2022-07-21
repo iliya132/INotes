@@ -27,7 +27,7 @@ class HealthControllerTest : BaseControllerTest() {
 
     @Before
     fun startup() {
-        usersService.register(UserDTO("testUser@test.ru", "testPassword123"))
+        usersService.register(UserDTO("testUser@test.ru", "testPassword123", "externalUserNameTest"))
     }
 
     @Test

@@ -89,12 +89,22 @@ export default function Login() {
                     </div>
                     <div className={styles['submit-area']}>
                         <div className={styles['oauth-btns']}>
-                            <button className={styles['ya-btn']}>
-                                <Svg icon={Icons.YaLogo} />
-                            </button>
-                            <button className={styles['g-btn']}>
-                                <Svg icon={Icons.GoogleLogo} />
-                            </button>
+                            <a className={styles['ya-btn']} href="http://localhost:8080/oauth2/authorization/yandex">
+                                <Svg icon={Icons.yandexBtn} />
+                            </a>
+                            <a className={styles['g-btn']} href="http://localhost:8080/oauth2/authorization/google">
+                                <div className={styles["google-btn"]}>
+                                    <div className={styles["google-icon-wrapper"]}>
+                                        <img
+                                            className={styles["google-icon-svg"]}
+                                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                                        />
+                                    </div>
+                                    <p className={styles["btn-text"]}>
+                                        <b>Sign in with Google</b>
+                                    </p>
+                                </div>
+                            </a>
                         </div>
 
                         <Button title="LOGIN" className={styles['login-btn']} />

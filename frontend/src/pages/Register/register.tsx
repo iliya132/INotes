@@ -79,10 +79,6 @@ export default function Register() {
 
                     </div>
                     <div className={styles['submit-area']}>
-                        <div className={styles["oauth-btns"]}>
-                            <button className={styles["ya-btn"]}><Svg icon={Icons.YaLogo}/></button>
-                            <button className={styles["g-btn"]}><Svg icon={Icons.GoogleLogo}/></button>
-                        </div>
 
                         <Button title="REGISTER" className={styles['login-btn']} />
                         <NavLink to={'/login'} className={styles['nav-link']} >

@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### SECRETS ###
+/src/main/resources/inotes.secrets.properties
+/src/main/resources/inotes.secrets-default.properties
+/src/main/resources/inotes.secrets-production.properties

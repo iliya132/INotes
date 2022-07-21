@@ -51,7 +51,8 @@ export enum Icons {
     GoogleLogo = "google-logo",
     ArrowDown = "arrow-down",
     Notebook = "notebook",
-    WhiteDots = "white-dots"
+    WhiteDots = "white-dots",
+    yandexBtn = "yandex-btn"
 }
 
 export const ICONS_DATA: TIconsData = {
@@ -87,4 +88,5 @@ export const ICONS_DATA: TIconsData = {
     [Icons.GoogleLogo]: {color: colors.BlackCommon, width: 24, height: 24},
     [Icons.ArrowDown]: {color: colors.BlackCommon, width: 17, height: 17},
     [Icons.Notebook]: {color: colors.BlackCommon, width: 20, height: 20},
+    [Icons.yandexBtn]: {color: colors.BlackCommon, width: 260, height: 44}
 };
