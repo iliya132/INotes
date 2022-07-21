@@ -2,6 +2,7 @@ package ru.iliya132.inotes.security
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import ru.iliya132.inotes.services.security.UserService
@@ -16,6 +17,9 @@ class AppAuthSuccessHandler : SimpleUrlAuthenticationSuccessHandler() {
     @Autowired
     private lateinit var userService: UserService
 
+    @Value("\${i-note.frontend.url:http://localhost:3000/}")
+    private lateinit var frontendUrl: String
+
     @Throws(IOException::class, ServletException::class)
     override fun handle(
         request: HttpServletRequest, response: HttpServletResponse,
@@ -23,7 +27,7 @@ class AppAuthSuccessHandler : SimpleUrlAuthenticationSuccessHandler() {
     ) {
         log.info("User login: ${authentication.name}")
         if (shouldRedirect(request)) {
-            val redirectUrl = response.encodeRedirectURL("http://localhost:3000/")
+            val redirectUrl = response.encodeRedirectURL(frontendUrl)
             response.sendRedirect(redirectUrl)
         }
     }
