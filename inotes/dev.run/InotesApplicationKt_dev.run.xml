@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="InotesApplicationKt_dev" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="ru.iliya132.inotes.InotesApplicationKt" />
+    <module name="inotes" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

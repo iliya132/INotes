@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="InotesApplicationKt_production" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="ru.iliya132.inotes.InotesApplicationKt" />
+    <module name="inotes" />
+    <shortenClasspath name="NONE" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=production" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

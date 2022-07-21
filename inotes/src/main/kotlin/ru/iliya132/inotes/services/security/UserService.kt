@@ -71,13 +71,12 @@ open class UserService(
 
         val avatar = if (dbUser==null) NULL_AVATAR else imageRepository.findFirstIdByUserId(dbUser.id).orElse(NULL_AVATAR)
         return SimpleUserDTO(user.displayName
-            ?: user.userName, user.authorities.map { it.authority }, generateAvatarUrl(avatar, request))
+            ?: user.userName, user.authorities.map { it.authority }, generateAvatarUrl(avatar))
     }
 
-    private fun generateAvatarUrl(avatarId: Long, request: HttpServletRequest): String {
+    private fun generateAvatarUrl(avatarId: Long): String {
         if (avatarId==NULL_AVATAR) {
-            val origin = request.getHeader(HttpHeaders.ORIGIN);
-            return "$origin/avatar.png"
+            return "$host/avatar.png"
         }
         return "$host/api/static/img/$avatarId"
     }
