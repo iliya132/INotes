@@ -7,12 +7,23 @@ import org.springframework.data.repository.query.Param
 import ru.iliya132.inotes.models.User
 
 interface UserRepository : CrudRepository<User, Long> {
+    @Query("select * from users where username = :username limit 1", nativeQuery = true)
     fun findByUserName(@Param("username") username: String): User?
 
+    @Query("select * from users where external_user_name = :username limit 1", nativeQuery = true)
+    fun findByExternalUserName(@Param("username") username: String): User?
+
+    @Query("select exists (select 1 from users u where u.username = :username);", nativeQuery = true)
     fun existsByUserName(@Param("username") username: String): Boolean
+
+    @Query("select exists (select 1 from users u where u.external_user_name = :username);", nativeQuery = true)
+    fun existsByExternalUserName(@Param("username") username: String): Boolean
 
     @Query("select id from users where username = :username limit 1", nativeQuery = true)
     fun findFirstIdByUserName(@Param("username") username: String): Long?
+
+    @Query("select id from users where external_user_name = :username limit 1", nativeQuery = true)
+    fun findFirstIdByExternalUserName(@Param("username") username: String): Long?
 
     @Modifying
     @Query("update users set password = :password where id = :userId", nativeQuery = true)

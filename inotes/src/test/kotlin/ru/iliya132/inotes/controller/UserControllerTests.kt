@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import ru.iliya132.inotes.config.SecurityConfig
+import ru.iliya132.inotes.config.ServicesConfig
 import ru.iliya132.inotes.config.TestAuthConfig
 import ru.iliya132.inotes.dto.ChangePasswordRequest
 import ru.iliya132.inotes.dto.UserDTO
@@ -37,7 +38,7 @@ class UserControllerTests : BaseControllerTest() {
     val expectedUserError = UserController.INVALID_USER_ATTRIBUTES
     val defaultUser = User(1, "defaultUserControllerTest@test.ru",
         "defaultPassword123!",
-        true, listOf(Role(0, "ROLE_USER")))
+        true, listOf(Role(0, "ROLE_USER")), "externalUserNameTest")
 
     @Autowired
     lateinit var userService: UserService
@@ -47,7 +48,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Before
     fun startup() {
-        userService.register(UserDTO(defaultUser.userName, defaultUser.password))
+        userService.register(UserDTO(defaultUser.userName, defaultUser.password, defaultUser.externalUserName))
     }
 
     @After
@@ -57,7 +58,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can register`() {
-        val testUser = UserDTO("canRegister@test.ru", "canRegister123!")
+        val testUser = UserDTO("canRegister@test.ru", "canRegister123!", null)
         buildRegisterRequest(testUser)
             .andDo { println() }
             .andExpect(status().isOk)
@@ -66,7 +67,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can login`() {
-        val testUser = UserDTO("canLogin@test.ru", "canLogin123&")
+        val testUser = UserDTO("canLogin@test.ru", "canLogin123&", null)
         buildRegisterRequest(testUser)
 
         buildLoginRequest(testUser.userName, testUser.password)
@@ -75,7 +76,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can't login with wrong credentials`() {
-        val testUser = UserDTO("cantLoginWithWrongCredentials@test.ru", "cantLoginWithWrongCredentials123&")
+        val testUser = UserDTO("cantLoginWithWrongCredentials@test.ru", "cantLoginWithWrongCredentials123&", null)
         //doesnt registered
         assert(
             buildLoginRequest(testUser.userName, testUser.password)
@@ -94,7 +95,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can't register with invalid password`() {
-        val invalidPasswordUser = UserDTO("cantRegister@test.ru", "qwe")
+        val invalidPasswordUser = UserDTO("cantRegister@test.ru", "qwe", null)
 
         assert(buildRegisterRequest(invalidPasswordUser)
             .andDo { println() }
@@ -104,7 +105,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can't register with invalid email`() {
-        val invalidEmailUser = UserDTO("cantRegister", "cantRegister123&")
+        val invalidEmailUser = UserDTO("cantRegister", "cantRegister123&", null)
         assert(buildRegisterRequest(invalidEmailUser)
             .andDo { println() }
             .andReturn()
@@ -113,7 +114,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `cant register without email`() {
-        val noEmailUser = UserDTO("", "cantRegister123&")
+        val noEmailUser = UserDTO("", "cantRegister123&", null)
         assert(buildRegisterRequest(noEmailUser)
             .andDo { println() }
             .andReturn()
@@ -122,7 +123,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `cant register without password`() {
-        val noPasswordUser = UserDTO("cantRegisterWithoutPassword@test.ru", "")
+        val noPasswordUser = UserDTO("cantRegisterWithoutPassword@test.ru", "", null)
         assert(
             buildRegisterRequest(noPasswordUser)
                 .andDo { println() }
@@ -134,7 +135,7 @@ class UserControllerTests : BaseControllerTest() {
 
     @Test
     fun `can't register same user`() {
-        val testUser = UserDTO("cantRegisterSameUser@test.ru", "cantRegisterSameUser123!")
+        val testUser = UserDTO("cantRegisterSameUser@test.ru", "cantRegisterSameUser123!", null)
         buildRegisterRequest(testUser)
             .andDo { println() }
             .andExpect(status().isOk)

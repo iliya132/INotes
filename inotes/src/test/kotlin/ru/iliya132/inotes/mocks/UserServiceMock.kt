@@ -31,7 +31,7 @@ class UserServiceMock : UserService(
         }
         val newUser =
             User(
-                0, user.userName, encoder.encode(user.password), true, listOf(Role(0, "ROLE_USER"))
+                0, user.userName, encoder.encode(user.password), true, listOf(Role(0, "ROLE_USER")), user.externalUserName
             )
         cache[user.userName] = newUser
         return RegistrationResponse(true, null, null)
@@ -46,7 +46,7 @@ class UserServiceMock : UserService(
         return cache[principal.name] ?: throw NotFoundException()
     }
 
-    private fun isExists(userName: String): Boolean {
+    override fun isExists(userName: String): Boolean {
         return cache.containsKey(userName)
     }
 }

@@ -1,5 +1,6 @@
 package ru.iliya132.inotes.controller
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
@@ -9,6 +10,7 @@ import ru.iliya132.inotes.dto.NotebookDTO
 import ru.iliya132.inotes.dto.NotebookWithNotesDTO
 import ru.iliya132.inotes.models.User
 import ru.iliya132.inotes.services.NotebookService
+import ru.iliya132.inotes.services.security.UserService
 import ru.iliya132.inotes.utils.toDTO
 import ru.iliya132.inotes.utils.toDto
 import ru.iliya132.inotes.utils.validation.CustomValidationException
@@ -17,19 +19,21 @@ import java.util.*
 @RestController
 @RequestMapping("/api/notebook")
 class NotebookController(private val notebookService: NotebookService) {
+    @Autowired
+    lateinit var userService: UserService
 
     @PostMapping("/save")
     fun saveNotebook(@RequestBody notebook: NotebookDTO, authentication: Authentication): ResponseEntity<NotebookDTO> {
         if (!notebook.validate()) {
             throw CustomValidationException("provided data is invalid")
         }
-        val currentUser = authentication.principal as User
+        val currentUser = getUser(authentication)
         return ResponseEntity.ok().body(notebookService.save(notebook.copy(owner = currentUser.id)).toDTO())
     }
 
     @GetMapping("/")
     fun getNotebooks(authentication: Authentication): List<NotebookWithNotesDTO> {
-        val currentUser = authentication.principal as User
+        val currentUser = getUser(authentication)
         return notebookService.getNotebooksForUser(currentUser.id)
     }
 
@@ -110,7 +114,7 @@ class NotebookController(private val notebookService: NotebookService) {
         auth: Authentication,
         action: () -> ResponseEntity<T>
     ): ResponseEntity<T> {
-        val currentUser = auth.principal as User
+        val currentUser = getUser(auth)
 
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             action()
@@ -124,7 +128,7 @@ class NotebookController(private val notebookService: NotebookService) {
         auth: Authentication,
         action: () -> Unit
     ): ResponseEntity<String> {
-        val currentUser = auth.principal as User
+        val currentUser = getUser(auth)
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             action()
             ResponseEntity.ok().build()
@@ -138,11 +142,15 @@ class NotebookController(private val notebookService: NotebookService) {
         auth: Authentication,
         action: () -> T
     ): ResponseEntity<T> {
-        val currentUser = auth.principal as User
+        val currentUser = getUser(auth)
         return if (notebookService.isUserOwner(notebookId, currentUser.id)) {
             return ResponseEntity.of(Optional.of(action()))
         } else {
             ResponseEntity.badRequest().build()
         }
+    }
+
+    private fun getUser(authentication: Authentication): User {
+        return userService.getUserFull(authentication)
     }
 }

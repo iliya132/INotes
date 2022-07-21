@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
-import ReloadPage from './components/ReloadPage/ReloadPage';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 import { NotesPage } from './pages/Notes/notes';
+import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Shared from './pages/Shared';
@@ -67,7 +67,7 @@ export default function App() {
                     </GuardRoute>
                 }
             />
-            <Route path="/notFound" element={<ReloadPage />} />
+            <Route path="/notFound" element={<NotFound />} />
             <Route path="*" element={<Navigate to={'/notFound'} replace={true} />} />
         </Routes>
     );
