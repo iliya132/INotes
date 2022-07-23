@@ -11,6 +11,11 @@ git pull
 cp ./robots.txt /www/html/robots.txt
 cp ./sitemap.xml /www/html/sitemap.xml
 
+
+echo "updating nginx"
+pkill nginx
+cp ./nginx.conf /etc/nginx/nginx.conf
+
 echo "stopping backend"
 pkill java
 echo "stopping docker container"
