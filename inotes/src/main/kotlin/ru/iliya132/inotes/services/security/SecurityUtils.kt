@@ -11,7 +11,7 @@ class SecurityUtils {
             newUser.displayName = oauthAttributes["display_name"] as String? ?: oauthAttributes["login"] as String?
             newUser.externalId = oauthAttributes["id"] as String?
             newUser.externalLogin = oauthAttributes["login"] as String?
-            newUser.externalDefaultEmail = oauthAttributes["default_email"] as String?
+            newUser.externalDefaultEmail = oauthAttributes["default_email"] as String
             newUser.externalIsAvatarEmpty = oauthAttributes["is_avatar_empty"] as Boolean?
             newUser.externalPsuid = oauthAttributes["psuid"] as String?
             return newUser

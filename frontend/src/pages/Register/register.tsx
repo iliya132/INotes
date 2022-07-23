@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
-import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
 import authController from '../../controllers/AuthController';
 import { ValidationResult } from '../../controllers/types';
@@ -11,18 +10,24 @@ import { authErrors, removeAuthErrors } from '../../store/reducers/authReduces';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './register.scss';
 import lockSvg from '../../../static/assets/lock.svg';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { Input } from '../../components/Input/Input';
+import PasswordInput from '../../components/PasswordInput';
 
 export default function Register() {
-    const [validityState, setValidity] = useState({isSucceded: true, errors: {}} as ValidationResult)
+    const [validityState, setValidity] = useState({ isSucceded: true, errors: {} } as ValidationResult);
     const dispatch = useAppDispatch();
     const serverErrors = useSelector(authErrors);
+    const [isLoading, setLoading] = useState(false);
+    const containerRef = useRef(null);
     const location = useLocation();
     useEffect(() => {
         dispatch(removeAuthErrors());
-    }, [location])
+    }, [location]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoading(true);
         const form = event.currentTarget;
         const formElements = form.elements as typeof form.elements & {
             login: HTMLInputElement;
@@ -36,86 +41,85 @@ export default function Register() {
         if (validationResult.isSucceded) {
             authController.register(username, password, confirmPassword);
         } else {
-            const loginErrors = serverErrors? serverErrors : validationResult.errors.login;
+            const loginErrors = serverErrors ? serverErrors : validationResult.errors.login;
             const passwordErrors = validationResult.errors.password;
             const confirmPasswordErrors = validationResult.errors.confirmPassword;
-            setValidity({isSucceded: false, errors: {login: loginErrors, password: passwordErrors, confirmPassword: confirmPasswordErrors}})
+            setValidity({
+                isSucceded: false,
+                errors: { login: loginErrors, password: passwordErrors, confirmPassword: confirmPasswordErrors },
+            });
+            setLoading(false);
         }
     };
 
     return (
         <div className={styles.container}>
             <div className={styles['column']}>
-                <a href="/" className={styles['logo-link']}>
+                <NavLink to="/" className={styles['logo-link']}>
                     <h1 className={styles.logo}>I-Note</h1>
-                </a>
-
-                <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
-                    <div className={styles["login-form"]}>
-                        <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
-                        <div className={styles['login-input']}>
-                            <Svg icon={Icons.Email} className={styles['email-ico']} />
-                            <input type="email" autoComplete="email" id="login" placeholder='E-mail...'/>
-                        </div>
-                        <label className={styles['error-label']} htmlFor="login">
-                            {validityState.errors.login}
-                        </label>
-                        <br />
-                        <div className={styles['login-input']}>
-                            <Svg icon={Icons.Key} className={styles['email-ico']} />
-                            <input type="password" autoComplete="new-password" id="password" placeholder='Password...'/>
-                        </div>
-                        <label className={styles['error-label']} htmlFor="password">
-                            {validityState.errors.password}
-                        </label>
-                        <br />
-                        <div className={styles['login-input']}>
-                            <Svg icon={Icons.Key} className={styles['email-ico']} />
-                            <input type="password" autoComplete="new-password" id="confirmPassword" placeholder='Confirm password...'/>
-                        </div>
-                        <label className={styles['error-label']} htmlFor="confirmPassword">
-                            {validityState.errors.confirmPassword}
-                        </label>
-
-                    </div>
-                    <div className={styles['submit-area']}>
-
-                        <Button title="REGISTER" className={styles['login-btn']} />
-                        <NavLink to={'/login'} className={styles['nav-link']} >
-                            Already have an account?
-                        </NavLink>
-                    </div>
-                </form>
+                </NavLink>
+                <SwitchTransition mode="out-in">
+                    <CSSTransition
+                        key={'login'}
+                        classNames="fade"
+                        timeout={300}
+                        appear
+                        mountOnEnter={true}
+                        unmountOnExit={true}
+                        nodeRef={containerRef}>
+                        <form
+                            action="#"
+                            className={styles['centered-container']}
+                            onSubmit={handleSubmit}
+                            ref={containerRef}>
+                            <div className={styles['login-form']}>
+                                <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
+                                <Input id='login' icon={Icons.Email} type="email" autocomplete="email" placeholder="Почта..." error={validityState.errors.login}/>
+                                <br />
+                                <PasswordInput id="password" autocomplete='new-password' placeholder='Пароль...' error={validityState.errors.password}/>
+                                <br />
+                                <PasswordInput id="confirmPassword" autocomplete='new-password' placeholder='Повторите пароль...' error={validityState.errors.confirmPassword}/>
+                            </div>
+                            <div className={styles['submit-area']}>
+                                <Button title="Зарегистрироваться" className={styles['login-btn']} isLoading={isLoading} />
+                                <NavLink to={'/login'} className={styles['nav-link']}>
+                                    Уже есть аккаунт?
+                                </NavLink>
+                            </div>
+                        </form>
+                    </CSSTransition>
+                </SwitchTransition>
             </div>
         </div>
     );
 }
 
 function validate(login: string, password: string, confirmPassword: string): ValidationResult {
-    var result: ValidationResult = { isSucceded: true, errors: {} }
+    var result: ValidationResult = { isSucceded: true, errors: {} };
     if (!login) {
         result.isSucceded = false;
-        result.errors.login = "Необходимо указать логин";
+        result.errors.login = 'Необходимо указать логин';
     }
 
     if (!password || !confirmPassword) {
         result.isSucceded = false;
         if (!password) {
-            result.errors.password = "Необходимо указать пароль";
-        }else if (!confirmPassword) {
-            result.errors.confirmPassword = "Поле не может быть пустым";
+            result.errors.password = 'Необходимо указать пароль';
+        } else if (!confirmPassword) {
+            result.errors.confirmPassword = 'Поле не может быть пустым';
         }
     }
 
     if (password && password !== confirmPassword) {
         result.isSucceded = false;
-        result.errors.password = "Пароли не совпадают";
-        result.errors.confirmPassword = "Пароли не совпадают";
+        result.errors.password = 'Пароли не совпадают';
+        result.errors.confirmPassword = 'Пароли не совпадают';
     }
 
     if (password && !REG_EXP_VALIDATE_PASSWORD.test(password)) {
         result.isSucceded = false;
-        result.errors.password = "Пароль должен быть длинной не менее 8 символов,\r\nсодержать заглавные и прописные буквы \r\nи хотя бы одну цифру";
+        result.errors.password =
+            'Пароль должен быть длинной не менее 8 символов,\r\nсодержать заглавные и прописные буквы \r\nи хотя бы одну цифру';
     }
     return result;
 }

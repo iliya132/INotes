@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { NotFound } from "./NotFound";
 
-export default NotFound;
+export default memo(NotFound);

@@ -1,14 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import styles from './home.scss';
 
-export default function Home() {
+function Home() {
     const navigate = useNavigate();
     return (
         <div className={styles.container}>
             <div className={styles.column}>
-                <a href="/" className={styles["logo-link"]}><h1 className={styles.logo}>I-Note</h1></a>
+                <NavLink to="/" className={styles['logo-link']}>
+                    <h1 className={styles.logo}>I-Note</h1>
+                </NavLink>
                 <div className={styles.offer}>
                     <h1 className={styles['offer-header']}>Организуй свои мысли</h1>
                     <div className={styles['offer-text']}>
@@ -20,3 +22,5 @@ export default function Home() {
         </div>
     );
 }
+
+export default memo(Home);

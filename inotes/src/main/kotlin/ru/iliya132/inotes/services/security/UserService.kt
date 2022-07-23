@@ -27,15 +27,19 @@ open class UserService(
     @Value("\${i-note.host-address}")
     val host: String? = null
 
+    @Value("\${i-note.frontend.url}")
+    val frontendUrl: String? = null
+
     open fun register(user: UserDTO): RegistrationResponse {
         if (isExists(user.userName)) {
             return RegistrationResponse(false, null, "Пользователь с таким логином уже зарегистрирован в системе")
         }
         val newUser =
             User(
-                0, user.userName, encoder.encode(user.password), true, rolesRepository.findByName
+                0, user.userName, encoder.encode(user.password), false, rolesRepository.findByName
                     ("ROLE_USER"), user.externalUserName
             )
+        newUser.externalDefaultEmail = newUser.userName
         userRepository.save(newUser)
         return RegistrationResponse(true, SimpleUserDTO(newUser.userName, newUser.roles.map { it.name }, null), null)
     }
@@ -48,6 +52,17 @@ open class UserService(
         return RegistrationResponse(true, SimpleUserDTO(user.userName, user.roles.map { it.name }, null), null)
     }
 
+    fun findById(userId: Long): User {
+        return userRepository.findById(userId).orElseThrow()
+    }
+
+    fun changePassword(userId: Long, newPassword: String) {
+        val user = userRepository.findById(userId).orElseThrow()
+        val encodedPassword = encoder.encode(newPassword)
+        user.password = encodedPassword
+        userRepository.changePassword(encodedPassword, user.id)
+    }
+
     fun changePassword(userId: Long, oldPassword: String, password: String): ResponseEntity<ChangePasswordResponse> {
 
         val user = userRepository.findById(userId).orElseThrow()
@@ -57,7 +72,6 @@ open class UserService(
         }
         user.password = encoder.encode(password)
         userRepository.changePassword(encoder.encode(password), user.id)
-
         return ResponseEntity.ok().build()
     }
 
@@ -76,7 +90,7 @@ open class UserService(
 
     private fun generateAvatarUrl(avatarId: Long): String {
         if (avatarId==NULL_AVATAR) {
-            return "$host/avatar.png"
+            return "${frontendUrl}avatar.png"
         }
         return "$host/api/static/img/$avatarId"
     }

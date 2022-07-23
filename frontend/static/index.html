@@ -7,9 +7,9 @@
         <meta name="description" content="i-note app" />
         <meta name="keywords" content="note, notes, i-note" />
         <meta name="theme-color" content="#191919" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
         <link rel="manifest" href="/manifest.json" />
         <title>INotes</title>
         <style>
@@ -56,10 +56,41 @@
                 background: #fff;
                 color: #000;
             }
+            .fade{
+
+            }
+            
+            .fade-appear,
+            .fade-enter {
+                transform: translateX(50px);
+                transition: all 0.3s linear;
+                opacity: 0;
+            }
+
+            .fade-appear-active,
+            .fade-enter-active {
+                transform: translateX(0px);
+                transition: all 0.3s linear;
+                opacity: 1;
+            }
+
+            .fade-exit {
+                transition: opacity 0.2s linear;
+                transform: translateX(0px);
+                opacity: 1;
+            }
+
+            .fade-exit-active {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
         </style>
     </head>
 
     <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
         <div id="root" style="width: 100%; height: 100%"></div>
         <section id="scripts-section"></section>
     </body>

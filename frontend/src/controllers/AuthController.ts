@@ -33,10 +33,26 @@ class AuthController extends BaseController {
             });
     }
 
+    public validateAuthenticated(): Promise<Boolean> {
+        return axios.get(`${this.authUrl}validate`, {withCredentials: true})
+            .then(response => {
+                if (response.status === 200) {
+                    return response.data as Boolean;
+                } else {
+                    console.log(response.statusText)
+                    return false;
+                }
+
+            }).catch(response => {
+                console.error(response)
+                return false;
+            })
+    }
+
     public register(username: string, password: string, confirmPassword: string) {
         let validity = this.validate(username, password, confirmPassword);
         if (validity.isSucceded) {
-            axios.post(this.authUrl + "register", {userName: username, password: password}).then(
+            axios.post(this.authUrl + "register", { userName: username, password: password }).then(
                 response => {
                     if (response.status === 200) {
                         this.dispatchStore(auth(response.data.user as User))
@@ -48,6 +64,38 @@ class AuthController extends BaseController {
         } else {
             this.dispatchStore(validationError(validity));
         }
+    }
+
+    public forgotPassword(userName: string): Promise<Boolean> {
+        return axios.get(`${this.authUrl}forgot-password/${userName}`)
+            .then(response => {
+                if (response.status === 200) {
+                    return true
+                } else {
+                    return false
+                }
+            // eslint-disable-next-line no-unused-vars
+            }).catch(_ => {
+                return false
+            })
+    }
+
+    public restorePassword(userId: number, verificationCode: string, newPassword: string): Promise<string | null> {
+        return axios.post(`${this.authUrl}restore-password/${userId}/${verificationCode}`, newPassword,
+            { headers: { 'content-type': 'text/plain' } })
+            .then(
+                response => {
+                    if (response.status === 200) {
+                        return null
+                    } else {
+                        return response.data
+                    }
+                }
+            )
+            .catch(e => {
+                console.log(e)
+                return e.response.data
+            })
     }
 
     public getUser() {

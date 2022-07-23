@@ -14,10 +14,14 @@ import ru.iliya132.inotes.dto.SimpleUserDTO
 import ru.iliya132.inotes.dto.UserDTO
 import ru.iliya132.inotes.models.Avatar
 import ru.iliya132.inotes.models.RegistrationResponse
+import ru.iliya132.inotes.models.VerificationType
 import ru.iliya132.inotes.repositories.ImageRepository
+import ru.iliya132.inotes.services.EmailService
 import ru.iliya132.inotes.services.security.UserService
 import ru.iliya132.inotes.utils.validation.CustomValidationException
 import ru.iliya132.inotes.utils.validation.PasswordValidator
+import java.time.LocalDateTime
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -30,12 +34,80 @@ class UserController {
     @Autowired
     private lateinit var imageRepository: ImageRepository
 
-    @Value("spring.security.oauth2.client.registration.yandex.client-secret")
-    private val yandexClientSecret = ""
+    @Autowired
+    private lateinit var emailService: EmailService
+
+    @Value("\${i-note.host-address}")
+    val host: String? = null
+
+    @Value("\${i-note.frontend.url}")
+    val frontendUrl: String? = null
 
     @GetMapping("/user")
     fun retrievePrincipal(auth: Authentication, request: HttpServletRequest): SimpleUserDTO {
         return userService.getUser(auth, request)
+    }
+
+    @GetMapping("/forgot-password/{userName}")
+    fun forgotPassword(@PathVariable userName: String): ResponseEntity<String> {
+        if (userService.isExists(userName)) {
+            val verificationCode = UUID.randomUUID().toString()
+            var user = userService.getUserFull(userName)
+            user.verificationCode = verificationCode
+            user.verificationType = VerificationType.RESTORE_PASSWORD
+            user.verificationCodeExpireAt = LocalDateTime.now().plusDays(1)
+            user = userService.userRepository.save(user)
+            sendRestoreMessage(user.externalDefaultEmail, user.id, verificationCode)
+        }
+        return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/validate")
+    fun validateAuth(auth: Authentication?): ResponseEntity<Boolean> {
+        if (auth==null || !auth.isAuthenticated) {
+            return ResponseEntity.ok(false)
+        }
+        return ResponseEntity.ok(true)
+    }
+
+    private fun sendRestoreMessage(email: String, userId: Long, verificationCode: String) {
+        emailService.sendSimpleMessage(email, "Восстановление пароля",
+            "Вы запросили восстановление доступа к вашему аккаунту на i-note.online\n" +
+                    "Для продолжения - перейдите по ссылке ${frontendUrl}restore-password/$userId/$verificationCode \n" +
+                    "Ссылка активна в течении суток.\n\n" +
+                    "Если вы не запрашивали это письмо - просто удалите его.\n" +
+                    "С уважением, I-Note")
+    }
+
+    @PostMapping("/restore-password/{userId}/{verificationCode}")
+    fun restorePassword(@PathVariable userId: Long, @PathVariable verificationCode: String,
+                        @RequestBody newPassword: String): ResponseEntity<String> {
+        var user = userService.findById(userId)
+        val isVCEquals = verificationCode==user.verificationCode
+        val isVCExpired = user.verificationCodeExpireAt!=null &&
+                user.verificationCodeExpireAt!!.isBefore(LocalDateTime.now())
+        val isVCTypeValid = user.verificationType==VerificationType.RESTORE_PASSWORD
+        if (!isVCEquals) {
+            return ResponseEntity.badRequest().body("Указан не верный код подтверждения. Запросите код повторно")
+        }
+        if (isVCExpired) {
+            return ResponseEntity.badRequest().body("Срок действия кода подтверждения истек. Запросите код повторно")
+        }
+
+        if (!isVCTypeValid) {
+            return ResponseEntity.badRequest().body("Код подтверждения невалиден. Запросите код повторноя")
+        }
+
+        if (!PasswordValidator.validatePassword(newPassword)) {
+            return ResponseEntity.badRequest().body("Новый пароль не соответствует политике безопасности")
+        }
+        userService.changePassword(userId, newPassword)
+        user = userService.findById(userId)
+        user.verificationCode = null
+        user.verificationCodeExpireAt = null
+        user.verificationType = null
+        userService.userRepository.save(user)
+        return ResponseEntity.ok("Пароль успешно изменен")
     }
 
     @PostMapping("/register")
