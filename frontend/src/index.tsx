@@ -11,7 +11,11 @@ import { store } from './store/store';
 import authController from './controllers/AuthController';
 import { ToastContainer } from 'react-toastify';
 
-authController.getUser()
+authController.validateAuthenticated().then(response => {
+    if(response){
+        authController.getUser()
+    }
+})
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

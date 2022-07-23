@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Register from "./register";
 
-export default Register;
+export default memo(Register);

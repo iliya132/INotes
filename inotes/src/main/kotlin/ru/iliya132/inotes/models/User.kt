@@ -1,5 +1,6 @@
 package ru.iliya132.inotes.models
 
+import org.hibernate.annotations.Type
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -7,6 +8,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -29,7 +31,7 @@ class User : UserDetails, java.io.Serializable, OAuth2User, OidcUser {
     var externalLogin: String? = null
 
     @Column(name = "external_default_email")
-    var externalDefaultEmail: String? = null
+    var externalDefaultEmail: String = ""
 
     @Column(name = "external_is_avatar_empty")
     var externalIsAvatarEmpty: Boolean? = null
@@ -42,6 +44,16 @@ class User : UserDetails, java.io.Serializable, OAuth2User, OidcUser {
 
     @Column(name = "display_name")
     var displayName: String? = null
+
+    @Column(name = "verification_code")
+    var verificationCode: String? = null
+
+    @Column(name = "verification_type", columnDefinition = "verification_type")
+    @Enumerated(EnumType.STRING)
+    var verificationType: VerificationType? = null
+
+    @Column(name = "verification_code_expire_at")
+    var verificationCodeExpireAt: LocalDateTime? = null
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -3,9 +3,8 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
+                    pattern="%style{%d{ISO8601}}{white} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
         </Console>
-
         <RollingFile name="RollingFile"
                      fileName="./logs/spring-boot-logger-log4j2.log"
                      filePattern="./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
@@ -14,24 +13,19 @@
             </PatternLayout>
             <Policies>
                 <!-- rollover on startup, daily and when the file reaches
-                    10 MegaBytes -->
+                    100 MegaBytes -->
                 <OnStartupTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy
-                        size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
                 <TimeBasedTriggeringPolicy/>
             </Policies>
         </RollingFile>
     </Appenders>
 
     <Loggers>
-        <!-- LOG everything at INFO level -->
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
         </Root>
-
-        <!-- LOG "com.baeldung*" at TRACE level -->
-        <Logger name="com.baeldung" level="trace"></Logger>
+        <Logger name="ru.iliya132" level="trace"></Logger>
     </Loggers>
-
 </Configuration>

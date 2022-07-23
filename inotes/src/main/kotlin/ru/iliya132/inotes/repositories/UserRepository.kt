@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
+import org.springframework.transaction.annotation.Transactional
 import ru.iliya132.inotes.models.User
 
 interface UserRepository : CrudRepository<User, Long> {
@@ -26,6 +27,7 @@ interface UserRepository : CrudRepository<User, Long> {
     fun findFirstIdByExternalUserName(@Param("username") username: String): Long?
 
     @Modifying
+    @Transactional
     @Query("update users set password = :password where id = :userId", nativeQuery = true)
     fun changePassword(@Param("password") newPassword: String, @Param("userId") userId: Long)
 }

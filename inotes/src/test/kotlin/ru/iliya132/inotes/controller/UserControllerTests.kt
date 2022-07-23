@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import ru.iliya132.inotes.config.SecurityConfig
 import ru.iliya132.inotes.config.ServicesConfig
 import ru.iliya132.inotes.config.TestAuthConfig
+import ru.iliya132.inotes.config.TestServicesConfig
 import ru.iliya132.inotes.dto.ChangePasswordRequest
 import ru.iliya132.inotes.dto.UserDTO
 import ru.iliya132.inotes.models.Role
@@ -29,7 +30,7 @@ import ru.iliya132.inotes.services.security.UserService
 
 
 @RunWith(SpringRunner::class)
-@Import(TestAuthConfig::class, SecurityConfig::class)
+@Import(TestAuthConfig::class, SecurityConfig::class, TestServicesConfig::class)
 @WebMvcTest(UserController::class)
 class UserControllerTests : BaseControllerTest() {
     @Autowired

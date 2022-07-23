@@ -44,3 +44,13 @@ alter table users add column if not exists token text;
 
 --changeset iliya132:added-display-name-column
 alter table users add column if not exists display_name text;
+
+--changeset iliya132:added-verification-code
+alter table users add column if not exists verification_code text;
+
+create type verification_type_enum as enum ('VERIFY_EMAIL', 'RESTORE_PASSWORD');
+
+alter table users add column if not exists verification_type verification_type_enum;
+alter table users add column if not exists verification_code_expire_at timestamp;
+alter table users alter column external_default_email set not null;
+create index if not exists idx_verification_code on users (verification_code);

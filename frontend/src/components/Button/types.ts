@@ -5,5 +5,6 @@ export interface IButtonProps {
     className?: string,
     disabled?: boolean;
     onClick?: MouseEventHandler<HTMLButtonElement>;
-    type?: "button" | "submit" | "reset"
+    type?: "button" | "submit" | "reset";
+    isLoading?: Boolean
 }
