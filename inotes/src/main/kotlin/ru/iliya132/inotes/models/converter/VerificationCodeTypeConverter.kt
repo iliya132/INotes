@@ -7,7 +7,10 @@ import javax.persistence.Converter
 @Converter(autoApply = true)
 class VerificationCodeTypeConverter : AttributeConverter<VerificationType, String>{
     override fun convertToDatabaseColumn(value: VerificationType?): String? {
-        return value?.name
+        if(value == null){
+            return null
+        }
+        return value.getCode()
     }
 
     override fun convertToEntityAttribute(value: String?): VerificationType? {
