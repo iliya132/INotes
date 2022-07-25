@@ -1,6 +1,7 @@
 package ru.iliya132.inotes.models
 
 import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -8,11 +9,14 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import ru.iliya132.inotes.models.base.PostgreSQLVerificationTypeEnumType
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
+@TypeDef(name = "verification_type_enum",
+typeClass = PostgreSQLVerificationTypeEnumType::class)
 class User : UserDetails, java.io.Serializable, OAuth2User, OidcUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +54,7 @@ class User : UserDetails, java.io.Serializable, OAuth2User, OidcUser {
 
     @Column(name = "verification_type", columnDefinition = "verification_type")
     @Enumerated(EnumType.STRING)
+    @Type(type = "verification_type_enum")
     var verificationType: VerificationType? = null
 
     @Column(name = "verification_code_expire_at")
