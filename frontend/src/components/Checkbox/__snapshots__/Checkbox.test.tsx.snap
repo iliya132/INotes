@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Checkbox component can be rendered: checkbox-snapshot 1`] = `
+<span>
+  test
+</span>
+`;
+
+exports[`Test Checkbox component display check svg on preess: checkbox-pressed 1`] = `"<div class=\\"\\"><input type=\\"checkbox\\" id=\\"test-id\\" hidden=\\"\\" value=\\"true\\"><div><svg class=\\"\\" width=\\"15\\" height=\\"15\\"><use xlink:href=\\"[object Object]#check\\"></use></svg></div></div><span>test</span>"`;
+
+exports[`Test Checkbox component not pressed by default: checkbox-unpressed 1`] = `"<div class=\\"\\"><input type=\\"checkbox\\" id=\\"test-id\\" hidden=\\"\\"><div hidden=\\"\\"><svg class=\\"\\" width=\\"15\\" height=\\"15\\"><use xlink:href=\\"[object Object]#check\\"></use></svg></div></div><span>test</span>"`;
