@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pretty markup tests should match snapshot: pretty markup snapshot 1`] = `
+<div
+  class="workfield-content-display-field"
+>
+  <div>
+    test-case
+  </div>
+</div>
+`;

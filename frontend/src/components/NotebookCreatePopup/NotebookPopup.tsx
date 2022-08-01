@@ -25,8 +25,9 @@ export function NotebookPopup(props: IFormInputProps) {
                 id="notebook-name"
                 placeholder="Введите имя для новой записной книжки"
                 onChange={handleChange}
+                data-testid="test-id"
             />
-            <Button title="Создать" className={styles['notebook-create-btn']} onClick={handleSubmit} />
+            <Button title="Создать" className={styles['notebook-create-btn']} onClick={handleSubmit} data-testid="test-btn-id"/>
         </div>
     );
 }

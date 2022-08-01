@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`notebook popup tests matches snapshot: notebook-popup-snapshot 1`] = `
+<div
+  class="notebook-create-popup-container"
+>
+  <div
+    class="input-container"
+  >
+    <input
+      class="input"
+      id="notebook-name"
+      placeholder="Введите имя для новой записной книжки"
+      type="text"
+    />
+  </div>
+  <label
+    class="error-label"
+    for="notebook-name"
+  />
+  <button
+    class="primary-button notebook-create-btn"
+  >
+    Создать
+    <div
+      class="button-content"
+    />
+  </button>
+</div>
+`;

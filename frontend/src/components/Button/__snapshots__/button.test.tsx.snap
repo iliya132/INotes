@@ -2,15 +2,19 @@
 
 exports[`Test Button component can be rendered: button-snapshot 1`] = `
 <button
-  class=""
+  class="primary-button"
 >
   test
-  <div />
+  <div
+    class="button-content"
+  />
 </button>
 `;
 
 exports[`Test Button component shows loading when isLoading: button-loading-snapshot 1`] = `
-<div>
+<div
+  class="button-content"
+>
   <div
     style="fill: white; height: 64px; width: 64px;"
   >

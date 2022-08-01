@@ -21,9 +21,10 @@ export function Search(props: ISearchProps) {
         notes: [],
     } as ISearchResult);
     const [isOpen, setOpen] = useState(false);
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFoundResults(notesController.find(e.target.value));
+        
+        const found = notesController.find(e.target.value)
+        setFoundResults(found);
         if (onChange) {
             onChange(e);
         }
@@ -56,7 +57,7 @@ export function Search(props: ISearchProps) {
             open={isOpen}
             position="bottom left"
             trigger={
-                <div className={styles['input-container']}>
+                <div className={styles['input-container']} data-testid="search-container">
                     <input
                         ref={inputRef}
                         id="search"
@@ -67,6 +68,7 @@ export function Search(props: ISearchProps) {
                             handleInputChange(e);
                         }}
                         autoComplete="disabled"
+                        data-testid="search-input"
                     />
                     <Svg icon={Icons.Search} className={styles['eye-icon']} />
                 </div>

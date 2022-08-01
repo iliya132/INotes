@@ -65,7 +65,10 @@ export default {
   // globalTeardown: undefined,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    PRODUCTION: false,
+    IS_REACT_ACT_ENVIRONMENT: true
+  },
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
   // maxWorkers: "50%",
@@ -89,7 +92,8 @@ export default {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^.+\.(css|scss|svg)$': 'babel-jest'
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy"
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

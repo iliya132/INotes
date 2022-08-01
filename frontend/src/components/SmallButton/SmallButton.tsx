@@ -5,10 +5,22 @@ import styles from './SmallButton.scss';
 import { ISmallButtonProps } from './types';
 
 export function SmallButton(props: ISmallButtonProps) {
-    const { icon, size, className, onClick, tooltip } = props;
+    const { icon, size, className, onClick, tooltip, disabled } = props;
+
+    const handleOnClick = () => {
+        if (disabled) {
+            return;
+        } else if (onClick) {
+            onClick();
+        }
+    };
 
     return (
-        <div className={classNames(styles['small-button-container'], className)} onClick={onClick} title={tooltip}>
+        <div
+            className={classNames(styles['small-button-container'], className)}
+            onClick={handleOnClick}
+            title={tooltip}
+            data-testid="test-id">
             <Svg icon={icon} className={styles['small-button-icon']} width={size} height={size} />
         </div>
     );

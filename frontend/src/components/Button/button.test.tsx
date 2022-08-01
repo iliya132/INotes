@@ -4,7 +4,6 @@ import { createRoot, Root } from 'react-dom/client';
 import { Button } from './button';
 import { act } from 'react-dom/test-utils';
 
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 let root: Root | null = null;
 let container: Element | null = null;
@@ -48,9 +47,10 @@ describe('Test Button component', () => {
     });
 
     it('setup className', () => {
-        const expectedClassName = 'test-classname';
+        const className = 'test-classname'
+        const expectedClassName = 'primary-button test-classname';
         act(() => {
-            root!.render(<Button title="test" className={expectedClassName} />);
+            root!.render(<Button title="test" className={className} />);
         });
         let btn = container?.querySelector('button');
 

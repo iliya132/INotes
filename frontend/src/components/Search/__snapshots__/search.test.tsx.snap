@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search field tests should match snapshot: search field snapshot 1`] = `"<div></div><div><div class=\\"input-container\\" data-testid=\\"search-container\\" aria-describedby=\\"popup-2\\"><input id=\\"search\\" type=\\"text\\" class=\\"search-field\\" placeholder=\\"Type here to search...\\" autocomplete=\\"disabled\\" data-testid=\\"search-input\\"><svg class=\\"image eye-icon tooltip\\" fill=\\"BlackCommon\\" width=\\"48\\" height=\\"48\\"><use xlink:href=\\"test-file-stub#search\\"></use></svg></div></div>"`;

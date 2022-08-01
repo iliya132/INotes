@@ -4,8 +4,6 @@ import { createRoot, Root } from 'react-dom/client';
 import { Checkbox } from './Checkbox';
 import { act } from 'react-dom/test-utils';
 
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
 let root: Root | null = null;
 let container: Element | null = null;
 beforeEach(() => {

@@ -7,7 +7,7 @@ const initialState: NotebooksState = {
     allNotes: []
 };
 
-const slice = createSlice({
+const slice = (initialState: NotebooksState) => createSlice({
     name: "notebooksReducer",
     initialState: initialState,
     reducers: {
@@ -60,8 +60,10 @@ const slice = createSlice({
     }
 });
 
-export const { addNotebook, addNote, updateNotebook, updateNote, removeNotebook, removeNote, setState, setShared, clearNotesState } = slice.actions;
-export default slice.reducer;
+const defaultSlice = slice(initialState)
+export const notesSlice = slice
+export const { addNotebook, addNote, updateNotebook, updateNote, removeNotebook, removeNote, setState, setShared, clearNotesState } = defaultSlice.actions;
+export default defaultSlice.reducer;
 
 export const notebooks = (state: RootState) => state.notebooksReducer.notebooks;
 export const allNotes = (state: RootState) => state.notebooksReducer.allNotes;
