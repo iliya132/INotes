@@ -3,7 +3,7 @@
 exports[`Test Button component can be rendered: button-snapshot 1`] = `
 <div
   class="small-button-container"
-  data-testid="test-id"
+  data-testid="dots"
 >
   <svg
     class="image small-button-icon tooltip"

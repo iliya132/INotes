@@ -11,7 +11,7 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import RestorePassword from './pages/RestorePassword';
 import Shared from './pages/Shared';
-import { currentUser, isAuth } from './store/reducers/authReduces';
+import { currentUser, isAuth } from './store/reducers/authReducer';
 
 const App = () => {
     const isAuthenticated = useSelector(isAuth);

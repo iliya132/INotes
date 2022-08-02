@@ -1,6 +1,6 @@
 import axios from "axios";
 import properties from "../../properties/properties";
-import { auth, authError } from "../reducers/authReduces";
+import { auth, authError } from "../reducers/authReducer";
 import { AppDispatch } from "../store";
 import { User } from "../types";
 

@@ -6,7 +6,7 @@ import { Icons } from '../../components/Svg/types';
 import authController from '../../controllers/AuthController';
 import { ValidationResult } from '../../controllers/types';
 import { REG_EXP_VALIDATE_PASSWORD } from '../../Misc/regexp';
-import { authErrors, removeAuthErrors } from '../../store/reducers/authReduces';
+import { authErrors, removeAuthErrors } from '../../store/reducers/authReducer';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './register.scss';
 import lockSvg from '../../../static/assets/lock.svg';
@@ -25,7 +25,7 @@ export default function Register() {
         dispatch(removeAuthErrors());
     }, [location]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
         const form = event.currentTarget;
@@ -39,7 +39,7 @@ export default function Register() {
         const confirmPassword: string = formElements.confirmPassword.value;
         const validationResult = validate(username, password, confirmPassword);
         if (validationResult.isSucceded) {
-            authController.register(username, password, confirmPassword);
+            await authController.register(username, password, confirmPassword);
         } else {
             const loginErrors = serverErrors ? serverErrors : validationResult.errors.login;
             const passwordErrors = validationResult.errors.password;

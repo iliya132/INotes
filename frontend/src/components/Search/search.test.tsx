@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { createRoot, Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { RootState } from '../../store/store';
 import { INote, INotebook } from '../../store/types';
 import { Search } from './search';
-import { authSlice } from '../../store/reducers/authReduces';
+import { authSlice } from '../../store/reducers/authReducer';
 import { notesSlice } from '../../store/reducers/notebooksReducer';
 import { configureStore } from '@reduxjs/toolkit';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
@@ -16,8 +15,6 @@ import { render, screen } from '@testing-library/react';
 import notesController from '../../controllers/NotesController';
 
 //#region common setup
-let root: Root | null = null;
-let container: Element | null = null;
 jest.mock('../../controllers/NotesController', () => ({ find: jest.fn() }));
 
 let initialState: RootState = {
@@ -48,20 +45,6 @@ beforeEach(() => {
             authReducer: authSlice(initialState.authReducer).reducer,
             notebooksReducer: notesSlice(initialState.notebooksReducer).reducer,
         },
-    });
-    act(() => {
-        container = document.createElement('div');
-        document.body.appendChild(container);
-        root = createRoot(container);
-    });
-});
-
-afterEach(() => {
-    act(() => {
-        root!.unmount();
-        document.body.removeChild(container!);
-        container!.remove();
-        container = null;
     });
 });
 //#endregion

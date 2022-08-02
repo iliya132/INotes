@@ -10,6 +10,7 @@ export function PrettyMarkup(props: IPrettyMarkupProps) {
     const toRender = sanitize(renderedValue);
     return (
         <div
+            data-testid="pretty-view"
             className={classNames(styles['workfield-content-display-field'], className)}
             dangerouslySetInnerHTML={{ __html: toRender }}></div>
     );

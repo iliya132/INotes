@@ -16,8 +16,8 @@ export function MediumButton(props: IMediumButtonProps) {
     };
 
     return (
-        <div className={classNames(styles['medium-container'], className)} onClick={handleOnClick}>
-            <Svg icon={icon} className={styles['small-button-icon']} width={size} height={size} />
+        <div className={classNames(styles['medium-container'], className)} onClick={handleOnClick} data-testid={icon.toString()}>
+            <Svg icon={icon} className={styles['small-button-icon']} width={size} height={size}/>
             <span>{title}</span>
         </div>
     );

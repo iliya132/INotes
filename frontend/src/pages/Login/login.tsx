@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
 import authController from '../../controllers/AuthController';
-import { authErrors, removeAuthErrors, validationError, validationErrors } from '../../store/reducers/authReduces';
+import { authErrors, removeAuthErrors, validationError, validationErrors } from '../../store/reducers/authReducer';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './login.scss';
 import lockSvg from '../../../static/assets/lock.svg';
@@ -48,7 +48,7 @@ export default function Login() {
                     },
                 }),
             );
-            setLoading(false)
+            setLoading(false);
         }
     };
     const errors = useSelector(authErrors);
@@ -57,8 +57,8 @@ export default function Login() {
     const passwordErrors = errors
         ? errors
         : validityErrors.errors?.password
-        ? validityErrors.errors.password
-        : undefined;
+            ? validityErrors.errors.password
+            : undefined;
     return (
         <div className={styles.container}>
             <div className={styles['column']}>
@@ -81,9 +81,21 @@ export default function Login() {
                             ref={containerRef}>
                             <div className={styles['login-form']}>
                                 <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
-                                <Input type={"email"} icon={Icons.Email} autocomplete="email" placeholder='Почта...' id='login' error={loginErrors}/>
+                                <Input
+                                    type={'email'}
+                                    icon={Icons.Email}
+                                    autocomplete="email"
+                                    placeholder="Почта..."
+                                    id="login"
+                                    error={loginErrors}
+                                />
                                 <br />
-                                <PasswordInput id="password" autocomplete='password' error={passwordErrors} placeholder="Пароль..." icon={Icons.Key} />
+                                <PasswordInput
+                                    id="password"
+                                    autocomplete="password"
+                                    error={passwordErrors}
+                                    placeholder="Пароль..."
+                                />
                                 <div className={styles['optins-row']}>
                                     <div className={styles['forgot-password']}>
                                         <NavLink to="/forgot-password" className={styles['forget-password-link']}>
@@ -116,7 +128,7 @@ export default function Login() {
                                     </a>
                                 </div>
 
-                                <Button title="Войти" className={styles['login-btn']} isLoading={isLoading}/>
+                                <Button title="Войти" className={styles['login-btn']} isLoading={isLoading} />
                                 <NavLink to={'/register'} className={styles['nav-link']}>
                                     Еще нет аккаунта?
                                 </NavLink>

@@ -44,6 +44,12 @@ const slice = (initialState: AuthState) => createSlice(
             logout: (state: AuthState) => {
                 state.isAuth = false;
                 state.user = undefined;
+            },
+            resetStateForTests: (state: AuthState) => {
+                state.error = initialState.error;
+                state.isAuth = initialState.isAuth;
+                state.user = initialState.user;
+                state.validation = initialState.validation;
             }
         }
 
@@ -53,7 +59,7 @@ const slice = (initialState: AuthState) => createSlice(
 const defaultSlice = slice(initialState)
 
 export const authSlice = slice;
-export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout } = defaultSlice.actions;
+export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout, resetStateForTests } = defaultSlice.actions;
 export default defaultSlice.reducer;
 export const currentUser = (state: RootState) => state.authReducer.user;
 export const isAuth = (state: RootState) => state.authReducer.isAuth;
