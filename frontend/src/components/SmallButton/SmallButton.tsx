@@ -20,7 +20,7 @@ export function SmallButton(props: ISmallButtonProps) {
             className={classNames(styles['small-button-container'], className)}
             onClick={handleOnClick}
             title={tooltip}
-            data-testid="test-id">
+            data-testid={icon.toString()}>
             <Svg icon={icon} className={styles['small-button-icon']} width={size} height={size} />
         </div>
     );

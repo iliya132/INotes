@@ -16,8 +16,6 @@ import { render, screen } from '@testing-library/react';
 import notesController from '../../controllers/NotesController';
 
 //#region common setup
-let root: Root | null = null;
-let container: Element | null = null;
 jest.mock('../../controllers/NotesController', () => ({ find: jest.fn() }));
 
 let initialState: RootState = {
@@ -48,20 +46,6 @@ beforeEach(() => {
             authReducer: authSlice(initialState.authReducer).reducer,
             notebooksReducer: notesSlice(initialState.notebooksReducer).reducer,
         },
-    });
-    act(() => {
-        container = document.createElement('div');
-        document.body.appendChild(container);
-        root = createRoot(container);
-    });
-});
-
-afterEach(() => {
-    act(() => {
-        root!.unmount();
-        document.body.removeChild(container!);
-        container!.remove();
-        container = null;
     });
 });
 //#endregion
