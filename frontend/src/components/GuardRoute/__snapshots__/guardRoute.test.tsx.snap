@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test GuardRoute component can be rendered: guardRoute-permitted-snapshot 1`] = `
+<span>
+  test
+</span>
+`;
+
+exports[`Test GuardRoute component should redirect on false: guardRoute-restricted-snapshot 1`] = `
+<span>
+  false
+</span>
+`;

@@ -13,7 +13,7 @@ const initialState: AuthState = {
     }
 };
 
-const slice = createSlice(
+const slice = (initialState: AuthState) => createSlice(
     {
         name: "authReducer",
         initialState: initialState,
@@ -50,8 +50,11 @@ const slice = createSlice(
     }
 )
 
-export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout } = slice.actions;
-export default slice.reducer;
+const defaultSlice = slice(initialState)
+
+export const authSlice = slice;
+export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout } = defaultSlice.actions;
+export default defaultSlice.reducer;
 export const currentUser = (state: RootState) => state.authReducer.user;
 export const isAuth = (state: RootState) => state.authReducer.isAuth;
 export const authErrors = (state: RootState) => state.authReducer.error;

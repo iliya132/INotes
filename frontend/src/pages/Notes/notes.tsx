@@ -10,7 +10,7 @@ import { INote, INotebookWithNotes } from '../../store/types';
 import { NavLink, useParams } from 'react-router-dom';
 import Svg from '../../components/Svg';
 import { Icons } from '../../components/Svg/types';
-import NotebookPopup from '../../components/NotebooCreatePopup';
+import NotebookPopup from '../../components/NotebookCreatePopup';
 import Popup from 'reactjs-popup';
 
 export function NotesPage() {

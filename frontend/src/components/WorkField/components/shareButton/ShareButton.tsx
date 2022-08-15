@@ -8,20 +8,11 @@ import notesController from '../../../../controllers/NotesController';
 import Svg from '../../../Svg';
 import clipboardCopy from 'clipboard-copy';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import { allNotes } from '../../../../store/reducers/notebooksReducer';
-import { useParams } from 'react-router-dom';
-import { INote } from '../../../../store/types';
 import Checkbox from '../../../Checkbox';
+import IShareBtnProps from './types';
 
-export function ShareButton() {
-    const notes = useSelector(allNotes);
-    const urlParams = useParams();
-    const selectedNote = Number(urlParams.selectedNote);
-    let note: INote | null = null;
-    if (selectedNote !== -1) {
-        note = notes.filter((it) => it.id === selectedNote)[0];
-    }
+export function ShareButton(props: IShareBtnProps) {
+    const {note} = props;
     const currentNoteSharedState = note?.isPublicUrlShared ? note.isPublicUrlShared : false;
     const url = `${document.location.origin}/shared/${note?.publicUrl}`;
     let isShared = currentNoteSharedState;
@@ -45,6 +36,7 @@ export function ShareButton() {
                     <SmallButton icon={Icons.Share} tooltip="Поделиться" />
                 </div>
             }
+            disabled={note === undefined || note === null}
             position="bottom right">
             {(close) => {
                 return (

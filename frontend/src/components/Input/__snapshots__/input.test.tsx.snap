@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test  input component matches snapshot: Input test snapshot 1`] = `
+<div
+  class="input-container"
+>
+  <svg
+    class="image pre-icon tooltip"
+    fill="BlackCommon"
+    height="17"
+    width="17"
+  >
+    <use
+      xlink:href="test-file-stub#key"
+    />
+  </svg>
+  <input
+    class="input"
+    id="test-id"
+    type="text"
+  />
+</div>
+`;

@@ -101,7 +101,7 @@ export function Workfield(props: IWorkfieldProps) {
 
     function getTitle(content: string) {
         const contentSplitted = content.replace(/#/g, '').replace(/_/g, '').trim().split('\n');
-        if (contentSplitted.length > 0) {
+        if (contentSplitted.length > 0 && contentSplitted[0].length > 0) {
             return contentSplitted[0];
         } else {
             return 'Без названия';
@@ -127,18 +127,20 @@ export function Workfield(props: IWorkfieldProps) {
                         />
                         <SmallButton
                             size={15}
+                            data-testid="btn-underscoped"
                             className={styles['wf-action-btn']}
                             icon={Icons.Underscoped}
                             onClick={() => handleWfAction(WfAction.Underscoped)}
                         />
                         <SmallButton
-                            size={15}
+                            size={15}data-testid="btn-dottedlist"
                             className={styles['wf-action-btn']}
                             icon={Icons.DottedList}
                             onClick={() => handleWfAction(WfAction.Dotted)}
                         />
                         <SmallButton
                             size={15}
+                            data-testid="btn-numberlist"
                             className={styles['wf-action-btn']}
                             icon={Icons.NumberList}
                             onClick={() => handleWfAction(WfAction.Number)}
@@ -163,12 +165,14 @@ export function Workfield(props: IWorkfieldProps) {
                         />
                         <SmallButton
                             size={15}
+                            data-testid="btn-code"
                             className={styles['wf-action-btn']}
                             icon={Icons.Code}
                             onClick={() => handleWfAction(WfAction.Code)}
                         />
                         <SmallButton
                             size={15}
+                            data-testid="btn-table"
                             className={styles['wf-action-btn']}
                             icon={Icons.Table}
                             onClick={() => handleWfAction(WfAction.Table)}
@@ -179,7 +183,7 @@ export function Workfield(props: IWorkfieldProps) {
                                     <SmallButton size={15} className={styles['wf-action-btn']} icon={Icons.Markup} />
                                 </div>
                             }>
-                            <div className={styles["markdown-help-container"]}>
+                            <div className={styles["markdown-help-container"]} data-testid="markdown-help">
                                 <ul>
                                     <li>Жирный текст <div className={styles["markdown-help-container-example"]}>**Text**</div></li><hr/>
                                     <li>Курсивный текст <div className={styles["markdown-help-container-example"]}>*Text*</div></li><hr/>
@@ -203,14 +207,14 @@ export function Workfield(props: IWorkfieldProps) {
                 ) : null}
 
                 <div className={styles['workfield-actions-container']}>
-                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку" />
-                    <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" />
-                    <SmallButton icon={Icons.Tag} tooltip="Задать тэг" />
+                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку"/>
+                    <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" data-testid="btn-copy"/>
+                    <SmallButton icon={Icons.Tag} tooltip="Задать тэг" data-testid="btn-tag"/>
                     <div>
-                        <ShareButton />
+                        <ShareButton note={note} data-testid="btn-share"/>
                     </div>
-                    <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} />
-                    <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" />
+                    <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} data-testid="btn-read"/>
+                    <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" data-testid="btn-save"/>
                 </div>
             </div>
 
@@ -222,6 +226,7 @@ export function Workfield(props: IWorkfieldProps) {
                     )}>
                     <div className={styles['workfield-content-edit-field-textarea']} key={`text-area${note?.id}`}>
                         <textarea
+                            data-testid="input-field"
                             onChange={(event) => handleChange(event)}
                             onKeyDown={handleKeyDown}
                             ref={textAreaRef}
