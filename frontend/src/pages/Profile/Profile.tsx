@@ -51,7 +51,7 @@ export function Profile(props: IProfileProps) {
         const name = target.name;
         setInputs({ ...inputs, [name]: value });
     };
-    const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file: File = event!.target!.files![0];
         if (file.size > properties.maxFileSize) {
             alert('Максимальный размер загружаемого файла - 30 Мб');
@@ -60,7 +60,7 @@ export function Profile(props: IProfileProps) {
         }
         const formData = new FormData();
         formData.append('avatar', file, file.name);
-        authController.uploadAvatar(formData);
+        await authController.uploadAvatar(formData);
     };
     const avatar = user.avatarUrl ? `${user.avatarUrl}` : avatarImg;
 

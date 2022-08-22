@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { createRoot, Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { RootState } from '../../store/store';
 import { INote, INotebook } from '../../store/types';
 import { Search } from './search';
-import { authSlice } from '../../store/reducers/authReduces';
+import { authSlice } from '../../store/reducers/authReducer';
 import { notesSlice } from '../../store/reducers/notebooksReducer';
 import { configureStore } from '@reduxjs/toolkit';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';

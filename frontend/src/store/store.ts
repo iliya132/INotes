@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["__PRELOADED_STATE__"] }] */
 import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
-import authReducer from './reducers/authReduces';
+import authReducer from './reducers/authReducer';
 import notebooksReducer from './reducers/notebooksReducer';
 
 

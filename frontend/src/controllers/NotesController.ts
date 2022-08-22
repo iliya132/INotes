@@ -15,13 +15,13 @@ class NotesController extends BaseController {
     private notebookurl = this.baseUrl + "api/notebook/"
     private dispatchStore = store.dispatch as typeof store.dispatch | Dispatch<any>
 
-    createNotebook(name: string) {
+    async createNotebook(name: string) {
         const newNotebook: NotebookDTO = {
             id: 0,
             color: 'blue',
             name: name
         };
-        axios.post(this.notebookurl + "save", newNotebook, { withCredentials: true })
+        return axios.post(this.notebookurl + "save", newNotebook, { withCredentials: true })
             .then((response) => {
                 store.dispatch(addNotebook(response.data))
             })
@@ -30,7 +30,7 @@ class NotesController extends BaseController {
             })
     }
 
-    createNote(name: string, notebookId: number) {
+    async createNote(name: string, notebookId: number) {
         const selectedNotebook = store.getState().notebooksReducer.notebooks.filter(it => it.id === notebookId)[0];
         if (!selectedNotebook) {
             throw Error("Cant create note without binding to parent");
@@ -43,31 +43,31 @@ class NotesController extends BaseController {
             isShared: false,
             publicUrl: ""
         }
-        this.dispatchStore(createNoteThunk(newNote))
+        return this.dispatchStore(createNoteThunk(newNote))
     }
 
-    fetchNotes() {
-        this.dispatchStore(fetchNotesThunk())
+    async fetchNotes() {
+        return this.dispatchStore(fetchNotesThunk())
     }
 
-    removeNotebook(notebook: INotebook) {
+    async removeNotebook(notebook: INotebook) {
         if (notebook) {
-            this.dispatchStore(removeNotebookThunk(notebook));
+            return this.dispatchStore(removeNotebookThunk(notebook));
         }
     }
 
-    updateNote(note: INoteDTO) {
+    async updateNote(note: INoteDTO) {
         if (note) {
-            this.dispatchStore(updateNoteThunk(note));
+            return this.dispatchStore(updateNoteThunk(note));
         }
     }
 
-    removeNote(noteId: number) {
-        this.dispatchStore(removeNoteThunk(noteId));
+    async removeNote(noteId: number) {
+        return this.dispatchStore(removeNoteThunk(noteId));
     }
 
-    setShared(noteId: number, isShared: boolean) {
-        this.dispatchStore(setPublicUrlShared(noteId, isShared));
+    async setShared(noteId: number, isShared: boolean) {
+        return this.dispatchStore(setPublicUrlShared(noteId, isShared));
     }
 
     find(text: string): ISearchResult {

@@ -44,7 +44,12 @@ const slice = (initialState: NotebooksState) => createSlice({
         },
         setState: (state: NotebooksState, action: PayloadAction<INotebookWithNotes[]>) => {
             state.notebooks = action.payload.map(it => { return { id: it.id, name: it.name, color: it.color } })
-            state.allNotes = action.payload.flatMap(it => it.notes.map(note => { return { ...note, parent: it, isNew: false } }))
+            state.allNotes = action.payload.flatMap(it => it.notes.map(note => {
+                return {
+                    ...note, parent: { color: it.color, name: it.name, id: it.id },
+                    isNew: false
+                }
+            }))
         },
         setShared: (state: NotebooksState, action: PayloadAction<INoteSharedState>) => {
             let note = state.allNotes.find(it => it.id === action.payload.noteId)
@@ -69,5 +74,5 @@ export const notebooks = (state: RootState) => state.notebooksReducer.notebooks;
 export const allNotes = (state: RootState) => state.notebooksReducer.allNotes;
 export const notebooksWithNotes = (state: RootState) => {
     const { notebooks, allNotes } = state.notebooksReducer;
-    return {notebooks, allNotes};
+    return { notebooks, allNotes };
 }

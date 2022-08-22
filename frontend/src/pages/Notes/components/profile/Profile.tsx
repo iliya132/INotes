@@ -5,7 +5,7 @@ import Popup from 'reactjs-popup';
 import Svg from '../../../../components/Svg';
 import { Icons } from '../../../../components/Svg/types';
 import authController from '../../../../controllers/AuthController';
-import { currentUser } from '../../../../store/reducers/authReduces';
+import { currentUser } from '../../../../store/reducers/authReducer';
 import styles from './Profile.scss';
 
 export function Profile() {

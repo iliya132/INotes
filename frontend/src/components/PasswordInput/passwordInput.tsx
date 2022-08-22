@@ -39,7 +39,7 @@ function GetIcon(showPassword: boolean, onclick: () => void) {
         <>
             {showPassword ? (
                 <Svg icon={Icons.EyeClosed} className={styles['eye-icon']} onClick={onclick} />
-            ) :  (
+            ) : (
                 <Svg icon={Icons.EyeOpened} className={styles['eye-icon']} onClick={onclick} />
             )}
         </>

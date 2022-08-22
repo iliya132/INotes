@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { REG_EXP_VALIDATE_PASSWORD } from "../Misc/regexp";
-import { auth, authError, logout, validationError } from "../store/reducers/authReduces";
+import { auth, authError, logout, validationError } from "../store/reducers/authReducer";
 import { clearNotesState } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
 import { fetchUser } from "../store/thunks/authThunks";
@@ -22,6 +22,7 @@ class AuthController extends BaseController {
         return axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
+
                     this.getUser();
                 } else {
                     this.dispatchStore(authError(response.data.message))
@@ -34,7 +35,7 @@ class AuthController extends BaseController {
     }
 
     public validateAuthenticated(): Promise<Boolean> {
-        return axios.get(`${this.authUrl}validate`, {withCredentials: true})
+        return axios.get(`${this.authUrl}validate`, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
                     return response.data as Boolean;
@@ -49,7 +50,7 @@ class AuthController extends BaseController {
             })
     }
 
-    public register(username: string, password: string, confirmPassword: string) {
+    public async register(username: string, password: string, confirmPassword: string) {
         let validity = this.validate(username, password, confirmPassword);
         if (validity.isSucceded) {
             axios.post(this.authUrl + "register", { userName: username, password: password }).then(
@@ -74,7 +75,7 @@ class AuthController extends BaseController {
                 } else {
                     return false
                 }
-            // eslint-disable-next-line no-unused-vars
+                // eslint-disable-next-line no-unused-vars
             }).catch(_ => {
                 return false
             })
@@ -115,7 +116,7 @@ class AuthController extends BaseController {
     }
 
     public uploadAvatar(formData: FormData) {
-        axios.post(this.authUrl + "avatar", formData, { withCredentials: true })
+        return axios.post(this.authUrl + "avatar", formData, { withCredentials: true })
             .then(() => {
                 this.getUser()
             }).catch((reason) => {
@@ -142,11 +143,13 @@ class AuthController extends BaseController {
         }
 
         if (password !== confirmPassword) {
+            result.isSucceded = false;
             result.errors.password = "Пароли не совпадают";
             result.errors.confirmPassword = "Пароли не совпадают";
         }
 
         if (!REG_EXP_VALIDATE_PASSWORD.test(password)) {
+            result.isSucceded = false;
             result.errors.password = "Пароль должен быть длинной не менее 8 символов, содержать заглавные и прописные буквы и хотя бы одну цифру";
         }
         return result;
@@ -158,8 +161,12 @@ class AuthController extends BaseController {
         }
         return axios.patch(`${this.authUrl}change-pass`, passwordChange, { withCredentials: true })
             .then((resp) => {
-                console.debug("successfully updated password", resp)
-                return Promise.resolve({ isSuccessfull: true, errors: { targets: [""], message: "" } })
+                if (resp.status === 200) {
+                    console.debug("successfully updated password", resp)
+                    return Promise.resolve({ isSuccessfull: true, errors: { targets: [""], message: "" } })
+                } else {
+                    return Promise.reject({response: { isSuccessfull: false, data: {targets: [], message: resp.statusText}}})
+                }
             }).catch((reason) => {
                 console.error("ERROR:", reason);
                 const errors = reason.response.data as { targets: string[], message: string }
