@@ -50,6 +50,27 @@ describe('notes controller test', () => {
         expect(notesState.allNotes[0]).toEqual(note);
     })
 
+    test('can copy note', async () => {
+        const notebook: INotebook = getTestNotebook();
+        store.dispatch(addNotebook(notebook));
+        expect(getNotesState().notebooks).toHaveLength(1);
+        const note: INote = getTestNote(notebook);
+        const apiNote: INoteDTO = {
+            content: note.content,
+            id: note.id,
+            isShared: note.isPublicUrlShared,
+            name: note.name,
+            notebookId: note.parent.id,
+            publicUrl: note.publicUrl
+        };
+        mockAxiosPostResult({status: 200, data: apiNote});
+        await notesController.copyNote(apiNote);
+        const notesState = getNotesState();
+        expect(notesState.notebooks).toHaveLength(1);
+        expect(notesState.allNotes).toHaveLength(1);
+        expect(notesState.allNotes[0]).toEqual(note);
+    })
+
     test('can fetch notes', async () => {
         const notebook = getTestNotebook();
         const notes = [getTestNote(notebook)];

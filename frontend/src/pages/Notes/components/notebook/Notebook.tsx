@@ -27,7 +27,7 @@ export function Notebook(props: INotebookProps) {
 
     const [isExpanded, setExpanded] = useState(isExpandedDefault);
 
-    if(isExpandedDefault && isExpanded !== isExpandedDefault){
+    if (isExpandedDefault && isExpanded !== isExpandedDefault) {
         setExpanded(true);
     }
 
@@ -44,8 +44,8 @@ export function Notebook(props: INotebookProps) {
     };
 
     const handleDeleteNotebook = (notebook: INotebook) => {
-        notesController.removeNotebook(notebook)
-    }
+        notesController.removeNotebook(notebook);
+    };
 
     return (
         <div className={styles['notebook-container']}>
@@ -69,7 +69,13 @@ export function Notebook(props: INotebookProps) {
                                 <span>{notebook.name}</span>
                                 <hr />
                                 <ul>
-                                    <li onClick={() => {close(); handleDeleteNotebook(notebook)}}>Удалить</li>
+                                    <li
+                                        onClick={() => {
+                                            close();
+                                            handleDeleteNotebook(notebook);
+                                        }}>
+                                        Удалить
+                                    </li>
                                 </ul>
                             </div>
                         );
@@ -78,18 +84,20 @@ export function Notebook(props: INotebookProps) {
             </div>
             {isExpanded ? (
                 <div className={styles['notebook-notes']}>
-                    {notebook.notes.map((it) => (
-                        <div
-                            key={'note_nav#' + it.id}
-                            className={classNames(
-                                styles['notebook-note-container'],
-                                currentNote?.id === it.id ? styles['selected'] : undefined,
-                            )}
-                            onClick={() => handleNoteSelected(it)}>
-                            <div className={styles['circle']}></div>
-                            <span className={styles['notebook-note-title']}>{it.name}</span>
-                        </div>
-                    ))}
+                    {notebook.notes
+                        .sort((first, second) => first.name.localeCompare(second.name))
+                        .map((it) => (
+                            <div
+                                key={'note_nav#' + it.id}
+                                className={classNames(
+                                    styles['notebook-note-container'],
+                                    currentNote?.id === it.id ? styles['selected'] : undefined,
+                                )}
+                                onClick={() => handleNoteSelected(it)}>
+                                <div className={styles['circle']}></div>
+                                <span className={styles['notebook-note-title']}>{it.name}</span>
+                            </div>
+                        ))}
                     <div className={styles['notebook-note-container']} onClick={() => handleNewNote(notebook.id)}>
                         <div className={styles['circle']}></div>
                         <span className={styles['notebook-note-title']}>Создать новую</span>
