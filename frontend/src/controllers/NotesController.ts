@@ -46,6 +46,10 @@ class NotesController extends BaseController {
         return this.dispatchStore(createNoteThunk(newNote))
     }
 
+    async copyNote(note: INoteDTO) {
+        return this.dispatchStore(createNoteThunk(note))
+    }
+
     async fetchNotes() {
         return this.dispatchStore(fetchNotesThunk())
     }

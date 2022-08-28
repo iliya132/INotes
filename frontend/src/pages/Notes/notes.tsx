@@ -68,9 +68,11 @@ export function NotesPage() {
                     <Search />
                 </div>
                 <div className={styles['notes-page-navbar-notes']}>
-                    {notebooksWithNotes.map((it) => (
-                        <Notebook key={`notebook_container#${it.id}`} notebook={it} />
-                    ))}
+                    {notebooksWithNotes
+                        .sort((first, second) => first.name.localeCompare(second.name))
+                        .map((it) => (
+                            <Notebook key={`notebook_container#${it.id}`} notebook={it} />
+                        ))}
                     <Popup
                         trigger={
                             <div className={styles['notebook-row']}>

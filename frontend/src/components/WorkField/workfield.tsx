@@ -99,6 +99,20 @@ export function Workfield(props: IWorkfieldProps) {
         }
     };
 
+    const handleNotecopy = () => {
+        if(note) {
+            const noteToUpdate: INoteDTO = {
+                content: input!,
+                id: 0,
+                name: getTitle(input!),
+                notebookId: note?.parent.id,
+                isShared: note.isPublicUrlShared,
+                publicUrl: note.publicUrl
+            };
+            notesController.copyNote(noteToUpdate);
+        }
+    }
+
     function getTitle(content: string) {
         const contentSplitted = content.replace(/#/g, '').replace(/_/g, '').trim().split('\n');
         if (contentSplitted.length > 0 && contentSplitted[0].length > 0) {
@@ -208,7 +222,7 @@ export function Workfield(props: IWorkfieldProps) {
 
                 <div className={styles['workfield-actions-container']}>
                     <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку"/>
-                    <SmallButton icon={Icons.Copy} tooltip="Скопировать заметку" data-testid="btn-copy"/>
+                    <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy"/>
                     <SmallButton icon={Icons.Tag} tooltip="Задать тэг" data-testid="btn-tag"/>
                     <div>
                         <ShareButton note={note} data-testid="btn-share"/>
