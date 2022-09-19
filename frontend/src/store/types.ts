@@ -8,6 +8,7 @@ export interface User {
 
 export interface AuthState {
     isAuth?: boolean;
+    isLoaded?: boolean;
     user?: User;
     error: string;
     validation: ValidationResult;
@@ -16,6 +17,8 @@ export interface AuthState {
 export interface NotebooksState {
     notebooks: INotebook[];
     allNotes: INote[];
+    selectedTags: string[];
+    userTags: string[];
 }
 
 export interface INotebook {
@@ -32,6 +35,7 @@ export interface INote {
     isNew: boolean;
     isPublicUrlShared: boolean;
     publicUrl: string;
+    tags: string[];
 }
 
 export interface INoteDTO {
@@ -41,6 +45,7 @@ export interface INoteDTO {
     notebookId: number;
     isShared: boolean;
     publicUrl: string;
+    tags: string[];
 }
 
 export interface INotebookWithNotes {

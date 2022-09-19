@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test  input component matches snapshot: Input test snapshot 1`] = `
+<div
+  aria-describedby="popup-1"
+>
+  <div
+    class="small-button-container"
+    data-testid="tag"
+    title="Задать тэг"
+  >
+    <svg
+      class="image small-button-icon tooltip"
+      fill="BlackCommon"
+      height="25"
+      width="25"
+    >
+      <use
+        xlink:href="test-file-stub#tag"
+      />
+    </svg>
+  </div>
+</div>
+`;

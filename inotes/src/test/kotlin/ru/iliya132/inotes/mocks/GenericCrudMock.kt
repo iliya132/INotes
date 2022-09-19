@@ -4,8 +4,8 @@ import org.springframework.data.repository.CrudRepository
 import ru.iliya132.inotes.models.base.BaseEntity
 import java.util.*
 
-open class GenericCrudMock<TEntity : BaseEntity> : CrudRepository<TEntity, Long> {
-    val cache = HashMap<Long, TEntity>()
+open class GenericCrudMock<TEntity : BaseEntity<TKey>, TKey> : CrudRepository<TEntity, TKey> {
+    val cache = HashMap<TKey, TEntity>()
     override fun <S : TEntity> save(entity: S): S {
         cache[entity.id] = entity
         return entity
@@ -16,11 +16,11 @@ open class GenericCrudMock<TEntity : BaseEntity> : CrudRepository<TEntity, Long>
         return entities
     }
 
-    override fun findById(id: Long): Optional<TEntity> {
+    override fun findById(id: TKey): Optional<TEntity> {
         return Optional.ofNullable(cache[id])
     }
 
-    override fun existsById(id: Long): Boolean {
+    override fun existsById(id: TKey): Boolean {
         return cache.containsKey(id)
     }
 
@@ -40,7 +40,7 @@ open class GenericCrudMock<TEntity : BaseEntity> : CrudRepository<TEntity, Long>
         entities.forEach { cache.remove(it.id) }
     }
 
-    override fun deleteAllById(ids: MutableIterable<Long>) {
+    override fun deleteAllById(ids: MutableIterable<TKey>) {
         ids.forEach { cache.remove(it) }
     }
 
@@ -48,11 +48,11 @@ open class GenericCrudMock<TEntity : BaseEntity> : CrudRepository<TEntity, Long>
         cache.remove(entity.id)
     }
 
-    override fun deleteById(id: Long) {
+    override fun deleteById(id: TKey) {
         cache.remove(id)
     }
 
-    override fun findAllById(ids: MutableIterable<Long>): MutableIterable<TEntity> {
+    override fun findAllById(ids: MutableIterable<TKey>): MutableIterable<TEntity> {
         return ids.mapNotNull { cache[it] }.toMutableList()
     }
 }

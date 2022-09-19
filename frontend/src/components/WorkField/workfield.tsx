@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import { ShareButton } from './components/shareButton/ShareButton';
 import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
 import Popup from 'reactjs-popup';
+import { TagButton } from './components/TagButton/TagButton';
 
 export function Workfield(props: IWorkfieldProps) {
     const { note, onChange, onSave } = props;
@@ -213,7 +214,7 @@ export function Workfield(props: IWorkfieldProps) {
                                         | header1 | header2 | <br/> |-----|-----| <br/>| value1 | value2 |</div></li><hr/>
                                     <li>Ссылка <div className={styles["markdown-help-container-example"]}>[shown text](http://link_here.com)</div></li><hr/>
                                     <li>Горизонтальная линия <div className={styles["markdown-help-container-example"]}>---</div></li><hr/>
-                                    <li>Цитирование <div className={styles["markdown-help-container-example"]}> Text</div></li><hr/>
+                                    <li>Цитирование <div className={styles["markdown-help-container-example"]}> &gt;Text</div></li><hr/>
                                 </ul>
                             </div>
                         </Popup>
@@ -223,7 +224,9 @@ export function Workfield(props: IWorkfieldProps) {
                 <div className={styles['workfield-actions-container']}>
                     <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку"/>
                     <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy"/>
-                    <SmallButton icon={Icons.Tag} tooltip="Задать тэг" data-testid="btn-tag"/>
+                    <div>
+                        <TagButton note={note}/>
+                    </div>
                     <div>
                         <ShareButton note={note} data-testid="btn-share"/>
                     </div>

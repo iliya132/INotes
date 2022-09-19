@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { REG_EXP_VALIDATE_PASSWORD } from "../Misc/regexp";
-import { auth, authError, logout, validationError } from "../store/reducers/authReducer";
+import { auth, authError, isLoaded, logout, setIsLoaded, validationError } from "../store/reducers/authReducer";
 import { clearNotesState } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
 import { fetchUser } from "../store/thunks/authThunks";
-import { fetchNotesThunk } from "../store/thunks/notesThunks";
+import { fetchNotesThunk, getUserTags } from "../store/thunks/notesThunks";
 import { User } from "../store/types";
 import BaseController from "./base/BaseController";
 import { PasswordChange, PasswordChangeResponse, ValidationResult as ValidationResult } from "./types";
@@ -67,6 +67,10 @@ class AuthController extends BaseController {
         }
     }
 
+    public async setLoaded() {
+        this.dispatchStore(setIsLoaded(true));
+    }
+
     public forgotPassword(userName: string): Promise<Boolean> {
         return axios.get(`${this.authUrl}forgot-password/${userName}`)
             .then(response => {
@@ -102,6 +106,7 @@ class AuthController extends BaseController {
     public getUser() {
         this.dispatchStore(fetchUser())
         this.dispatchStore(fetchNotesThunk());
+        this.dispatchStore(getUserTags());
     }
 
     public logout() {

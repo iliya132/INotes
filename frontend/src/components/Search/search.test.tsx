@@ -30,6 +30,8 @@ let initialState: RootState = {
     notebooksReducer: {
         notebooks: [],
         allNotes: [],
+        userTags: [],
+        selectedTags: []
     },
 };
 

@@ -1,0 +1,23 @@
+@import '../../../../Misc/colors.scss';
+
+.popup-container{
+    min-width: 300px;
+}
+
+.selected-item{
+    display: inline-block;
+    background-color: $BlackCommon;
+    border: 1px solid black;
+    margin: 5px; 
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    color: white;
+    user-select: none;
+
+    &:hover {
+        background-color: $BlackCommonHover;
+        cursor: pointer;
+        
+    }
+}

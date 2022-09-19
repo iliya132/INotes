@@ -6,6 +6,7 @@ import { AuthState, User } from "../types";
 const initialState: AuthState = {
     error: '',
     isAuth: undefined,
+    isLoaded: undefined,
     user: undefined,
     validation: {
         isSucceded: false,
@@ -19,6 +20,9 @@ const slice = (initialState: AuthState) => createSlice(
         initialState: initialState,
         reducers:
         {
+            setIsLoaded: (state: AuthState, action: PayloadAction<boolean>) => {
+                state.isLoaded = action.payload;
+            },
             setIsAuth: (state: AuthState, action: PayloadAction<boolean>) => {
                 state.isAuth = action.payload;
             },
@@ -39,7 +43,7 @@ const slice = (initialState: AuthState) => createSlice(
             },
             removeAuthErrors: (state: AuthState) => {
                 state.error = "",
-                state.validation = { isSucceded: true, errors: undefined }
+                    state.validation = { isSucceded: true, errors: undefined }
             },
             logout: (state: AuthState) => {
                 state.isAuth = false;
@@ -59,9 +63,10 @@ const slice = (initialState: AuthState) => createSlice(
 const defaultSlice = slice(initialState)
 
 export const authSlice = slice;
-export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout, resetStateForTests } = defaultSlice.actions;
+export const { setIsAuth, setUser, auth, authError, validationError, removeAuthErrors, logout, resetStateForTests, setIsLoaded } = defaultSlice.actions;
 export default defaultSlice.reducer;
 export const currentUser = (state: RootState) => state.authReducer.user;
 export const isAuth = (state: RootState) => state.authReducer.isAuth;
+export const isLoaded = (state: RootState) => state.authReducer.isLoaded;
 export const authErrors = (state: RootState) => state.authReducer.error;
 export const validationErrors = (state: RootState) => state.authReducer.validation;

@@ -4,7 +4,7 @@ import ru.iliya132.inotes.models.Notebook
 import ru.iliya132.inotes.repositories.NotebookRepository
 import java.util.*
 
-class NotebookRepositoryMock : GenericCrudMock<Notebook>(), NotebookRepository {
+class NotebookRepositoryMock : GenericCrudMock<Notebook, Long>(), NotebookRepository {
     override fun existsById(id: Long): Boolean {
         return super.existsById(id)
     }

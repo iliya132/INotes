@@ -4,11 +4,42 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Workfield } from './workfield';
 import { INote, INotebook, INoteDTO } from '../../store/types';
 import notesController from '../../controllers/NotesController';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { authSlice } from '../../store/reducers/authReducer';
+import { notesSlice } from '../../store/reducers/notebooksReducer';
+import { RootState } from '../../store/store';
 
 jest.mock('../../controllers/NotesController', () => ({
     removeNote: jest.fn(),
     updateNote: jest.fn(),
 }));
+
+
+let initialState: RootState = {
+    authReducer: {
+        error: '',
+        isAuth: true,
+        user: { roles: ['user'], userName: 'test-user', avatarUrl: '/default.png' },
+        validation: {
+            isSucceded: true,
+            errors: {},
+        },
+    },
+    notebooksReducer: {
+        notebooks: [],
+        allNotes: [],
+        userTags: [],
+        selectedTags: []
+    },
+};
+
+let store = configureStore({
+    reducer: {
+        authReducer: authSlice(initialState.authReducer).reducer,
+        notebooksReducer: notesSlice(initialState.notebooksReducer).reducer,
+    },
+});
 
 const notebook: INotebook = {
     color: 'red',
@@ -27,32 +58,32 @@ let note: INote = {
 
 describe('workfield tests', () => {
     test('can render', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const workfield = document.body.querySelector('.work-field');
         expect(workfield).not.toBeNull();
     });
 
     test('match snapshot', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const workfield = document.body.querySelector('.work-field');
         expect(workfield).not.toBeNull();
         expect(workfield?.outerHTML).toMatchSnapshot('workfield snapshot');
     });
 
     test('can be rendered when note is null', () => {
-        render(<Workfield note={null} />);
+        render(<Provider store={store}><Workfield note={null} /></Provider>);
         const workfield = document.body.querySelector('.work-field');
         expect(workfield).not.toBeNull();
     });
 
     test('can be rendered when note is undefined', () => {
-        render(<Workfield note={undefined} />);
+        render(<Provider store={store}><Workfield note={undefined} /></Provider>);
         const workfield = document.body.querySelector('.work-field');
         expect(workfield).not.toBeNull();
     });
 
     test('helpers bold', async () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('bold-icon');
         expect(btn).not.toBeNull();
 
@@ -65,7 +96,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers italic', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('italic-icon');
         expect(btn).not.toBeNull();
 
@@ -78,7 +109,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers underscoped', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('underscoped-icon');
         expect(btn).not.toBeNull();
 
@@ -91,7 +122,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers h1', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('h1-icon');
         expect(btn).not.toBeNull();
 
@@ -104,7 +135,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers h2', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('h2-icon');
         expect(btn).not.toBeNull();
 
@@ -117,7 +148,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers h3', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('h3-icon');
         expect(btn).not.toBeNull();
 
@@ -130,7 +161,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers dotted list', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('dotted-list-icon');
         expect(btn).not.toBeNull();
 
@@ -143,7 +174,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers number list', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('list-icon');
         expect(btn).not.toBeNull();
 
@@ -156,7 +187,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers table', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('table-icon');
         expect(btn).not.toBeNull();
 
@@ -169,7 +200,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers code', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('code-icon');
         expect(btn).not.toBeNull();
 
@@ -182,7 +213,7 @@ describe('workfield tests', () => {
     });
 
     test('helpers markdown', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('markup-icon');
         expect(btn).not.toBeNull();
 
@@ -201,7 +232,7 @@ describe('workfield tests', () => {
             isRemoved = true;
         });
         notesController.removeNote = remove;
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('remove');
         expect(btn).not.toBeNull();
 
@@ -221,7 +252,7 @@ describe('workfield tests', () => {
     });
 
     test('can go in reader mode', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('read-icon');
         expect(btn).not.toBeNull();
 
@@ -243,7 +274,7 @@ describe('workfield tests', () => {
             isUpdated = true;
         });
         notesController.updateNote = save;
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('save-icon');
         expect(btn).not.toBeNull();
 
@@ -254,7 +285,7 @@ describe('workfield tests', () => {
 
     test('can fire onChange', () => {
         let isChanged = false;
-        render(<Workfield note={note} onChange={() => (isChanged = true)} />);
+        render(<Provider store={store}><Workfield note={note} onChange={() => (isChanged = true)} /></Provider>);
 
         const input = screen.getByTestId('input-field') as HTMLTextAreaElement;
         expect(input).not.toBeNull();
@@ -272,7 +303,7 @@ describe('workfield tests', () => {
         });
         notesController.updateNote = save;
         let isOnSaved = false;
-        render(<Workfield note={note} onSave={() => (isOnSaved = true)} />);
+        render(<Provider store={store}><Workfield note={note} onSave={() => (isOnSaved = true)} /></Provider>);
         const btn = screen.getByTestId('save-icon');
         expect(btn).not.toBeNull();
 
@@ -291,7 +322,7 @@ describe('workfield tests', () => {
             title = _note.name;
         });
         notesController.updateNote = save;
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const btn = screen.getByTestId('save-icon');
         expect(btn).not.toBeNull();
 
@@ -305,7 +336,7 @@ describe('workfield tests', () => {
     });
 
     test('it renders on input', () => {
-        render(<Workfield note={note} />);
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
         const input = screen.getByTestId('input-field') as HTMLTextAreaElement;
         const renderedView = screen.getByTestId('pretty-view');
         expect(input.value).toEqual('test-content');

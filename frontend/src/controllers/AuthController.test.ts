@@ -26,7 +26,8 @@ const notebookWithNotes: INotebookWithNotes[] = [
             isPublicUrlShared: false,
             name: 'abc',
             parent: { color: 'red', id: 0, name: 'test-notebook' },
-            publicUrl: 'fasdfadsf'
+            publicUrl: 'fasdfadsf',
+            tags: ['test']
         }]
     }
 ]

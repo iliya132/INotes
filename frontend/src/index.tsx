@@ -12,8 +12,10 @@ import authController from './controllers/AuthController';
 import { ToastContainer } from 'react-toastify';
 
 authController.validateAuthenticated().then(response => {
-    if(response){
+    if (response) {
         authController.getUser()
+    } else {
+        authController.setLoaded();
     }
 })
 
@@ -25,7 +27,7 @@ root.render(
             <Provider store={store}>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
                     <App />
-                    <ToastContainer position='bottom-right' autoClose={3000}/>
+                    <ToastContainer position='bottom-right' autoClose={3000} />
                 </ErrorBoundary>
             </Provider>
         </BrowserRouter>

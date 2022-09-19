@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.mail.javamail.JavaMailSender
 import ru.iliya132.inotes.repositories.NoteRepository
 import ru.iliya132.inotes.repositories.NotebookRepository
+import ru.iliya132.inotes.repositories.TagRepository
 import ru.iliya132.inotes.services.EmailService
 import ru.iliya132.inotes.services.NotebookService
 
@@ -14,8 +15,9 @@ class TestServicesConfig {
 
     @Bean
     fun notebookService(notebookRepository: NotebookRepository,
-                        noteRepository: NoteRepository): NotebookService {
-        return NotebookService(notebookRepository, noteRepository)
+                        noteRepository: NoteRepository,
+                        tagsRepository: TagRepository): NotebookService {
+        return NotebookService(notebookRepository, noteRepository, tagsRepository)
     }
 
     @Bean

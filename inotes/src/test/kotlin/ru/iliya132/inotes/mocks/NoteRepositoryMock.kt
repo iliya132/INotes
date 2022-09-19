@@ -4,7 +4,7 @@ import ru.iliya132.inotes.models.Note
 import ru.iliya132.inotes.repositories.NoteRepository
 import java.util.*
 
-class NoteRepositoryMock : GenericCrudMock<Note>(), NoteRepository {
+class NoteRepositoryMock : GenericCrudMock<Note, Long>(), NoteRepository {
     override fun findById(id: Long): Optional<Note> {
         return super.findById(id)
     }
