@@ -1,6 +1,6 @@
 import axios from "axios";
 import properties from "../../properties/properties";
-import { auth, authError } from "../reducers/authReducer";
+import { auth, authError, setIsLoaded } from "../reducers/authReducer";
 import { AppDispatch } from "../store";
 import { User } from "../types";
 
@@ -12,9 +12,11 @@ export function fetchUser() {
         axios.get(authUrl + "user", { withCredentials: true })
             .then(response => {
                 dispatch(auth(response.data as User));
+                dispatch(setIsLoaded(true));
             })
             .catch(reason => {
                 dispatch(authError(reason.message))
+                dispatch(setIsLoaded(true));
             })
     }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
+import Loading from './components/Loading';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home/home';
 import Login from './pages/Login';
@@ -11,14 +12,18 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import RestorePassword from './pages/RestorePassword';
 import Shared from './pages/Shared';
-import { currentUser, isAuth } from './store/reducers/authReducer';
+import { currentUser, isAuth, isLoaded } from './store/reducers/authReducer';
 
 const App = () => {
     const isAuthenticated = useSelector(isAuth);
+    const isLoadingFinished = useSelector(isLoaded);
+    console.log(isLoadingFinished);
+    const loaded = isLoadingFinished === undefined ? false : isLoadingFinished;
     const activeUser = useSelector(currentUser);
-    const isSignedIn = isAuthenticated === undefined ? false : isAuthenticated
-    return (
-        <Routes>
+    const isSignedIn = isAuthenticated === undefined ? false : isAuthenticated;
+
+    return !loaded ? (<Loading/>) :
+        (<Routes>
             <Route path="/">
                 <Route
                     index={true}
@@ -76,7 +81,8 @@ const App = () => {
             <Route path="/notFound" element={<NotFound />} />
             <Route path="*" element={<Navigate to={'/notFound'} replace={true} />} />
         </Routes>
-    );
+
+        );
 };
 
 export default App;

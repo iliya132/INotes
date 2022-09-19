@@ -1,5 +1,6 @@
 package ru.iliya132.inotes.controller
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
@@ -35,6 +36,12 @@ class NotebookController(private val notebookService: NotebookService) {
     fun getNotebooks(authentication: Authentication): List<NotebookWithNotesDTO> {
         val currentUser = getUser(authentication)
         return notebookService.getNotebooksForUser(currentUser.id)
+    }
+
+    @GetMapping("/tags")
+    fun getUserTags(authentication: Authentication): List<String> {
+        val currentUser = getUser(authentication)
+        return notebookService.getUserTags(currentUser.id)
     }
 
     @DeleteMapping("/remove/{id}")
@@ -82,7 +89,7 @@ class NotebookController(private val notebookService: NotebookService) {
     fun getNotes(
         @PathVariable notebookId: Long,
         authentication: Authentication
-    ): ResponseEntity<kotlin.collections.Collection<NoteDTO>> {
+    ): ResponseEntity<Collection<NoteDTO>> {
         return isUserOwnedOrBadRequestWithEntity(notebookId, authentication) {
             return@isUserOwnedOrBadRequestWithEntity notebookService.getNotes(notebookId)
         }
@@ -107,6 +114,17 @@ class NotebookController(private val notebookService: NotebookService) {
             return ResponseEntity.notFound().build()
         }
         return ResponseEntity.ok(sharedNote.content)
+    }
+
+    @PostMapping("/update-tags")
+    fun updateTags(@RequestBody note: NoteDTO): ResponseEntity<NoteDTO> {
+        return try {
+            notebookService.updateTags(note.id, note.tags)
+            ResponseEntity.ok().build()
+        } catch (e: Exception) {
+            log.error(e.message)
+            ResponseEntity.badRequest().build()
+        }
     }
 
     private fun <T> isUserOwnedOrBadRequest(
@@ -152,5 +170,9 @@ class NotebookController(private val notebookService: NotebookService) {
 
     private fun getUser(authentication: Authentication): User {
         return userService.getUserFull(authentication)
+    }
+
+    companion object{
+        val log = LoggerFactory.getLogger(NotebookController::class.java)
     }
 }

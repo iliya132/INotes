@@ -8,8 +8,9 @@ data class NoteDTO(
     val content: String,
     val notebookId: Long,
     val isPublicUrlShared: Boolean,
-    val publicUrl: String?
-) : IValidatedEntity, BaseEntity {
+    val publicUrl: String?,
+    val tags: ArrayList<String>
+) : IValidatedEntity, BaseEntity<Long> {
     override fun validate(): Boolean {
         return name.isNotEmpty()
     }

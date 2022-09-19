@@ -7,33 +7,46 @@ import ru.iliya132.inotes.dto.NotebookDTO
 import ru.iliya132.inotes.dto.NotebookWithNotesDTO
 import ru.iliya132.inotes.models.Note
 import ru.iliya132.inotes.models.Notebook
+import ru.iliya132.inotes.models.Tag
 import ru.iliya132.inotes.repositories.NoteRepository
 import ru.iliya132.inotes.repositories.NotebookRepository
+import ru.iliya132.inotes.repositories.TagRepository
 import ru.iliya132.inotes.utils.fromDTO
 import ru.iliya132.inotes.utils.toDto
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Service
 class NotebookService(
     private val notebookRepository: NotebookRepository,
-    private val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository,
+    private val tagsRepository: TagRepository
 ) {
     fun getNotebooksForUser(id: Long): List<NotebookWithNotesDTO> {
-
         val notebooks = notebookRepository.findAllByOwner(id)
-        val notes = noteRepository.findAllByNotebookIds(notebooks.map { it.id }).groupBy { it.notebook }
-        notes.values.forEach { ensureNotesHasPublicIdWithNote(it) }
+        val notes = noteRepository.findAllByNotebookIds(notebooks.map { it.id })
+            .map {
+                val noteDto = it.toDto()
+                val tags = tagsRepository.getByNoteId(it.id)
+                noteDto.tags.addAll(tags);
+                noteDto
+            }.groupBy { it.notebookId }
         return notebooks.map {
             NotebookWithNotesDTO(
                 it.id,
                 it.name,
                 it.color,
-                notes[it.id]?.map { note -> note.toDto() } ?: listOf())
+                notes[it.id] ?: listOf())
         }
     }
 
     fun getNotes(notebookId: Long): List<NoteDTO> {
         val notes = noteRepository.findAllByNotebookIds(listOf(notebookId)).map { it.toDto() }
+            .map {
+                val tags = tagsRepository.getByNoteId(it.id)
+                it.tags.addAll(tags)
+                return@map it
+            }
         ensureNotesHasPublicId(notes)
         return notes
     }
@@ -103,7 +116,15 @@ class NotebookService(
         } catch (e: Exception) {
             return null
         }
+    }
 
+    fun updateTags(noteId: Long, tags: ArrayList<String>) {
+        tagsRepository.deleteAllByNoteId(noteId)
+        tagsRepository.saveAll(tags.map { Tag(noteId, it) })
+    }
+
+    fun getUserTags(id: Long): List<String>{
+        return tagsRepository.getByUserId(id);
     }
 }
 

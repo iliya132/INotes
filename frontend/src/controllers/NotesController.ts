@@ -3,7 +3,7 @@ import { Dispatch } from "react";
 import properties from "../properties/properties";
 import { addNotebook } from "../store/reducers/notebooksReducer";
 import { store } from "../store/store";
-import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, removeNoteThunk, setPublicUrlShared, updateNoteThunk } from "../store/thunks/notesThunks";
+import { createNoteThunk, fetchNotesThunk, removeNotebookThunk, removeNoteThunk, setPublicUrlShared, updateNoteThunk, updateTags } from "../store/thunks/notesThunks";
 import { INote, INotebook, INoteDTO } from "../store/types";
 import BaseController from "./base/BaseController";
 import { IFoundNote, IFoundNotebook, ISearchResult, NotebookDTO } from "./types";
@@ -70,6 +70,10 @@ class NotesController extends BaseController {
         return this.dispatchStore(removeNoteThunk(noteId));
     }
 
+    async updateTags(note: INote){
+        return this.dispatchStore(updateTags(note));
+    }
+
     async setShared(noteId: number, isShared: boolean) {
         return this.dispatchStore(setPublicUrlShared(noteId, isShared));
     }
@@ -94,28 +98,36 @@ class NotesController extends BaseController {
 }
 
 function filterNotesContains(note: INote, text: string): boolean {
-    return note.content.toLowerCase().includes(text.toLowerCase());
+    return note.content.toLowerCase().includes(text.toLowerCase()) || note.tags.filter(it => it.includes(text)).length > 0;
 }
 
 function getFoundNoteContext(note: INote, text: string): IFoundNote {
     return {
         note,
-        context: getContext(note.content, text)
+        context: getContext(note.content, text, note.tags)
     };
 }
 
 function getFoundNotebookContext(notebook: INotebook, text: string): IFoundNotebook {
     return {
         notebook,
-        context: getContext(notebook.name, text)
+        context: getContext(notebook.name, text, [])
     };
 }
 
 // Личная записная книжка
 // Личная
 
-function getContext(content: string, search: string): string {
+function getContext(content: string, search: string, tags: string[]): string {
     const foundIndex = content.toLowerCase().indexOf(search);
+    if(foundIndex === -1){
+        return "Метки: " + tags.map(it => {
+            if(it.includes(search)){
+                return "%%" + it + "%%"
+            }
+            return it;
+        });
+    }
     const endIndex = foundIndex + search.length;
     let indexOfContext = foundIndex;
     let indexOfEndContext = endIndex + searchContextOffset;

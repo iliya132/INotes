@@ -7,7 +7,7 @@ data class NotebookDTO(
     val name: String,
     val color: String,
     val owner: Long
-) : IValidatedEntity, BaseEntity {
+) : IValidatedEntity, BaseEntity<Long> {
     override fun validate(): Boolean {
         return name.isNotEmpty()
     }

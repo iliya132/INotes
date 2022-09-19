@@ -10,7 +10,7 @@ fun NoteDTO.fromDTO(): Note {
 }
 
 fun Note.toDto(): NoteDTO {
-    return NoteDTO(this.id, this.name, this.content, this.notebook, this.isPublicUrlShared, this.publicId)
+    return NoteDTO(this.id, this.name, this.content, this.notebook, this.isPublicUrlShared, this.publicId, arrayListOf())
 }
 
 fun NotebookDTO.fromDTO(): Notebook {

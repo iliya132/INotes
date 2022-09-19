@@ -29,7 +29,8 @@ const slice = (initialState: NotebooksState) => createSlice({
                 parent: state.notebooks.filter(it => it.id === note.notebookId)[0],
                 isNew: false,
                 isPublicUrlShared: note.isShared,
-                publicUrl: note.publicUrl
+                publicUrl: note.publicUrl,
+                tags: note.tags
             }
             const allNotes = state.allNotes;
             const existedId = state.allNotes.findIndex(it => it.id === updatedNote.id);
@@ -60,6 +61,18 @@ const slice = (initialState: NotebooksState) => createSlice({
         clearNotesState: (state: NotebooksState) => {
             state.allNotes = [];
             state.notebooks = [];
+        },
+        selectTags: (state: NotebooksState, action: PayloadAction<string[]>) => {
+            state.selectedTags = action.payload;
+        },
+        updateTagsAction: (state: NotebooksState, action: PayloadAction<INote>) => {
+            const note = action.payload;
+            const allNotes = state.allNotes;
+            const existedId = state.allNotes.findIndex(it => it.id === note.id);
+            allNotes[existedId] = note
+        },
+        setUserTags: (state: NotebooksState, action: PayloadAction<string[]>) => {
+            state.userTags = action.payload
         }
 
     }
@@ -67,11 +80,24 @@ const slice = (initialState: NotebooksState) => createSlice({
 
 const defaultSlice = slice(initialState)
 export const notesSlice = slice
-export const { addNotebook, addNote, updateNotebook, updateNote, removeNotebook, removeNote, setState, setShared, clearNotesState } = defaultSlice.actions;
+export const { addNotebook,
+    addNote,
+    updateNotebook,
+    updateNote,
+    removeNotebook,
+    removeNote,
+    setState,
+    setShared,
+    clearNotesState,
+    selectTags,
+    updateTagsAction,
+    setUserTags } = defaultSlice.actions;
 export default defaultSlice.reducer;
 
 export const notebooks = (state: RootState) => state.notebooksReducer.notebooks;
 export const allNotes = (state: RootState) => state.notebooksReducer.allNotes;
+export const selectedTags = (state: RootState) => state.notebooksReducer.selectedTags;
+export const userTags = (state: RootState) => state.notebooksReducer.userTags;
 export const notebooksWithNotes = (state: RootState) => {
     const { notebooks, allNotes } = state.notebooksReducer;
     return { notebooks, allNotes };

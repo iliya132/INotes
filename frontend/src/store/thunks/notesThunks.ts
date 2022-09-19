@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import properties from "../../properties/properties";
-import { addNote, removeNote, removeNotebook, setShared, setState, updateNote } from "../reducers/notebooksReducer";
+import { addNote, removeNote, removeNotebook, setShared, setState, setUserTags, updateNote, updateTagsAction } from "../reducers/notebooksReducer";
 import { AppDispatch, store } from "../store";
 import { INote, INotebook, INotebookWithNotes, INoteDTO } from "../types";
 
@@ -58,7 +58,8 @@ export function createNoteThunk(note: INoteDTO) {
                         name: newNote.name,
                         isPublicUrlShared: newNote.isShared,
                         publicUrl: newNote.publicUrl,
-                        parent: store.getState().notebooksReducer.notebooks.filter(it => it.id === newNote.notebookId)[0]
+                        parent: store.getState().notebooksReducer.notebooks.filter(it => it.id === newNote.notebookId)[0],
+                        tags: newNote.tags
                     }
                     dispatch(addNote(noteToAdd))
                 } else {
@@ -132,6 +133,41 @@ export function setPublicUrlShared(noteId: number, isShared: boolean) {
 
 export function loadSharedNote(sharedUrl: string) {
     return async function loadSharedNote() {
-        axios.get(`${notebookurl}/shared-note/${sharedUrl}`)
+        axios.get(`${notebookurl}shared-note/${sharedUrl}`)
+    }
+}
+
+export function updateTags(note: INote) {
+    return async function updateTags(dispatch: AppDispatch) {
+        axios.post(`${notebookurl}update-tags`, note, { withCredentials: true })
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(updateTagsAction(note))
+                } else {
+                    //TODO обработка ошибок
+                    console.error(response)
+                }
+            })
+            .catch(reason => {
+                //TODO обработка ошибок
+                console.error(reason);
+            })
+
+    }
+}
+
+export function getUserTags() {
+    return async function getUserTags(dispatch: AppDispatch) {
+        axios.get(`${notebookurl}tags`, { withCredentials: true })
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(setUserTags(response.data))
+                } else {
+                    console.error(response);
+                }
+            })
+            .catch(reason => {
+                console.error(reason);
+            })
     }
 }
