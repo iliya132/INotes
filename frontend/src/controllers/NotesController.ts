@@ -41,7 +41,8 @@ class NotesController extends BaseController {
             notebookId: selectedNotebook.id,
             content: `## ${name}\n\n---\n\n`,
             isShared: false,
-            publicUrl: ""
+            publicUrl: "",
+            tags: []
         }
         return this.dispatchStore(createNoteThunk(newNote))
     }

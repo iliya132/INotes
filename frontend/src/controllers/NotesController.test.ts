@@ -40,7 +40,8 @@ describe('notes controller test', () => {
             isShared: note.isPublicUrlShared,
             name: note.name,
             notebookId: note.parent.id,
-            publicUrl: note.publicUrl
+            publicUrl: note.publicUrl,
+            tags: []
         };
         mockAxiosPostResult({status: 200, data: apiNote});
         await notesController.createNote('test-content', 1);
@@ -61,7 +62,8 @@ describe('notes controller test', () => {
             isShared: note.isPublicUrlShared,
             name: note.name,
             notebookId: note.parent.id,
-            publicUrl: note.publicUrl
+            publicUrl: note.publicUrl,
+            tags: []
         };
         mockAxiosPostResult({status: 200, data: apiNote});
         await notesController.copyNote(apiNote);
@@ -116,7 +118,8 @@ describe('notes controller test', () => {
             isShared: note.isPublicUrlShared,
             name: 'changed-title',
             notebookId: note.parent.id,
-            publicUrl: note.publicUrl
+            publicUrl: note.publicUrl,
+            tags: []
         };
         const expectedNote: INote = {
             content: noteDTO.content,
@@ -125,7 +128,8 @@ describe('notes controller test', () => {
             name: noteDTO.name,
             isNew: false,
             parent: notebook,
-            publicUrl: noteDTO.publicUrl
+            publicUrl: noteDTO.publicUrl,
+            tags: []
         };
         await notesController.updateNote(noteDTO);
         const state = getNotesState();
@@ -187,7 +191,7 @@ function getTestNotebook() {
     };
 }
 
-function getTestNote(notebook: INotebook) {
+function getTestNote(notebook: INotebook): INote {
     return {
         content: 'test-content',
         id: 1,
@@ -195,7 +199,8 @@ function getTestNote(notebook: INotebook) {
         isPublicUrlShared: false,
         name: 'test-cotent',
         parent: notebook,
-        publicUrl: 'abc'
+        publicUrl: 'abc',
+        tags: []
     };
 }
 

@@ -91,7 +91,8 @@ export function Workfield(props: IWorkfieldProps) {
                 name: getTitle(input!),
                 notebookId: note?.parent.id,
                 isShared: note.isPublicUrlShared,
-                publicUrl: note.publicUrl
+                publicUrl: note.publicUrl,
+                tags: note.tags
             };
             notesController.updateNote(noteToUpdate);
         }
@@ -108,7 +109,8 @@ export function Workfield(props: IWorkfieldProps) {
                 name: getTitle(input!),
                 notebookId: note?.parent.id,
                 isShared: note.isPublicUrlShared,
-                publicUrl: note.publicUrl
+                publicUrl: note.publicUrl,
+                tags: note.tags
             };
             notesController.copyNote(noteToUpdate);
         }
