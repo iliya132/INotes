@@ -13,6 +13,7 @@ import lockSvg from '../../../static/assets/lock.svg';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { Input } from '../../components/Input/Input';
 import PasswordInput from '../../components/PasswordInput';
+import InputPage from '../Shared/InputPage';
 
 export default function Register() {
     const [validityState, setValidity] = useState({ isSucceded: true, errors: {} } as ValidationResult);
@@ -53,44 +54,28 @@ export default function Register() {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles['column']}>
-                <NavLink to="/" className={styles['logo-link']}>
-                    <h1 className={styles.logo}>I-Note</h1>
-                </NavLink>
-                <SwitchTransition mode="out-in">
-                    <CSSTransition
-                        key={'login'}
-                        classNames="fade"
-                        timeout={300}
-                        appear
-                        mountOnEnter={true}
-                        unmountOnExit={true}
-                        nodeRef={containerRef}>
-                        <form
-                            action="#"
-                            className={styles['centered-container']}
-                            onSubmit={handleSubmit}
-                            ref={containerRef}>
-                            <div className={styles['login-form']}>
-                                <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
-                                <Input id='login' icon={Icons.Email} type="email" autocomplete="email" placeholder="Почта..." error={validityState.errors.login}/>
-                                <br />
-                                <PasswordInput id="password" autocomplete='new-password' placeholder='Пароль...' error={validityState.errors.password}/>
-                                <br />
-                                <PasswordInput id="confirmPassword" autocomplete='new-password' placeholder='Повторите пароль...' error={validityState.errors.confirmPassword}/>
-                            </div>
-                            <div className={styles['submit-area']}>
-                                <Button title="Зарегистрироваться" className={styles['login-btn']} isLoading={isLoading} />
-                                <NavLink to={'/login'} className={styles['nav-link']}>
-                                    Уже есть аккаунт?
-                                </NavLink>
-                            </div>
-                        </form>
-                    </CSSTransition>
-                </SwitchTransition>
-            </div>
-        </div>
+        <InputPage>
+            <form
+                action="#"
+                className={styles['centered-container']}
+                onSubmit={handleSubmit}
+                ref={containerRef}>
+                <div className={styles['login-form']}>
+                    <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
+                    <Input id='login' icon={Icons.Email} type="email" autocomplete="email" placeholder="Почта..." error={validityState.errors.login} />
+                    <br />
+                    <PasswordInput id="password" autocomplete='new-password' placeholder='Пароль...' error={validityState.errors.password} />
+                    <br />
+                    <PasswordInput id="confirmPassword" autocomplete='new-password' placeholder='Повторите пароль...' error={validityState.errors.confirmPassword} />
+                </div>
+                <div className={styles['submit-area']}>
+                    <Button title="Зарегистрироваться" className={styles['login-btn']} isLoading={isLoading} />
+                    <NavLink to={'/login'} className={styles['nav-link']}>
+                        Уже есть аккаунт?
+                    </NavLink>
+                </div>
+            </form>
+        </InputPage>
     );
 }
 

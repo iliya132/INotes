@@ -8,6 +8,7 @@ import authController from '../../controllers/AuthController';
 import { REG_EXP_VALIDATE_PASSWORD } from '../../Misc/regexp';
 import { toast } from 'react-toastify';
 import PasswordInput from '../../components/PasswordInput';
+import InputPage from '../Shared/InputPage';
 
 export function RestorePassword() {
     const { userId, verificationCode } = useParams();
@@ -41,35 +42,28 @@ export function RestorePassword() {
         });
     };
     return (
-        <div className={styles.container}>
-            <div className={styles['column']}>
-                <a href="/" className={styles['logo-link']}>
-                    <h1 className={styles.logo}>I-Note</h1>
-                </a>
-
-                <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
-                    <div className={styles['login-form']}>
-                        <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
-                        <h4 className={styles["header"]}>Восстановление пароля</h4>
-                        <PasswordInput
-                            autocomplete="new-password"
-                            id="password"
-                            placeholder="Введите новый пароль"
-                            icon={Icons.Key}
-                        />
-                        <label className={styles['error-label']} htmlFor="login">
-                            {error}
-                        </label>
-                    </div>
-                    <div className={styles['submit-area']}>
-                        <Button title="Сохранить" className={styles['login-btn']} />
-                        <NavLink to={'/login'} className={styles['nav-link']}>
-                            Я вспомнил свой пароль!
-                        </NavLink>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <InputPage>
+            <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
+                <div className={styles['login-form']}>
+                    <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
+                    <h4 className={styles["header"]}>Восстановление пароля</h4>
+                    <PasswordInput
+                        autocomplete="new-password"
+                        id="password"
+                        placeholder="Введите новый пароль"
+                    />
+                    <label className={styles['error-label']} htmlFor="login">
+                        {error}
+                    </label>
+                </div>
+                <div className={styles['submit-area']}>
+                    <Button title="Сохранить" className={styles['login-btn']} />
+                    <NavLink to={'/login'} className={styles['nav-link']}>
+                        Я вспомнил свой пароль!
+                    </NavLink>
+                </div>
+            </form>
+        </InputPage>
     );
 }
 

@@ -178,7 +178,7 @@
         </svg>
     </symbol>
     <symbol id="ya-logo">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" fill="white">
+        <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
             <path d="M153.1 315.8L65.7 512H2l96-209.8c-45.1-22.9-75.2-64.4-75.2-141.1C22.7 53.7 90.8 0 171.7 0H254v512h-55.1V315.8h-45.8zm45.8-269.3h-29.4c-44.4 0-87.4 29.4-87.4 114.6 0 82.3 39.4 108.8 87.4 108.8h29.4V46.5z" />
         </svg>
     </symbol>
@@ -213,7 +213,7 @@
         </svg>
     </symbol>
     <symbol id="yandex-btn">
-        <svg width="200" height="44" viewBox="0 0 260 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="100%" viewBox="0 0 260 56" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="260" height="56" fill="black"/>
             <rect x="44" y="16" width="24" height="24" rx="12" fill="#FC3F1D"/>
             <path d="M57.6912 35.212H60.1982V20.812H56.5516C52.8843 20.812 50.9574 22.6975 50.9574 25.4739C50.9574 27.6909 52.0141 28.9962 53.8995 30.3429L50.6259 35.212H53.3401L56.9867 29.7628L55.7228 28.9133C54.1896 27.8773 53.4437 27.0693 53.4437 25.3288C53.4437 23.7956 54.5211 22.7596 56.5723 22.7596H57.6912V35.212Z" fill="white"/>

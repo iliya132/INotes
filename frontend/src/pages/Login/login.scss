@@ -1,26 +1,33 @@
 @import '../../Misc/colors.scss';
 
 .centered-container {
-    display: flex;
-    position: absolute;
-    top: 30%;
-    left: 40%;
-    flex-direction: column;
     width: 410px;
     height: 490px;
+    padding-bottom: 30px;
 }
 
 .container {
     box-sizing: border-box;
-    height: 100%;
+    min-height: 100vh;
     padding: 30px;
     background: linear-gradient(279.04deg, #fff 0%, #fff 65%, #484848 65.1%, #484848 100%);
+}
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 10%;
 }
 
 .column {
     max-width: 70%;
     margin-right: auto;
+    height: 100%;
     margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .logo {
@@ -56,8 +63,10 @@
     padding-right: 35px;
     padding-bottom: 38px;
     padding-left: 35px;
+    padding-top: 5px;
     background-color: $Background;
     box-shadow: 0 0 35px 1px rgb(0 0 0 / 15%);
+    border-radius: 5px;
 }
 
 .login-btn {
@@ -159,7 +168,7 @@
 }
 
 .ya-btn {
-    width: 200px;
+    width: 50%;
     height: 44px;
     border: none;
     outline: none;
@@ -167,14 +176,15 @@
     border-radius: 2px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2);
     transition: all 400ms ease 0s;
+    background-color: black;
 
-    &:hover{
+    &:hover {
         box-shadow: 0 5px 10px rgba(117, 117, 117, .7);
     }
 }
 
 .g-btn {
-    width: 200px;
+    width: 50%;
     height: 44px;
     outline: none;
 }
@@ -189,20 +199,21 @@
 }
 
 .google-btn {
-    width: 200px;
+    flex-direction: row;
+    width: 100%;
     height: 44px;
     background-color: #fcfcfc;
     border-radius: 2px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2);
     cursor: pointer;
     cursor: hand;
+    justify-content: center;
     align-self: center;
     user-select: none;
     display: flex;
     transition: all 400ms ease 0s;
 
     & .google-icon-wrapper {
-        position: absolute;
         margin-top: 1px;
         margin-left: 1px;
         width: 40px;
@@ -224,9 +235,11 @@
         float: right;
         font-family: Montserrat;
         font-weight: regular;
-        margin: auto 30px auto auto;
+        text-align: left;
+        margin-top: auto;
+        margin-bottom: auto;
         color: #757575;
-        font-size: 12px;
+        font-size: 0.7rem;
         letter-spacing: .2px;
         user-select: none
     }
@@ -241,5 +254,82 @@
         background: #F8F8F8;
         color: #fff;
         user-select: none
+    }
+}
+
+// desktop
+@media screen and (min-width: 1024px) {}
+
+// tablet
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        box-sizing: border-box;
+        min-height: 100vh;
+        padding: 30px;
+        background: linear-gradient(150deg, #fff 0%, #fff 60%, #484848 60.1%, #484848 100%);
+    }
+
+    .logo {
+        margin: 0;
+        color: $TextColor;
+        font-size: 4em;
+        text-decoration: none;
+        user-select: none;
+    }
+}
+
+// phone
+@media screen and (max-width: 767px) {
+
+    .container {
+        box-sizing: border-box;
+        min-height: 100vh;
+        padding: 10px;
+        background: none;
+    }
+
+    .column {
+        max-width: 95%;
+        margin-right: auto;
+        height: 100%;
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .centered-container {
+        width: auto;
+        height: auto;
+    }
+
+    .logo {
+        margin: 0;
+        color: $TextColor;
+        font-size: 2em;
+        text-decoration: none;
+        user-select: none;
+    }
+
+    .login-form {
+        padding-right: 5px;
+        padding-bottom: 38px;
+        padding-left: 5px;
+        padding-top: 5px;
+        background-color: $Background;
+        box-shadow: none;
+        border-radius: 5px;
+        & img{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .form-wrapper {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        margin-bottom: auto;
+        margin-top: auto;
     }
 }
