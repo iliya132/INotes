@@ -52,7 +52,10 @@ export enum Icons {
     ArrowDown = "arrow-down",
     Notebook = "notebook",
     WhiteDots = "white-dots",
-    yandexBtn = "yandex-btn"
+    yandexBtn = "yandex-btn",
+    threeDots = "three-dots",
+    arrowBarLeft = "arrow-bar-left",
+    arrowBarRight = "arrow-bar-right"
 }
 
 export const ICONS_DATA: TIconsData = {
@@ -88,5 +91,8 @@ export const ICONS_DATA: TIconsData = {
     [Icons.GoogleLogo]: {color: colors.BlackCommon, width: '24px', height: 24},
     [Icons.ArrowDown]: {color: colors.BlackCommon, width: '17px', height: 17},
     [Icons.Notebook]: {color: colors.BlackCommon, width: '20px', height: 20},
-    [Icons.yandexBtn]: {color: colors.BlackCommon, width: '100%', height: 44}
+    [Icons.yandexBtn]: {color: colors.BlackCommon, width: '100%', height: 44},
+    [Icons.threeDots]: {color: colors.BlackCommon, width: '32px', height: 32},
+    [Icons.arrowBarLeft]: {color: colors.BlackCommon, width: "16px", height:16},
+    [Icons.arrowBarRight]: {color: colors.BlackCommon, width: "16px", height:16}
 };

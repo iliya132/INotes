@@ -12,7 +12,7 @@ import styles from './search.scss';
 import ISearchProps from './types';
 
 export function Search(props: ISearchProps) {
-    const { onChange } = props;
+    const { onChange, hidden } = props;
     const inputRef = useRef(null);
     const nav = useNavigate();
     const allNotesState = useSelector(allNotes);
@@ -51,7 +51,7 @@ export function Search(props: ISearchProps) {
 
     const isAnyResultsFound = foundResults.notebooks.length > 0 || foundResults.notes.length > 0;
 
-    return (
+    return hidden ? null : (
         <Popup
             onClose={handleClose}
             open={isOpen}

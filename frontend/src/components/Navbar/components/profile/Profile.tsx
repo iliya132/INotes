@@ -5,14 +5,16 @@ import Popup from 'reactjs-popup';
 import Svg from '../../../../components/Svg';
 import { Icons } from '../../../../components/Svg/types';
 import authController from '../../../../controllers/AuthController';
+import { IProfileProps } from '../../../../pages/Profile/types';
 import { currentUser } from '../../../../store/reducers/authReducer';
 import styles from './Profile.scss';
 
-export function Profile() {
+export function Profile(props: IProfileProps) {
+    const { hidden } = props;
     const user = useSelector(currentUser);
     const avatarUrl = user!.avatarUrl ? user?.avatarUrl : "/avatar.png";
 
-    return (
+    return hidden? null : (
         <div className={styles['profile-container']}>
             <img src={avatarUrl} className={styles['profile-avatar']} />
             <span className={styles['profile-userame']}>{user?.userName}</span>
