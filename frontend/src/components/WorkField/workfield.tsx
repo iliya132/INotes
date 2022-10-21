@@ -12,15 +12,15 @@ import { ShareButton } from './components/shareButton/ShareButton';
 import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
 import Popup from 'reactjs-popup';
 import { TagButton } from './components/TagButton/TagButton';
+import useEventListener from '../../Misc/utils/useEventListenerHook/useEventListenerHook';
 
 export function Workfield(props: IWorkfieldProps) {
+
     const { note, onChange, onSave } = props;
     const [currentNoteId, setCurrentNoteId] = useState(-1);
     const [rendered, setRendered] = useState('');
     const [input, setInput] = useState(note?.content);
     const [isReadMode, setReadMode] = useState(false);
-    console.log(input);
-
     const textAreaRef: React.LegacyRef<HTMLTextAreaElement> = useRef(null);
     const md = configureMarkdownIt();
     useEffect(() => {
@@ -31,13 +31,43 @@ export function Workfield(props: IWorkfieldProps) {
                 textAreaElem.value = note!.content;
                 setRendered(md.render(note?.content!));
                 setCurrentNoteId(props.note.id);
+
             }
         } else {
             setInput('');
             setRendered('');
             textAreaRef.current!.value = '';
         }
+
     });
+
+    const keyDownHandler = (e: KeyboardEvent) => {
+        let pressedKeys = new Set();
+        if (!pressedKeys.has(e.key)) {
+            pressedKeys.add(e.key);
+
+            if (e.ctrlKey) {
+                switch (e.key) {
+                    case ('s'):
+                        e.preventDefault();
+                        handleSaveChanges();
+                        break;
+                    case('b'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Bold);
+                        break;
+                    case('i'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Italic);
+                    case('u'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Underscoped);
+                }
+            }
+        }
+    };
+
+    useEventListener("keydown", keyDownHandler);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         handleTextAreaValueChanged(setRendered, setInput, md)(event);
@@ -84,20 +114,22 @@ export function Workfield(props: IWorkfieldProps) {
         }
     };
 
+    function getCurrentInput() {
+        return input;
+    }
+
     function handleSaveChanges() {
         if (note) {
             const noteToUpdate: INoteDTO = {
-                content: input!,
+                content: getCurrentInput()!,
                 id: note.id,
-                name: getTitle(input!),
+                name: getTitle(getCurrentInput()!),
                 notebookId: note?.parent.id,
                 isShared: note.isPublicUrlShared,
                 publicUrl: note.publicUrl,
                 tags: note.tags
             };
-            console.log(input);
-            console.log(noteToUpdate);
-            // notesController.updateNote(noteToUpdate);
+            notesController.updateNote(noteToUpdate);
         }
         if (onSave) {
             onSave();

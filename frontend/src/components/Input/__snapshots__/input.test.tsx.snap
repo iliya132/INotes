@@ -8,7 +8,7 @@ exports[`test  input component matches snapshot: Input test snapshot 1`] = `
     class="image pre-icon tooltip"
     fill="BlackCommon"
     height="17"
-    width="17"
+    width="17px"
   >
     <use
       xlink:href="test-file-stub#key"
