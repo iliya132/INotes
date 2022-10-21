@@ -12,14 +12,15 @@ import { ShareButton } from './components/shareButton/ShareButton';
 import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
 import Popup from 'reactjs-popup';
 import { TagButton } from './components/TagButton/TagButton';
+import useEventListener from '../../Misc/utils/useEventListenerHook/useEventListenerHook';
 
 export function Workfield(props: IWorkfieldProps) {
+
     const { note, onChange, onSave } = props;
     const [currentNoteId, setCurrentNoteId] = useState(-1);
     const [rendered, setRendered] = useState('');
     const [input, setInput] = useState(note?.content);
     const [isReadMode, setReadMode] = useState(false);
-
     const textAreaRef: React.LegacyRef<HTMLTextAreaElement> = useRef(null);
     const md = configureMarkdownIt();
     useEffect(() => {
@@ -30,13 +31,43 @@ export function Workfield(props: IWorkfieldProps) {
                 textAreaElem.value = note!.content;
                 setRendered(md.render(note?.content!));
                 setCurrentNoteId(props.note.id);
+
             }
         } else {
             setInput('');
             setRendered('');
             textAreaRef.current!.value = '';
         }
+
     });
+
+    const keyDownHandler = (e: KeyboardEvent) => {
+        let pressedKeys = new Set();
+        if (!pressedKeys.has(e.key)) {
+            pressedKeys.add(e.key);
+
+            if (e.ctrlKey) {
+                switch (e.key) {
+                    case ('s'):
+                        e.preventDefault();
+                        handleSaveChanges();
+                        break;
+                    case('b'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Bold);
+                        break;
+                    case('i'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Italic);
+                    case('u'):
+                        e.preventDefault();
+                        handleWfAction(WfAction.Underscoped);
+                }
+            }
+        }
+    };
+
+    useEventListener("keydown", keyDownHandler);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         handleTextAreaValueChanged(setRendered, setInput, md)(event);
@@ -83,12 +114,16 @@ export function Workfield(props: IWorkfieldProps) {
         }
     };
 
-    const handleSaveChanges = () => {
+    function getCurrentInput() {
+        return input;
+    }
+
+    function handleSaveChanges() {
         if (note) {
             const noteToUpdate: INoteDTO = {
-                content: input!,
+                content: getCurrentInput()!,
                 id: note.id,
-                name: getTitle(input!),
+                name: getTitle(getCurrentInput()!),
                 notebookId: note?.parent.id,
                 isShared: note.isPublicUrlShared,
                 publicUrl: note.publicUrl,
@@ -102,7 +137,7 @@ export function Workfield(props: IWorkfieldProps) {
     };
 
     const handleNotecopy = () => {
-        if(note) {
+        if (note) {
             const noteToUpdate: INoteDTO = {
                 content: input!,
                 id: 0,
@@ -150,7 +185,7 @@ export function Workfield(props: IWorkfieldProps) {
                             onClick={() => handleWfAction(WfAction.Underscoped)}
                         />
                         <SmallButton
-                            size={15}data-testid="btn-dottedlist"
+                            size={15} data-testid="btn-dottedlist"
                             className={styles['wf-action-btn']}
                             icon={Icons.DottedList}
                             onClick={() => handleWfAction(WfAction.Dotted)}
@@ -202,21 +237,21 @@ export function Workfield(props: IWorkfieldProps) {
                             }>
                             <div className={styles["markdown-help-container"]} data-testid="markdown-help">
                                 <ul>
-                                    <li>Жирный текст <div className={styles["markdown-help-container-example"]}>**Text**</div></li><hr/>
-                                    <li>Курсивный текст <div className={styles["markdown-help-container-example"]}>*Text*</div></li><hr/>
-                                    <li>Подчеркнутый текст <div className={styles["markdown-help-container-example"]}>_Text_</div></li><hr/>
-                                    <li>Заголовок 1 уровня <div className={styles["markdown-help-container-example"]}># Text</div></li><hr/>
-                                    <li>Заголовок 2 уровня <div className={styles["markdown-help-container-example"]}>## Text</div></li><hr/>
-                                    <li>Заголовок 3 уровня <div className={styles["markdown-help-container-example"]}>### Text</div></li><hr/>
-                                    <li>Список с точками <div className={styles["markdown-help-container-example"]}>* Text</div></li><hr/>
-                                    <li>Список с цифрами <div className={styles["markdown-help-container-example"]}>1. Text</div></li><hr/>
-                                    <li>Блок кода <div className={styles["markdown-help-container-example"]}>``` javascript <br/> Text <br/>```</div></li><hr/>
-                                    <li>Однострочный код <div className={styles["markdown-help-container-example"]}>`Text`</div></li><hr/>
+                                    <li>Жирный текст <div className={styles["markdown-help-container-example"]}>**Text**</div></li><hr />
+                                    <li>Курсивный текст <div className={styles["markdown-help-container-example"]}>*Text*</div></li><hr />
+                                    <li>Подчеркнутый текст <div className={styles["markdown-help-container-example"]}>_Text_</div></li><hr />
+                                    <li>Заголовок 1 уровня <div className={styles["markdown-help-container-example"]}># Text</div></li><hr />
+                                    <li>Заголовок 2 уровня <div className={styles["markdown-help-container-example"]}>## Text</div></li><hr />
+                                    <li>Заголовок 3 уровня <div className={styles["markdown-help-container-example"]}>### Text</div></li><hr />
+                                    <li>Список с точками <div className={styles["markdown-help-container-example"]}>* Text</div></li><hr />
+                                    <li>Список с цифрами <div className={styles["markdown-help-container-example"]}>1. Text</div></li><hr />
+                                    <li>Блок кода <div className={styles["markdown-help-container-example"]}>``` javascript <br /> Text <br />```</div></li><hr />
+                                    <li>Однострочный код <div className={styles["markdown-help-container-example"]}>`Text`</div></li><hr />
                                     <li>Таблица <div className={styles["markdown-help-container-example"]}>
-                                        | header1 | header2 | <br/> |-----|-----| <br/>| value1 | value2 |</div></li><hr/>
-                                    <li>Ссылка <div className={styles["markdown-help-container-example"]}>[shown text](http://link_here.com)</div></li><hr/>
-                                    <li>Горизонтальная линия <div className={styles["markdown-help-container-example"]}>---</div></li><hr/>
-                                    <li>Цитирование <div className={styles["markdown-help-container-example"]}> &gt;Text</div></li><hr/>
+                                        | header1 | header2 | <br /> |-----|-----| <br />| value1 | value2 |</div></li><hr />
+                                    <li>Ссылка <div className={styles["markdown-help-container-example"]}>[shown text](http://link_here.com)</div></li><hr />
+                                    <li>Горизонтальная линия <div className={styles["markdown-help-container-example"]}>---</div></li><hr />
+                                    <li>Цитирование <div className={styles["markdown-help-container-example"]}> &gt;Text</div></li><hr />
                                 </ul>
                             </div>
                         </Popup>
@@ -224,16 +259,16 @@ export function Workfield(props: IWorkfieldProps) {
                 ) : null}
 
                 <div className={styles['workfield-actions-container']}>
-                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку"/>
-                    <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy"/>
+                    <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку" />
+                    <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy" />
                     <div>
-                        <TagButton note={note}/>
+                        <TagButton note={note} />
                     </div>
                     <div>
-                        <ShareButton note={note} data-testid="btn-share"/>
+                        <ShareButton note={note} data-testid="btn-share" />
                     </div>
-                    <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} data-testid="btn-read"/>
-                    <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" data-testid="btn-save"/>
+                    <SmallButton icon={Icons.Read} tooltip="Режим чтения" onClick={handleSwitchReadMode} data-testid="btn-read" />
+                    <MediumButton icon={Icons.Save} onClick={handleSaveChanges} title="Сохранить" data-testid="btn-save" />
                 </div>
             </div>
 

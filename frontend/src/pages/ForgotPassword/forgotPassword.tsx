@@ -7,6 +7,7 @@ import { Icons } from '../../components/Svg/types';
 import Svg from '../../components/Svg';
 import authController from '../../controllers/AuthController';
 import { toast } from 'react-toastify';
+import InputPage from '../Shared/InputPage';
 
 export function ForgotPassword() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -18,40 +19,34 @@ export function ForgotPassword() {
         const email = formElements.email.value;
         authController.forgotPassword(email).then((response) => {
             if (response) {
-                toast.success('На ваш почтовый адрес было направлено письмо с инструкцией по восстановлению пароля', {autoClose: 10_000});
+                toast.success('На ваш почтовый адрес было направлено письмо с инструкцией по восстановлению пароля', { autoClose: 10_000 });
             } else {
                 toast.error('Что-то пошло не так. Попробуйте повторить операцию');
             }
         });
     };
     return (
-        <div className={styles.container}>
-            <div className={styles['column']}>
-                <a href="/" className={styles['logo-link']}>
-                    <h1 className={styles.logo}>I-Note</h1>
-                </a>
+        <InputPage>
+            <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
+                <div className={styles['login-form']}>
+                    <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
+                    <div className={styles['login-input']}>
+                        <Svg icon={Icons.Email} className={styles['email-ico']} />
+                        <input type="email" autoComplete="email" id="email" placeholder="Почта..." />
+                    </div>
+                    <br />
+                    <div className={styles["help-text"]}>Если вы не помните ваш логин - напишите нам на <a href="mailto:support@i-note.online">support@i-note.online</a> и мы поможем
+                        восстановить доступ к аккаунту
+                    </div>
 
-                <form action="#" className={styles['centered-container']} onSubmit={handleSubmit}>
-                    <div className={styles['login-form']}>
-                        <img src={lockSvg} width="102px" height="102px" className={styles['lock-img']} />
-                        <div className={styles['login-input']}>
-                            <Svg icon={Icons.Email} className={styles['email-ico']} />
-                            <input type="email" autoComplete="email" id="email" placeholder="Почта..." />
-                        </div>
-                        <br/>
-                        <div className={styles["help-text"]}>Если вы не помните ваш логин - напишите нам на <a href="mailto:support@i-note.online">support@i-note.online</a> и мы поможем
-                            восстановить доступ к аккаунту
-                        </div>
-                        
-                    </div>
-                    <div className={styles['submit-area']}>
-                        <Button title="Восстановить" className={styles['login-btn']} />
-                        <NavLink to={'/login'} className={styles['nav-link']}>
-                            Я вспомнил свой пароль!
-                        </NavLink>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                <div className={styles['submit-area']}>
+                    <Button title="Восстановить" className={styles['login-btn']} />
+                    <NavLink to={'/login'} className={styles['nav-link']}>
+                        Я вспомнил свой пароль!
+                    </NavLink>
+                </div>
+            </form>
+        </InputPage>
     );
 }

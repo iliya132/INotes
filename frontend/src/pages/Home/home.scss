@@ -8,6 +8,7 @@
 
 .logo {
     margin: 0;
+    padding-top: 30px;
     color: $TextColor;
     font-size: 4em;
     text-decoration: none;
@@ -18,12 +19,6 @@
     text-decoration: none;
 }
 
-.container {
-    box-sizing: border-box;
-    height: 100%;
-    padding: 30px;
-    background: linear-gradient(288.67deg, #484848 0%, #484848 36%, #fff 36.03%, #fff 100%);
-}
 
 .offer-container {
     position: absolute;
@@ -39,22 +34,105 @@
     height: 1033.04px;
 }
 
-.offer {
-    position: absolute;
-    top: 436px;
-}
+
 
 .offer-header {
-    font-size: 40px;
+    font-size: 200%;
     font-weight: bold;
 }
 
 .offer-text {
     max-width: 570px;
-    font-size: 24px;
-    line-height: 41px;
+    font-size: 130%;
+    line-height: 150%;
 }
 
 .login-btn {
     margin-top: 35px;
 }
+
+// desktop
+@media screen and (min-width: 1024px){
+    .container {
+        box-sizing: border-box;
+        min-height: 100vh;
+        background: linear-gradient(288.67deg, #484848 0%, #484848 36%, #fff 36.03%, #fff 100%);
+    }
+
+    .offer {
+        position: absolute;
+        bottom: 40%;
+    }
+
+    .offer-header {
+        font-size: 300%;
+        font-weight: bold;
+    }
+    
+    .offer-text {
+        max-width: 570px;
+        font-size: 150%;
+        line-height: 150%;
+    }
+}
+
+// tablet
+@media screen and (min-width: 768px) and (max-width: 1023px){
+    .container {
+        box-sizing: border-box;
+        height: 100vh;
+        padding: 10px;
+        background: linear-gradient(330deg, #484848 0%, #484848 46%, #fff 46.03%, #fff 100%);
+    }
+
+    .offer {
+        position: absolute;
+        bottom: 50%;
+    }
+}
+
+// phone
+@media screen and (max-width: 767px){
+    .container {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 10px;
+        background: linear-gradient(220deg, #484848 0%, #484848 20%, #fff 20.2%, #fff 100%);
+    }
+
+    .logo {
+        margin: 0;
+        padding-top: 30px;
+        color: $TextColor;
+        font-size: 3em;
+        text-decoration: none;
+        user-select: none;
+    }
+    
+    .logo-link {
+        text-decoration: none;
+    }
+
+    .offer {
+        max-width: 95%;
+        box-sizing: border-box;
+        margin-top: auto;
+        margin-bottom: 20%;
+    }
+
+    .column {
+        max-width: 95%;
+        height: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-btn {
+        margin-top: 35px;
+        margin-left: auto;
+    }
+}
+
+

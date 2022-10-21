@@ -13,7 +13,7 @@ exports[`test  input component matches snapshot: Input test snapshot 1`] = `
       class="image small-button-icon tooltip"
       fill="BlackCommon"
       height="25"
-      width="25"
+      width="25px"
     >
       <use
         xlink:href="test-file-stub#tag"

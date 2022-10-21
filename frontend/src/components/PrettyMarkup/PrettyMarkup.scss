@@ -2,5 +2,12 @@
     margin: 5px 5px 0;
     padding: 15px;
     border: none;
+    max-width: 100%;
     border-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    & * {
+        word-wrap: break-word;
+    }
 }
