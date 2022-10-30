@@ -185,7 +185,6 @@ export function Workfield(props: IWorkfieldProps) {
                     const textAreaElem = textAreaRef!.current!;
                     const startPos = textAreaElem.selectionStart;
                     const EndPos = textAreaElem.selectionEnd;
-                    console.log(startPos, EndPos)
                     const startValue = textAreaElem?.value.substring(0, startPos);
                     const endValue = textAreaElem?.value.substring(EndPos);
                     const finalText = startValue + refs.join(", ") + endValue;
@@ -194,7 +193,6 @@ export function Workfield(props: IWorkfieldProps) {
                 });
         }
         e.preventDefault()
-
     }
 
     function getTitle(content: string) {

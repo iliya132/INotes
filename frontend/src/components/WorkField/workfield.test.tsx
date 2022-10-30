@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Workfield } from './workfield';
 import { INote, INotebook, INoteDTO } from '../../store/types';
 import notesController from '../../controllers/NotesController';
+import filesController from '../../controllers/FilesController';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from '../../store/reducers/authReducer';
@@ -15,6 +16,9 @@ jest.mock('../../controllers/NotesController', () => ({
     updateNote: jest.fn(),
 }));
 
+jest.mock('../../controllers/FilesController', () => ({
+    uploadfile: jest.fn()
+}))
 
 let initialState: RootState = {
     authReducer: {
@@ -395,4 +399,38 @@ describe('workfield tests', () => {
         fireEvent.keyDown(input, { key: 'Tab', code: 'Tab', charCode: 9, shiftKey: true });
         expect(input.value).toEqual("test-row1\ntest-row2");
     });
+
+    test('can drop file', async () => {
+        const blob: BlobPart[] = [new ArrayBuffer(10)]
+        const file = new File(blob, 'test-filename')
+        const dti = new MockedDataTransferItem(file)
+        render(<Provider store={store}><Workfield note={note} /></Provider>);
+        const input = screen.getByTestId('input-field') as HTMLTextAreaElement;
+
+        const uploadMock = jest.fn((_files: File[], _noteId: number) => {
+            return Promise.resolve({ fileName: "linkToDownload" } as any)
+        })
+        fireEvent.select(input);
+
+        filesController.uploadfile = uploadMock
+
+        await act(async () => {
+            fireEvent.drop(input, { dataTransfer: { items: [dti] } })
+            await waitFor(() => expect(filesController.uploadfile).toHaveBeenCalledTimes(1))
+        })
+
+        expect(input.value).toContain('[fileName](linkToDownload)')
+    })
 });
+
+class MockedDataTransferItem {
+    private file: File;
+
+    constructor(file: File) {
+        this.file = file;
+    }
+
+    public getAsFile(): File | undefined {
+        return this.file;
+    }
+}
