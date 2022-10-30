@@ -84,6 +84,7 @@
 
 .workfield-content-edit-field-textarea {
     margin: 5px 5px 0;
+    border: 2px solid transparent;
 
     textarea {
         box-sizing: border-box;
@@ -110,6 +111,10 @@
             background-color: $G4;
         }
     }
+}
+
+.drag-active{
+    border: 2px dashed red;
 }
 
 .note-name-edit-field {

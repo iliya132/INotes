@@ -5,6 +5,7 @@ import { IWorkfieldProps, WfAction } from './types';
 import styles from './workfield.scss';
 import PrettyMarkup from '../PrettyMarkup';
 import notesController from '../../controllers/NotesController';
+import filesController from '../../controllers/FilesController';
 import { INoteDTO } from '../../store/types';
 import { MediumButton } from '../SmallButton/MediumButton';
 import classNames from 'classnames';
@@ -14,10 +15,13 @@ import Popup from 'reactjs-popup';
 import { TagButton } from './components/TagButton/TagButton';
 import useEventListener from '../../Misc/utils/useEventListenerHook/useEventListenerHook';
 
+const imagePattern = /.*(.png|.jpg|.jpeg|.gif)/
+
 export function Workfield(props: IWorkfieldProps) {
 
     const { note, onChange, onSave } = props;
     const [currentNoteId, setCurrentNoteId] = useState(-1);
+    const [isDragActive, setDragActive] = useState(false);
     const [rendered, setRendered] = useState('');
     const [input, setInput] = useState(note?.content);
     const [isReadMode, setReadMode] = useState(false);
@@ -31,14 +35,12 @@ export function Workfield(props: IWorkfieldProps) {
                 textAreaElem.value = note!.content;
                 setRendered(md.render(note?.content!));
                 setCurrentNoteId(props.note.id);
-
             }
         } else {
             setInput('');
             setRendered('');
             textAreaRef.current!.value = '';
         }
-
     });
 
     const keyDownHandler = (e: KeyboardEvent) => {
@@ -52,14 +54,14 @@ export function Workfield(props: IWorkfieldProps) {
                         e.preventDefault();
                         handleSaveChanges();
                         break;
-                    case('b'):
+                    case ('b'):
                         e.preventDefault();
                         handleWfAction(WfAction.Bold);
                         break;
-                    case('i'):
+                    case ('i'):
                         e.preventDefault();
                         handleWfAction(WfAction.Italic);
-                    case('u'):
+                    case ('u'):
                         e.preventDefault();
                         handleWfAction(WfAction.Underscoped);
                 }
@@ -149,6 +151,48 @@ export function Workfield(props: IWorkfieldProps) {
             };
             notesController.copyNote(noteToUpdate);
         }
+    }
+
+    const handleDragOver = () => setDragActive(true);
+    const handleDragLeave = () => setDragActive(false);
+
+
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        setDragActive(false);
+        if (!note) {
+            return;
+        }
+
+        const items = e.dataTransfer.items
+        if (items && items.length > 0) {
+            const files: File[] = [];
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].getAsFile() != null) {
+                    files[files.length] = items[i].getAsFile()!;
+                }
+            }
+            filesController.uploadfile(files, note?.id)
+                .then(result => {
+                    let refs: String[] = [];
+                    for (const key in result) {
+                        let isImage = false;
+                        if(imagePattern.test(key)){
+                            isImage = true;
+                        }
+                        refs.push(`${isImage ? "!" : ""}[${key}](${result[key]})`)
+                    }
+                    const textAreaElem = textAreaRef!.current!;
+                    const startPos = textAreaElem.selectionStart;
+                    const EndPos = textAreaElem.selectionEnd;
+                    const startValue = textAreaElem?.value.substring(0, startPos);
+                    const endValue = textAreaElem?.value.substring(EndPos);
+                    const finalText = startValue + refs.join(", ") + endValue;
+                    textAreaElem.value = finalText;
+                    render(finalText)
+                });
+        }
+        e.preventDefault()
     }
 
     function getTitle(content: string) {
@@ -278,7 +322,11 @@ export function Workfield(props: IWorkfieldProps) {
                         styles['workfield-content-edit-field'],
                         isReadMode ? styles['reader-mode-invisible'] : null,
                     )}>
-                    <div className={styles['workfield-content-edit-field-textarea']} key={`text-area${note?.id}`}>
+                    <div className={classNames(styles['workfield-content-edit-field-textarea'], isDragActive ? styles['drag-active'] : undefined)} key={`text-area${note?.id}`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                    >
                         <textarea
                             data-testid="input-field"
                             onChange={(event) => handleChange(event)}
