@@ -48,22 +48,28 @@ export function Workfield(props: IWorkfieldProps) {
         if (!pressedKeys.has(e.key)) {
             pressedKeys.add(e.key);
 
-            if (e.ctrlKey) {
+            if (e.ctrlKey || e.metaKey) {
                 switch (e.key) {
                     case ('s'):
+                    case ('ы'):
                         e.preventDefault();
                         handleSaveChanges();
                         break;
                     case ('b'):
+                    case ('и'):
                         e.preventDefault();
                         handleWfAction(WfAction.Bold);
                         break;
                     case ('i'):
+                    case ('ш'):
                         e.preventDefault();
                         handleWfAction(WfAction.Italic);
+                        break;
                     case ('u'):
+                    case ('г'):
                         e.preventDefault();
                         handleWfAction(WfAction.Underscoped);
+                        break;
                 }
             }
         }
@@ -177,7 +183,7 @@ export function Workfield(props: IWorkfieldProps) {
                     let refs: String[] = [];
                     for (const key in result) {
                         let isImage = false;
-                        if(imagePattern.test(key)){
+                        if (imagePattern.test(key)) {
                             isImage = true;
                         }
                         refs.push(`${isImage ? "!" : ""}[${key}](${result[key]})`)

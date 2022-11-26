@@ -11,6 +11,7 @@
     background-color: $BlackCommon;
     gap: 12px;
     overflow: auto;
+    overflow-x: hidden;
 
     &.collapsed {
         width: 30px;
@@ -20,6 +21,25 @@
 
 .hidden {
     display: none !important;
+}
+
+.notes-nav-helpers-container {
+    display: flex;
+    justify-content: start;
+
+    & button {
+        font-family: Montserrat;
+        font-size: 14px;
+        border: none;
+        border-radius: 3px;
+        padding: 5px 15px;
+        margin: 0 5px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: azure;
+        }
+    }
 }
 
 .notes-page-navbar-logo {
