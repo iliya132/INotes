@@ -2,23 +2,26 @@
 
 .notebook-container {
     margin-top: 15px;
-    margin-left: 15px;
     color: white;
-}
+    cursor: pointer;
 
-.notebook-notes {
-    margin-top: 15px;
-    margin-left: 15px;
+
 }
 
 .notebook-row {
     display: flex;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 3px;
     flex-direction: row;
     gap: 10px;
-    cursor: pointer;
 
     &:hover .notebook-options-dots {
         visibility: visible;
+    }
+
+    &:hover {
+        background-color: #545454;
     }
 }
 
@@ -26,9 +29,14 @@
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 2px 0;
+    padding-left: 15px;
     font-family: Montserrat;
     font-size: 16px;
     cursor: pointer;
+
+    &:hover {
+        background-color: #545454;
+    }
 }
 
 .selected {

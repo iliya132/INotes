@@ -25,6 +25,7 @@ export interface INotebook {
     id: number;
     name: string;
     color: string;
+    isExpanded: boolean
 }
 
 export interface INote {
@@ -52,7 +53,8 @@ export interface INotebookWithNotes {
     id: number;
     name: string;
     color: string;
-    notes: INote[]
+    notes: INote[];
+    isExpanded: boolean;
 }
 
 export interface INoteSharedState {

@@ -18,9 +18,10 @@ describe('notes controller test', () => {
         const result: INotebook = {
             color: 'red',
             id: 1,
-            name: 'test-notebook'
+            name: 'test-notebook',
+            isExpanded: false
         };
-        mockAxiosPostResult({status: 200, data: result});
+        mockAxiosPostResult({ status: 200, data: result });
 
         await notesController.createNotebook('test-notebook');
 
@@ -43,7 +44,7 @@ describe('notes controller test', () => {
             publicUrl: note.publicUrl,
             tags: []
         };
-        mockAxiosPostResult({status: 200, data: apiNote});
+        mockAxiosPostResult({ status: 200, data: apiNote });
         await notesController.createNote('test-content', 1);
         const notesState = getNotesState();
         expect(notesState.notebooks).toHaveLength(1);
@@ -65,7 +66,7 @@ describe('notes controller test', () => {
             publicUrl: note.publicUrl,
             tags: []
         };
-        mockAxiosPostResult({status: 200, data: apiNote});
+        mockAxiosPostResult({ status: 200, data: apiNote });
         await notesController.copyNote(apiNote);
         const notesState = getNotesState();
         expect(notesState.notebooks).toHaveLength(1);
@@ -80,7 +81,8 @@ describe('notes controller test', () => {
             color: notebook.color,
             id: notebook.id,
             name: notebook.name,
-            notes: notes
+            notes: notes,
+            isExpanded: false
         };
         mockAxiosGetResult({ status: 200, data: [fetchResult] });
         await notesController.fetchNotes();
@@ -101,7 +103,7 @@ describe('notes controller test', () => {
     })
 
     test('can remove note', async () => {
-        const {note} = withDefaultStoreState();
+        const { note } = withDefaultStoreState();
         mockAxiosDeleteResult({ status: 200 });
         await notesController.removeNote(note.id);
         const state = getNotesState();
@@ -111,7 +113,7 @@ describe('notes controller test', () => {
 
     test('can update note', async () => {
         mockAxiosPutResult({ status: 200 });
-        const {notebook, note} = withDefaultStoreState();
+        const { notebook, note } = withDefaultStoreState();
         const noteDTO: INoteDTO = {
             content: 'changed-content',
             id: note.id,
@@ -140,7 +142,7 @@ describe('notes controller test', () => {
 
     test('can share note', async () => {
         mockAxiosPostResult({ status: 200 });
-        const {note} = withDefaultStoreState();
+        const { note } = withDefaultStoreState();
         await notesController.setShared(note.id, true);
         const state = getNotesState();
         expect(state.notebooks).toHaveLength(1);
@@ -149,12 +151,12 @@ describe('notes controller test', () => {
     })
 
     test('can find by text', () => {
-        const {note, notebook} = withDefaultStoreState();
+        const { note, notebook } = withDefaultStoreState();
         const result = notesController.find('test');
         expect(result.notebooks).toHaveLength(1);
         expect(result.notes).toHaveLength(1);
-        expect(result.notebooks[0]).toEqual({context: '%%test%%-notebook', notebook: notebook});
-        expect(result.notes[0]).toEqual({context: '%%test%%-content', note: note});
+        expect(result.notebooks[0]).toEqual({ context: '%%test%%-notebook', notebook: notebook });
+        expect(result.notes[0]).toEqual({ context: '%%test%%-content', note: note });
     })
 
     test('return empty result when search text is too short', () => {
@@ -187,7 +189,8 @@ function getTestNotebook() {
     return {
         color: 'red',
         id: 1,
-        name: 'test-notebook'
+        name: 'test-notebook',
+        isExpanded: false
     };
 }
 
@@ -211,8 +214,9 @@ function withDefaultStoreState() {
         color: notebook.color,
         id: notebook.id,
         name: notebook.name,
-        notes: [note]
+        notes: [note],
+        isExpanded: false
     };
     store.dispatch(setState([notebookWithNotes]));
-    return {notebook, note, notebookWithNotes};
+    return { notebook, note, notebookWithNotes };
 }

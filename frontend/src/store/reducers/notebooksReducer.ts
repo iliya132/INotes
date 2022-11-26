@@ -4,7 +4,9 @@ import { INote, INotebook, INotebookWithNotes, INoteDTO, INoteSharedState, Noteb
 
 const initialState: NotebooksState = {
     notebooks: [],
-    allNotes: []
+    allNotes: [],
+    selectedTags: [],
+    userTags: []
 };
 
 const slice = (initialState: NotebooksState) => createSlice({
@@ -44,10 +46,10 @@ const slice = (initialState: NotebooksState) => createSlice({
             state.allNotes = [...state.allNotes.filter(it => it.id !== action.payload)]
         },
         setState: (state: NotebooksState, action: PayloadAction<INotebookWithNotes[]>) => {
-            state.notebooks = action.payload.map(it => { return { id: it.id, name: it.name, color: it.color } })
+            state.notebooks = action.payload.map(it => { return { id: it.id, name: it.name, color: it.color, isExpanded: false } })
             state.allNotes = action.payload.flatMap(it => it.notes.map(note => {
                 return {
-                    ...note, parent: { color: it.color, name: it.name, id: it.id },
+                    ...note, parent: { color: it.color, name: it.name, id: it.id, isExpanded: false },
                     isNew: false
                 }
             }))
@@ -74,7 +76,6 @@ const slice = (initialState: NotebooksState) => createSlice({
         setUserTags: (state: NotebooksState, action: PayloadAction<string[]>) => {
             state.userTags = action.payload
         }
-
     }
 });
 

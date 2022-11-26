@@ -25,6 +25,7 @@ export function Navbar() {
             name: it.name,
             color: it.color,
             notes: notes.filter((note) => note.parent.id === it.id),
+            isExpanded: it.isExpanded
         } as INotebookWithNotes;
     });
 
@@ -49,7 +50,7 @@ export function Navbar() {
                 {notebooksWithNotes
                     .sort((first, second) => first.name.localeCompare(second.name))
                     .map((it) => (
-                        <Notebook key={`notebook_container#${it.id}`} notebook={it} />
+                        <Notebook key={`notebook_container#${it.id}`} notebook={it}/>
                     ))}
                 <Popup
                     trigger={
