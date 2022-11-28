@@ -1,0 +1,35 @@
+@import "../../../Misc/colors.scss";
+
+.file-row{
+    display: flex;
+    gap: 10px;
+    font-family: Montserrat;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid $Gray;
+}
+
+.extension {
+    background-color: $TextColor;
+    color: white;
+    font-weight: bold;
+    padding:10px;
+    border-radius: 2px;
+}
+
+.content {
+    padding-top: 10px;
+    text-align: left;
+    justify-content: left;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.content-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

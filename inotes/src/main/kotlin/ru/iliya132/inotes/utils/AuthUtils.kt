@@ -6,7 +6,7 @@ import ru.iliya132.inotes.models.User
 
 @Component
 class AuthUtils {
-    open fun getCurrentUserId() :Long{
+    fun getCurrentUserId() :Long{
         return (SecurityContextHolder.getContext().authentication.principal as User).id
     }
 }

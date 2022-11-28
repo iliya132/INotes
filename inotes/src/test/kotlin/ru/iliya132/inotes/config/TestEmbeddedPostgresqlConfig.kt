@@ -27,7 +27,7 @@ import javax.sql.DataSource
     transactionManagerRef = "transactionManager"
 )
 @Profile("test")
-class TestEmbeddedPostgresqlConfig() {
+class TestEmbeddedPostgresqlConfig {
     init {
         postgreSqlContainer.start()
         val database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
@@ -63,7 +63,7 @@ class TestEmbeddedPostgresqlConfig() {
             .packages("ru.iliya132.inotes.models").build()
     }
 
-    private fun jpaProperties(): Map<String, Any>? {
+    private fun jpaProperties(): Map<String, Any> {
         return HashMap()
     }
 

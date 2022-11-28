@@ -12,5 +12,4 @@ import org.springframework.context.annotation.PropertySources
     PropertySource("classpath:inotes.secrets-\${envTarget:default}.properties")
 )
 @Profile("!test")
-class PropertySourceConfig {
-}
+class PropertySourceConfig

@@ -9,10 +9,6 @@ class NotebookRepositoryMock : GenericCrudMock<Notebook, Long>(), NotebookReposi
         return super.existsById(id)
     }
 
-    override fun deleteById(id: Long) {
-        super.deleteById(id)
-    }
-
     override fun findAllByOwner(owner: Long): Collection<Notebook> {
         return super.findAll().filter { it.owner==owner }
     }
@@ -20,6 +16,10 @@ class NotebookRepositoryMock : GenericCrudMock<Notebook, Long>(), NotebookReposi
     override fun isUserOwner(notebookId: Long, userId: Long): Boolean {
         val notebook = super.findById(notebookId).orElseThrow()
         return notebook.owner==userId
+    }
+
+    override fun isUserOwnerByNoteId(noteId: Long, userId: Long): Boolean {
+        error("not implemented")
     }
 
     override fun findById(id: Long): Optional<Notebook> {

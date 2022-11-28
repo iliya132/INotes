@@ -14,6 +14,7 @@ import configureMarkdownIt from '../../Misc/utils/configureMarkdown';
 import Popup from 'reactjs-popup';
 import { TagButton } from './components/TagButton/TagButton';
 import useEventListener from '../../Misc/utils/useEventListenerHook/useEventListenerHook';
+import Uploads from '../Uploads';
 
 const imagePattern = /.*(.png|.jpg|.jpeg|.gif)/
 
@@ -121,6 +122,10 @@ export function Workfield(props: IWorkfieldProps) {
             notesController.removeNote(note?.id);
         }
     };
+
+    const handleUploadsClick = () => {
+
+    }
 
     function getCurrentInput() {
         return input;
@@ -310,6 +315,12 @@ export function Workfield(props: IWorkfieldProps) {
 
                 <div className={styles['workfield-actions-container']}>
                     <SmallButton icon={Icons.Remove} onClick={handleNoteRemove} tooltip="Удалить заметку" />
+                    <Popup trigger={
+                        <div>
+                            <SmallButton icon={Icons.download} onClick={handleUploadsClick} tooltip="Медиафайлы" />
+                        </div>
+                    }>{note == null ? undefined : <Uploads noteId={note!.id}/>}</Popup>
+
                     <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy" />
                     <div>
                         <TagButton note={note} />

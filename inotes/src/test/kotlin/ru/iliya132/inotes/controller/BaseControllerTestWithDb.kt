@@ -33,6 +33,7 @@ abstract class BaseControllerTestWithDb {
     companion object {
         const val FILE_API_URL = "/api/file"
         const val defaultUserName = "defaultUser@test.ru"
+        const val secondUserName = "second_defaultUser@test.ru"
         const val defaultUserPassword = "defaultPassword123!"
     }
 }
