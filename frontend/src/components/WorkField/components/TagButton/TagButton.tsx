@@ -14,7 +14,7 @@ import { userTags } from "../../../../store/reducers/notebooksReducer";
 export function TagButton(props: ITagButtonProps) {
     const { note } = props;
     if (!note) {
-        return <></>;
+        return <SmallButton icon={Icons.Tag} tooltip="Задать тэг" data-testid="btn-tag" disabled={true}/>;
     }
     const availableTags = useSelector(userTags)
     const selectedTags: ITag[] = note?.tags?.map(it => { return { label: it, value: it } })

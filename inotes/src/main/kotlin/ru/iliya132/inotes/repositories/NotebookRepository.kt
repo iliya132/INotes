@@ -13,6 +13,11 @@ interface NotebookRepository : CrudRepository<Notebook, Long> {
         nativeQuery = true)
     fun isUserOwner(@Param("id") notebookId: Long, @Param("owner") userId: Long): Boolean
 
+    @Query(value = "select exists (select 1 from notes n " +
+            "join notebooks nb on n.notebook = nb.id " +
+            "where n.id = :id and nb.owner = :owner)", nativeQuery = true)
+    fun isUserOwnerByNoteId(@Param("id") noteId: Long, @Param("owner") userId: Long): Boolean
+
     @Modifying
     @Query(value = "delete from notebooks n where n.id = :id", nativeQuery = true)
     override fun deleteById(@Param("id") id: Long)

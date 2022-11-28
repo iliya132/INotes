@@ -27,10 +27,7 @@ import ru.iliya132.inotes.config.SecurityConfig
 import ru.iliya132.inotes.config.ServicesConfig
 import ru.iliya132.inotes.dto.NoteDTO
 import ru.iliya132.inotes.dto.NotebookDTO
-import ru.iliya132.inotes.models.Blob
-import ru.iliya132.inotes.models.Note
-import ru.iliya132.inotes.models.Notebook
-import ru.iliya132.inotes.models.User
+import ru.iliya132.inotes.models.*
 import ru.iliya132.inotes.repositories.FileRepository
 import ru.iliya132.inotes.repositories.RolesRepository
 import ru.iliya132.inotes.repositories.UserRepository
@@ -44,7 +41,7 @@ import javax.transaction.Transactional
 @AutoConfigureMockMvc
 @Import(SecurityConfig::class, ServicesConfig::class, FileController::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class FileControllerTest : BaseControllerTestWithDb() {
+class FileControllerTest : BaseControllerTestWithDb() {
 
     @Autowired
     private lateinit var wac: WebApplicationContext
@@ -66,9 +63,10 @@ open class FileControllerTest : BaseControllerTestWithDb() {
     private lateinit var notebook: Notebook
     private lateinit var note: Note
     private lateinit var user: User
+    private lateinit var secondUser: User
 
     @BeforeAll
-    open fun onSetUp() {
+    fun onSetUp() {
         mvcMock = MockMvcBuilders.webAppContextSetup(wac)
             .apply<DefaultMockMvcBuilder>(springSecurity())
             .build()
@@ -76,14 +74,18 @@ open class FileControllerTest : BaseControllerTestWithDb() {
         rolesRepository.save(defaultRole)
         val defaultUser = User(
             0, defaultUserName, BCryptPasswordEncoder().encode(defaultUserPassword),
-            true, listOf(defaultRole), "externalUserName"
+            true, listOf(defaultRole), "externalUserName")
+        val secondUser = User(
+                0, secondUserName, BCryptPasswordEncoder().encode(defaultUserPassword),
+        true, listOf(defaultRole), "externalUserName"
         )
 
         user = userRepository.save(defaultUser)
-        notebook = notebookService.save(NotebookDTO(TEST_NOTEBOOK_ID, "test_notebook", "red", 0L))
+        this.secondUser = userRepository.save(secondUser)
+        notebook = notebookService.save(NotebookDTO(TEST_NOTEBOOK_ID, "test_notebook", "red", user.id))
         note = notebookService.saveNote(
             NoteDTO(
-                TEST_NOTE_ID,
+                 TEST_NOTE_ID,
                 "test_note",
                 "## test_note ",
                 notebook.id,
@@ -223,6 +225,33 @@ open class FileControllerTest : BaseControllerTestWithDb() {
         // try to download result
         downloadFile(savedBlobs[0].id!!)
             .andExpect { Assertions.assertThat(it.response.status).isEqualTo(404) }
+    }
+
+    @Test
+    fun `cant query for file info's when not authenticated`() {
+        val reqBuilder = MockMvcRequestBuilders.get("$FILE_API_URL/for-note/1")
+        mvcMock.perform(reqBuilder)
+            .andExpect{Assertions.assertThat(it.response.status).isEqualTo(403)}
+    }
+
+    @WithMockUser(defaultUserName)
+    @Test
+    fun `can query for file info's`() {
+        fileRepository.save(Blob("test_filename", ByteArray(0), user.id, 15, note.id))
+        val reqBuilder = MockMvcRequestBuilders.get("$FILE_API_URL/for-note/${note.id}")
+        val answer = mvcMock.perform(reqBuilder)
+            .andExpect{Assertions.assertThat(it.response.status).isEqualTo(200)}
+            .andReturn()
+        Assertions.assertThat(answer.response.contentAsString).isEqualTo("[{\"size\":15,\"fileName\":\"test_filename\"}]")
+    }
+
+    @Test
+    @WithMockUser(secondUserName)
+    fun `cant query for files info when not owner`() {
+        fileRepository.save(Blob("test_filename", ByteArray(0), secondUser.id, 0, note.id))
+        val reqBuilder = MockMvcRequestBuilders.get("$FILE_API_URL/for-note/1")
+        mvcMock.perform(reqBuilder)
+            .andExpect{Assertions.assertThat(it.response.status).isEqualTo(403)}
     }
 
     private fun uploadFile(noteId: Long, vararg files: MockMultipartFile): ResultActions {

@@ -28,7 +28,7 @@ class NotebookService(
             .map {
                 val noteDto = it.toDto()
                 val tags = tagsRepository.getByNoteId(it.id)
-                noteDto.tags.addAll(tags);
+                noteDto.tags.addAll(tags)
                 noteDto
             }.groupBy { it.notebookId }
         return notebooks.map {
@@ -91,6 +91,10 @@ class NotebookService(
         return noteRepository.findById(id)
     }
 
+    fun isNoteUserOwned(noteId: Long, userId: Long): Boolean {
+        return notebookRepository.isUserOwnerByNoteId(noteId, userId)
+    }
+
     fun isUserOwner(notebookId: Long, userId: Long): Boolean {
         return notebookRepository.isUserOwner(notebookId, userId)
     }
@@ -124,7 +128,7 @@ class NotebookService(
     }
 
     fun getUserTags(id: Long): List<String>{
-        return tagsRepository.getByUserId(id);
+        return tagsRepository.getByUserId(id)
     }
 }
 

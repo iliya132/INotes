@@ -6,11 +6,11 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
 @Service
-open class EmailService {
+class EmailService {
     @Autowired
     lateinit var emailSender: JavaMailSender
 
-    open fun sendSimpleMessage(to: String, subject: String, text: String) {
+    fun sendSimpleMessage(to: String, subject: String, text: String) {
         val message = SimpleMailMessage()
         message.setFrom("noreply@i-note.online")
         message.setTo(to)

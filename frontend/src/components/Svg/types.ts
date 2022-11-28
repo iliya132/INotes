@@ -55,7 +55,8 @@ export enum Icons {
     yandexBtn = "yandex-btn",
     threeDots = "three-dots",
     arrowBarLeft = "arrow-bar-left",
-    arrowBarRight = "arrow-bar-right"
+    arrowBarRight = "arrow-bar-right",
+    download = "download"
 }
 
 export const ICONS_DATA: TIconsData = {
@@ -94,5 +95,6 @@ export const ICONS_DATA: TIconsData = {
     [Icons.yandexBtn]: {color: colors.BlackCommon, width: '100%', height: 44},
     [Icons.threeDots]: {color: colors.BlackCommon, width: '32px', height: 32},
     [Icons.arrowBarLeft]: {color: colors.BlackCommon, width: "16px", height:16},
-    [Icons.arrowBarRight]: {color: colors.BlackCommon, width: "16px", height:16}
+    [Icons.arrowBarRight]: {color: colors.BlackCommon, width: "16px", height:16},
+    [Icons.download]: {color: colors.BlackCommon, width: "16px", height: 16}
 };

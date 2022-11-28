@@ -11,6 +11,6 @@ class AppLogoutSuccessHandler : LogoutSuccessHandler {
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        response!!.status = HttpServletResponse.SC_OK;
+        response!!.status = HttpServletResponse.SC_OK
     }
 }

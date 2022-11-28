@@ -7,20 +7,25 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import ru.iliya132.inotes.models.Blob
+import ru.iliya132.inotes.models.BlobLite
 import ru.iliya132.inotes.models.User
 import ru.iliya132.inotes.repositories.FileRepository
+import ru.iliya132.inotes.repositories.NoteRepository
+import ru.iliya132.inotes.services.NotebookService
 import ru.iliya132.inotes.services.security.UserService
 
 @RestController
 @RequestMapping("/api/file")
 class FileController(
     private val fileRepository: FileRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val notebookService: NotebookService
 ) {
     @Value("\${i-note.host-address}")
     val host: String? = null
@@ -30,6 +35,25 @@ class FileController(
 
     @Value("\${i-note.file.max_overall_file_size_per_user}")
     private val maxOverallFilesSizePerUser: Long = 0L
+
+    @GetMapping("/for-note/{note_id}")
+    fun getFilesInfo(@PathVariable(name = "note_id") noteId: Long, auth: Authentication): ResponseEntity<Collection<BlobLite>> {
+        val user = getUser(auth)
+        if(!notebookService.isNoteUserOwned(noteId, user.id)) {
+            throw BadCredentialsException("Note doesn't belong to current user authenticated")
+        }
+        return ResponseEntity.ok(fileRepository.findByNoteId(noteId))
+    }
+
+    @DeleteMapping("delete/{id}")
+    fun deleteFile(@PathVariable(name="id") fileId: Long, auth: Authentication){
+        val ownerId = fileRepository.getUserIdById(fileId)
+        val user = getUser(auth)
+        if(user.id != ownerId){
+            throw BadCredentialsException("This file doesnt belong to current user authenticated")
+        }
+        fileRepository.deleteById(fileId)
+    }
 
     @PostMapping("/upload/{note_id}")
     fun uploadFile(
@@ -97,7 +121,7 @@ class FileController(
         val file = fileRepository.findById(id)
         val user = getUser(auth)
         val isEmpty = file.isEmpty
-        val isOwned = user.id == file.get().ownerId
+        val isOwned = !isEmpty && user.id == file.get().ownerId
         if (isEmpty || !isOwned) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "Nothing found for requested resource")
         }
