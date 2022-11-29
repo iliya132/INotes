@@ -8,6 +8,7 @@
         "dev-build": "cross-env NODE_ENV=development webpack --mode development",
         "build": "cross-env NODE_ENV=production webpack --mode production",
         "build-and-run": "cross-env NODE_ENV=production webpack --mode production && node ./dist/server.js",
+        "build-and-run-dev": "cross-env NODE_ENV=development webpack --mode development && node ./dist/server.js",
         "codestyle": "eslint \"src/**/*.{ts,tsx}\"",
         "fix-codestyle": "eslint --fix \"src/**/*.{ts,tsx}\"",
         "check-styles": "stylelint --fix src/**/*.scss",

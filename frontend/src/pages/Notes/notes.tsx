@@ -4,11 +4,12 @@ import Workfield from '../../components/WorkField';
 import { useSelector } from 'react-redux';
 import { allNotes } from '../../store/reducers/notebooksReducer';
 import { INote } from '../../store/types';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 
 export function NotesPage() {
     const notes = useSelector(allNotes);
+    const navigate = useNavigate();
     const [isContextChanged, setContextChanged] = useState(false);
 
     const urlParams = useParams();
@@ -36,6 +37,10 @@ export function NotesPage() {
     const handleNoteSave = () => {
         setContextChanged(false);
     };
+
+    if (currentNote == undefined && urlParams.selectedNote != undefined) {
+        navigate("/notFound", { replace: true });
+    }
 
     return (
         <div className={styles['notes-page-container']}>
