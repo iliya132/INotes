@@ -8,7 +8,7 @@ const testing = {
 }
 
 const production = {
-    apiUrl: "https://www.i-note.online/",
+    apiUrl: "https://i-note.online/",
     maxFileSize: 31_457_280,
     searchContextOffset: 5,
     minSearchContextOffset: 100,
