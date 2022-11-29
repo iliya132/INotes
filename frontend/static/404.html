@@ -1,83 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <style>
-        * {
-            font-family: sans-serif;
-        }
-        body {
-            background-color: #a3b18a;
-        }
-        .container-centered {
-            min-width: 500px;
-            width: 40%;
-            height: 50%;
-            min-height: 400px;
-            background-color: #bac4a7;
-            position: absolute;
-            top: 20%;
-            left: 30%;
-            border-radius: 12px;
-            background-color: rgb(218 215 205 / 50%);
-            box-shadow: 0 0 91px rgb(0 0 0 / 14%);
-            padding: 25px;
-        }
 
-        h1 {
-            text-align: center;
-        }
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 700px;
+        min-height: 500px;
+        padding: 20px;
+        transform: translateX(-350px) translateY(-300px);
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0 0 91px rgba(0, 0, 0, 0.14);
+        font-family: Montserrat;
+        font-size: 18px;
+        text-align: center;
+    }
 
-        .message-container {
-            text-align: center;
-        }
+    .error-code {
+        margin: 40px 0;
+        font-size: 100px;
+        font-weight: bold;
+    }
 
-        span {
-            font-size: 24px;
-            text-align: center;
-        }
+    .back-link-container {
+        min-height: 70px;
+        text-align: center;
+    }
 
-        .error-code {
-            font-size: 150px;
-            text-align: center;
-            margin: auto;
-            height: 250px;
-            margin-top: 100px;
-        }
-        .back-link-container {
-            width: 100%;
-            text-align: center;
-        }
+    .back-link {
+        padding: 10px;
+        border-radius: 6px;
+        background-color: #424242;
+        color: white;
+        text-decoration: none;
+    }
 
-        .back-link {
-            display: inline-block;
-            margin: 0 auto;
-            text-decoration: none;
-            color: #dad7cd;
-            font-size: 20px;
-            border-radius: 6px;
-            padding: 10px;
-            background-color: #344e41;
-            text-align: center;
-        }
-        .back-link:hover {
-            background-color: #26392f;
-        }
-    </style>
-    <body>
-        <div class="container-centered">
-            <h1>Страница не найдена</h1>
-            <div class="message-container">
-                <span>К сожалению страница, которую вы ищете не найдена. Попробуйте другой запрос</span>
-            </div>
-            <div class="error-code">404</div>
-            <div class="back-link-container">
-                <a href="/" class="back-link">Вернуться на сайт</a>
-            </div>
+    .back-link:hover {
+        background-color: rgb(56, 56, 56);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h2>Страница, которую вы ищете не существует</h2>
+        <div class="message">Убедитесь что адрес указан верно</div>
+        <div class="error-code">404</div>
+        <div class="back-link-container">
+            <a href="/" class="back-link">
+                Вернуться на сайт
+            </a>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

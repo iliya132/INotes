@@ -22,7 +22,7 @@ const App = () => {
     const activeUser = useSelector(currentUser);
     const isSignedIn = isAuthenticated === undefined ? false : isAuthenticated;
 
-    return !loaded ? (<Loading/>) :
+    return !loaded ? (<Loading />) :
         (<Routes>
             <Route path="/">
                 <Route
@@ -34,7 +34,8 @@ const App = () => {
                     }
                 />
                 <Route
-                    path=":selectedNote"
+                    path="/note/:selectedNote"
+
                     element={
                         <GuardRoute key="selectedNote_guard" canActivate={isSignedIn} redirectTo="/home">
                             <NotesPage />

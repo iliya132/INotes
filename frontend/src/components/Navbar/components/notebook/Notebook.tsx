@@ -28,7 +28,7 @@ export function Notebook(props: INotebookProps) {
     }
 
     const handleNoteSelected = (note: INote) => {
-        navigate(`/${note.id}`);
+        navigate(`/note/${note.id}`);
     };
 
     const handleNewNote = (notebookId: number) => {
