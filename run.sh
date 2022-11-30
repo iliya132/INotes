@@ -46,6 +46,7 @@ mkdir ~/inotes/INotes/frontend/sslcert
 cp /etc/letsencrypt/live/i-note.online/fullchain.pem ~/inotes/INotes/frontend/sslcert/fullchain.pem
 cp /etc/letsencrypt/live/i-note.online/privkey.pem ~/inotes/INotes/frontend/sslcert/privkey.pem
 docker build -t i-note .
-rm -rf ~/inotes/INotes/frontend/sslcert
 echo "running docker container"
-docker run --name i_note -p 3000:3000 -d i-note
+docker run --name i_note -p 3000:3000 -p 3443:3443 -d i-note
+rm -rf ~/inotes/INotes/frontend/sslcert
+
