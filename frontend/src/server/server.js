@@ -6,15 +6,11 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const helmet = require('helmet');
+const isDev = process.env.NODE_ENV === 'development';
 
 const app = express();
 const PORT = 3000;
 const HTTPS_PORT = 3443;
-
-const options = {
-    cert: fs.readFileSync('/var/wwwroot/sslcert/fullchain.pem'),
-    key: fs.readFileSync('/var/wwwroot/sslcert/privkey.pem')
-};
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -47,5 +43,12 @@ app.get("*/*", (req, res) => {
 })
 
 app.listen(PORT);
-https.createServer(options, app)
-    .listen(HTTPS_PORT);
+if (!isDev){
+    const options = {
+        cert: fs.readFileSync('/var/wwwroot/sslcert/fullchain.pem'),
+        key: fs.readFileSync('/var/wwwroot/sslcert/privkey.pem')
+    };
+    https.createServer(options, app)
+        .listen(HTTPS_PORT);
+}
+
