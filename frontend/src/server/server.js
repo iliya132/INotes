@@ -16,6 +16,7 @@ const returnIndex = (req, res) => {
 };
 
 app.get("/", returnIndex)
+app.get("/home", returnIndex)
 app.get("/note/*", returnIndex);
 app.get("/login", returnIndex);
 app.get("/register", returnIndex);

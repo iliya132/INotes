@@ -113,6 +113,8 @@ class SecurityConfig {
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            .and()
+            .headers().httpStrictTransportSecurity().includeSubDomains(true).maxAgeInSeconds(31536000)
         return http.build()
     }
 
