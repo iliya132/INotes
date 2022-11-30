@@ -11,8 +11,8 @@ const PORT = 3000;
 const HTTPS_PORT = 3443;
 
 const options = {
-    cert: fs.readFileSync(path.resolve(__dirname, './.cert/fullchain.pem')),
-    key: fs.readFileSync(path.resolve(__dirname, './.cert/privkey.pem'))
+    cert: fs.readFileSync('/var/wwwroot/sslcert/fullchain.pem'),
+    key: fs.readFileSync('/var/wwwroot/sslcert/privkey.pem')
 };
 
 app.use(require('helmet')());
