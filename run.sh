@@ -29,6 +29,7 @@ pkill java
 echo "stopping docker container"
 docker stop i_note
 docker rm i_note
+docker system prune -a -f
 
 #build & run backend
 cd inotes
