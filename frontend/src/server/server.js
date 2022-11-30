@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
+const helmet = require('helmet');
 
 const app = express();
 const PORT = 3000;
@@ -15,7 +16,14 @@ const options = {
     key: fs.readFileSync('/var/wwwroot/sslcert/privkey.pem')
 };
 
-app.use(require('helmet')());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "img-src": ["'self'", "'https://upload.wikimedia.org'"]
+        }
+    }
+}));
 app.use(express.static("./dist"));
 
 const returnIndex = (req, res) => {
