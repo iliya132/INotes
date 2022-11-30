@@ -42,6 +42,10 @@ nohup java -jar -Dspring.profiles.active=production  ./target/inotes-0.0.1-SNAPS
 echo "installing node_modules"
 cd /home/iliya132/inotes/INotes/frontend
 echo "building docker image"
+mkdir ~/inotes/INotes/frontend/.cert
+cp /etc/letsencrypt/live/i-note.online/fullchain.pem ~/inotes/INotes/frontend/.cert/fullchain.pem
+cp /etc/letsencrypt/live/i-note.online/privkey.pem ~/inotes/INotes/frontend/.cert/privkey.pem
 docker build -t i-note .
+rm -rf ~/inotes/INotes/frontend/.cert
 echo "running docker container"
 docker run --name i_note -p 3000:3000 -d i-note
