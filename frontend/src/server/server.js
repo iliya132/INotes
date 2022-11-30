@@ -16,13 +16,11 @@ const options = {
 };
 
 app.use(require('helmet')());
-app.use(express.static("./"));
+app.use(express.static("./dist"));
 
 const returnIndex = (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 };
-
-app.get(/\.(js|css|map|ico|json|png|svg|html|ttf)$/, express.static(path.resolve(__dirname, './dist/')));
 app.get("/", returnIndex)
 app.get("/home", returnIndex)
 app.get("/note/*", returnIndex);
