@@ -14,9 +14,6 @@ git checkout main
 echo "GIT: pulling changes"
 git pull
 
-cp ./robots.txt /www/html/robots.txt
-cp ./sitemap.xml /www/html/sitemap.xml
-
 #Nginx section - required sudo access
 echo "updating nginx"
 pkill nginx
