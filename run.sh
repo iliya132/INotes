@@ -39,11 +39,11 @@ nohup java -jar -Dspring.profiles.active=production  ./target/inotes-0.0.1-SNAPS
 echo "installing node_modules"
 cd /home/iliya132/inotes/INotes/frontend
 echo "building docker image"
-mkdir ~/inotes/INotes/frontend/sslcert
-cp /etc/letsencrypt/live/i-note.online/fullchain.pem ~/inotes/INotes/frontend/sslcert/fullchain.pem
-cp /etc/letsencrypt/live/i-note.online/privkey.pem ~/inotes/INotes/frontend/sslcert/privkey.pem
+mkdir /home/iliya132/inotes/INotes/frontend/sslcert
+cp /etc/letsencrypt/live/i-note.online/fullchain.pem /home/iliya132/inotes/INotes/frontend/sslcert/fullchain.pem
+cp /etc/letsencrypt/live/i-note.online/privkey.pem /home/iliya132/inotes/INotes/frontend/sslcert/privkey.pem
 docker build -t i-note .
 echo "running docker container"
 docker run --name i_note -p 3000:3000 -p 3443:3443 -d i-note
-rm -rf ~/inotes/INotes/frontend/sslcert
+rm -rf /home/iliya132/inotes/INotes/frontend/sslcert
 

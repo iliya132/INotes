@@ -20,7 +20,7 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            "img-src": ["'self'", "'https://upload.wikimedia.org'"]
+            "img-src": ["*"]
         }
     }
 }));
