@@ -15,12 +15,14 @@ import Popup from 'reactjs-popup';
 import { TagButton } from './components/TagButton/TagButton';
 import useEventListener from '../../Misc/utils/useEventListenerHook/useEventListenerHook';
 import Uploads from '../Uploads';
+import { useNavigate } from 'react-router-dom';
 
 const imagePattern = /.*(.png|.jpg|.jpeg|.gif)/
 
 export function Workfield(props: IWorkfieldProps) {
 
     const { note, onChange, onSave } = props;
+    const navigate = useNavigate();
     const [currentNoteId, setCurrentNoteId] = useState(-1);
     const [isDragActive, setDragActive] = useState(false);
     const [rendered, setRendered] = useState('');
@@ -119,7 +121,8 @@ export function Workfield(props: IWorkfieldProps) {
 
     const handleNoteRemove = () => {
         if (note) {
-            notesController.removeNote(note?.id);
+            notesController.removeNote(note?.id)
+                .then(() => navigate("/"));
         }
     };
 
@@ -319,7 +322,7 @@ export function Workfield(props: IWorkfieldProps) {
                         <div>
                             <SmallButton icon={Icons.download} onClick={handleUploadsClick} tooltip="Медиафайлы" />
                         </div>
-                    }>{note == null ? undefined : <Uploads noteId={note!.id}/>}</Popup>
+                    }>{note == null ? undefined : <Uploads noteId={note!.id} />}</Popup>
 
                     <SmallButton icon={Icons.Copy} onClick={handleNotecopy} tooltip="Скопировать заметку" data-testid="btn-copy" />
                     <div>
