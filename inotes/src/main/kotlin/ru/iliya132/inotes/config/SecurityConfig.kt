@@ -30,6 +30,9 @@ class SecurityConfig {
     @Autowired
     lateinit var userService: UserService
 
+    @Value("#{'\${i-note.allowed-origins}'.split(',')}")
+    lateinit var allowedOrigins: List<String>
+
     @Value("\${i-note.remember-me.key}")
     val rememberMeKey: String = "test-key"
 
@@ -68,7 +71,7 @@ class SecurityConfig {
         http.csrf().disable()
             .cors().configurationSource {
                 val config = CorsConfiguration()
-                config.allowedOrigins = ALLOWED_ORIGINS
+                config.allowedOrigins = allowedOrigins
                 config.allowCredentials = true
                 config.allowedMethods = listOf("*")
                 config.addAllowedHeader("*")
@@ -120,6 +123,6 @@ class SecurityConfig {
 
     companion object {
         val ALLOWED_ORIGINS = listOf("http://localhost:3000", "http://localhost:80", "https://localhost:443",
-            "http://i-note.online", "https://i-note.online", "https://www.i-note.online", "http://www.i-note.online")
+            "http://i-note.online", "https://i-note.online")
     }
 }

@@ -8,9 +8,6 @@ fi
 #cleanup
 cd /home/iliya132/inotes/INotes
 
-cp ./robots.txt /www/html/robots.txt
-cp ./sitemap.xml /www/html/sitemap.xml
-
 #Nginx section - required sudo access
 echo "updating nginx"
 pkill nginx
@@ -23,6 +20,7 @@ pkill java
 echo "stopping docker container"
 docker stop i_note
 docker rm i_note
+docker system prune -a -f
 
 #build & run backend
 cd inotes
@@ -35,6 +33,10 @@ nohup java -jar -Dspring.profiles.active=production  ./target/inotes-0.0.1-SNAPS
 echo "installing node_modules"
 cd /home/iliya132/inotes/INotes/frontend
 echo "building docker image"
+mkdir /home/iliya132/inotes/INotes/frontend/sslcert
+cp /etc/letsencrypt/live/i-note.online/fullchain.pem /home/iliya132/inotes/INotes/frontend/sslcert/fullchain.pem
+cp /etc/letsencrypt/live/i-note.online/privkey.pem /home/iliya132/inotes/INotes/frontend/sslcert/privkey.pem
 docker build -t i-note .
 echo "running docker container"
-docker run --name i_note -p 3000:3000 -d i-note
+docker run --name i_note -p 3000:3000 -p 3443:3443 -d i-note
+rm -rf /home/iliya132/inotes/INotes/frontend/sslcert

@@ -72,6 +72,14 @@ module.exports = {
                     from: path.resolve(__dirname, '../static/404.html'),
                     to: path.resolve(__dirname, '../dist/404.html')
                 },
+                {
+                    from: path.resolve(__dirname, '../static/sitemap.xml'),
+                    to: path.resolve(__dirname, '../dist/sitemap.xml')
+                },
+                {
+                    from: path.resolve(__dirname, '../static/robots.txt'),
+                    to: path.resolve(__dirname, '../dist/robots.txt')
+                },
             ],
         }),
     ],

@@ -103,6 +103,7 @@ export default function Login() {
                                 <div className={styles['google-icon-wrapper']}>
                                     <img
                                         className={styles['google-icon-svg']}
+                                        crossOrigin='anonymous'
                                         src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                                     />
                                 </div>
