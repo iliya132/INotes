@@ -19,8 +19,7 @@ app.use(helmet({
             "img-src": ["*"]
         }
     },
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: false
+    crossOriginEmbedderPolicy: false
 }));
 app.use(express.static("./dist"));
 
