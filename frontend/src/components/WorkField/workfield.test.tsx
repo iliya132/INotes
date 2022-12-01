@@ -18,7 +18,14 @@ jest.mock('../../controllers/NotesController', () => ({
 
 jest.mock('../../controllers/FilesController', () => ({
     uploadfile: jest.fn()
-}))
+}));
+
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom') as any,
+    useNavigate: () => mockedUsedNavigate,
+}));
 
 let initialState: RootState = {
     authReducer: {
@@ -232,7 +239,7 @@ describe('workfield tests', () => {
     test('can delete note', () => {
         let isRemoved = false;
         // eslint-disable-next-line no-unused-vars
-        const remove = jest.fn((noteId: number) => {
+        const remove = jest.fn(async (noteId: number) => {
             isRemoved = true;
         });
         notesController.removeNote = remove;
