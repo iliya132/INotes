@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import GuardRoute from './components/GuardRoute';
 import Loading from './components/Loading';
-import ForgotPassword from './pages/ForgotPassword';
-import Home from './pages/Home/home';
-import Login from './pages/Login';
-import { NotesPage } from './pages/Notes/notes';
-import NotFound from './pages/NotFound';
-import Profile from './pages/Profile';
-import Register from './pages/Register';
-import RestorePassword from './pages/RestorePassword';
-import Shared from './pages/Shared';
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const Home = React.lazy(() => import('./pages/Home/home'));
+const Login = React.lazy(() => import('./pages/Login'));
+const NotesPage = React.lazy(() => import('./pages/Notes'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const Profile = React.lazy(() => import('./pages/Profile'));
+
+const Register = React.lazy(() => import('./pages/Register'));
+const RestorePassword = React.lazy(() => import('./pages/RestorePassword'));
+const Shared = React.lazy(() => import('./pages/Shared'));
 import { currentUser, isAuth, isLoaded } from './store/reducers/authReducer';
 
 const App = () => {
@@ -29,7 +30,9 @@ const App = () => {
                     index={true}
                     element={
                         <GuardRoute key="notes_guard" canActivate={isSignedIn} redirectTo="/home">
-                            <NotesPage />
+                            <Suspense fallback={<Loading/>}>
+                                <NotesPage />
+                            </Suspense>
                         </GuardRoute>
                     }
                 />
@@ -38,7 +41,9 @@ const App = () => {
 
                     element={
                         <GuardRoute key="selectedNote_guard" canActivate={isSignedIn} redirectTo="/home">
-                            <NotesPage />
+                            <Suspense fallback={<Loading/>}>
+                                <NotesPage />
+                            </Suspense>
                         </GuardRoute>
                     }
                 />
@@ -47,7 +52,9 @@ const App = () => {
                 path="/home"
                 element={
                     <GuardRoute key="Home_guard" canActivate={!isSignedIn} redirectTo="/">
-                        <Home />
+                        <Suspense fallback={<Loading/>}>
+                            <Home />
+                        </Suspense>
                     </GuardRoute>
                 }></Route>
 
@@ -55,7 +62,9 @@ const App = () => {
                 path="/login"
                 element={
                     <GuardRoute canActivate={!isSignedIn} redirectTo="/">
-                        <Login />
+                        <Suspense fallback={<Loading/>}>
+                            <Login />
+                        </Suspense>
                     </GuardRoute>
                 }></Route>
             <Route
@@ -64,7 +73,9 @@ const App = () => {
                     <GuardRoute
                         canActivate={!isSignedIn}
                         redirectTo="/">
-                        <Register />
+                        <Suspense fallback={<Loading/>}>
+                            <Register />
+                        </Suspense>
                     </GuardRoute>
                 }
             />
@@ -73,13 +84,15 @@ const App = () => {
                 path="/profile"
                 element={
                     <GuardRoute canActivate={isSignedIn && activeUser !== undefined} redirectTo="/login">
-                        <Profile user={activeUser!} />
+                        <Suspense fallback={<Loading/>}>
+                            <Profile user={activeUser!} />
+                        </Suspense>
                     </GuardRoute>
                 }
             />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/restore-password/:userId/:verificationCode" element={<RestorePassword />} />
-            <Route path="/notFound" element={<NotFound />} />
+            <Route path="/forgot-password" element={<Suspense fallback={<Loading/>}><ForgotPassword /></Suspense>} />
+            <Route path="/restore-password/:userId/:verificationCode" element={<Suspense fallback={<Loading/>}><RestorePassword /></Suspense>} />
+            <Route path="/notFound" element={<Suspense fallback={<Loading/>}><NotFound /></Suspense>} />
             <Route path="*" element={<Navigate to={'/notFound'} replace={true} />} />
         </Routes>
 
