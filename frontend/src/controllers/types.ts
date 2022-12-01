@@ -45,8 +45,8 @@ export interface IFoundNotebook{
     context: string;
 }
 
-export interface IFileUploaded{
-    id: number;
+export interface IFileUploaded {
     fileName: string;
+    id: number;
     size: number;
 }
