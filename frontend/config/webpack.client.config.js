@@ -19,7 +19,11 @@ module.exports = {
         maxAssetSize: assetsSize
     },
     entry: {
-        main: ['./src/index.tsx']
+        main: {
+            import: './src/index.tsx',
+            dependOn: 'shared'
+        },
+        shared: ['react', './src/Misc/colors.scss', './src/Misc/fonts.scss', './src/Misc/root.scss', './static/assets/lock.svg']
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
@@ -37,6 +41,7 @@ module.exports = {
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin()],
+        runtimeChunk: 'single'
     },
     plugins: [
         new DefinePlugin({ PRODUCTION: JSON.stringify(isDev ? false : true) }),
