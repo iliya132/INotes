@@ -1,3 +1,5 @@
+const isDev = process.env.NODE_ENV === 'development';
+
 module.exports = {
     sass: {
         test: /\.s[ac]ss$/i,
@@ -9,7 +11,7 @@ module.exports = {
                 options: {
                     importLoaders: 1,
                     modules: {
-                        localIdentName: '[local]_[hash:base64:3]',
+                        localIdentName: isDev ? '[local]_[hash:base64:3]' : '[hash:base64:7]',
                     },
                 },
             },

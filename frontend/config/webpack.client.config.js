@@ -7,17 +7,19 @@ const assetsLoaders = require('./loaders/assets.loaders.js');
 const tsLoaders = require('./loaders/typescript.loaders.js');
 const path = require('path');
 const { DefinePlugin } = require('webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === 'development';
+const assetsSize = 1.5 * 1024 * 1024;
 
 module.exports = {
     mode: isDev ? 'development' : 'production',
-    entry: {
-        main: ['./src/index.tsx'],
-    },
     performance: {
-        maxEntrypointSize: 2000000,
-        maxAssetSize: 2000000
+        maxEntrypointSize: assetsSize,
+        maxAssetSize: assetsSize
+    },
+    entry: {
+        main: ['./src/index.tsx']
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
@@ -32,8 +34,12 @@ module.exports = {
         historyApiFallback: true,
     },
     devtool: isDev ? 'source-map' : false,
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+    },
     plugins: [
-        new DefinePlugin({PRODUCTION: JSON.stringify(isDev ? false : true)}),
+        new DefinePlugin({ PRODUCTION: JSON.stringify(isDev ? false : true) }),
         new HtmlWebpackPlugin({
             template: './static/index.html',
             minify: {
@@ -47,6 +53,12 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, '../static/assets'),
                     to: path.resolve(__dirname, '../dist'),
+                    filter: async (filePath) => {
+                        if(filePath.includes(".ttf")){
+                            return false;
+                        }
+                        return true;
+                    }
                 },
                 {
                     from: path.resolve(__dirname, '../manifest.json'),
