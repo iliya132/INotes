@@ -49,4 +49,5 @@ export interface IFileUploaded {
     fileName: string;
     id: number;
     size: number;
+    userId: number;
 }

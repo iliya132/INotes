@@ -10,11 +10,13 @@ interface FileRepository : JpaRepository<Blob, Long> {
     fun existsByNoteIdAndFileName(noteId: Long, fileName: String): Boolean
     fun findByNoteIdAndFileName(noteId: Long, fileName: String): Blob
 
-    @Query("select id, file_name as fileName, size from blob where note_id = :note_id", nativeQuery = true)
+    @Query("select id, file_name as fileName, note_id as noteId, size, user_id as userId from blob where note_id = :note_id", nativeQuery = true)
     fun findByNoteId(@Param("note_id")noteId: Long): Collection<BlobLite>
+
+    fun findByIdLight(id: Long): BlobLite
 
     @Query("select user_id from blob where id = :id", nativeQuery = true)
     fun getUserIdById(id: Long): Long
     @Query("select SUM(size) from blob where user_id = :userId", nativeQuery = true)
-    fun sumSizeByUserId(userId: Long): Long?
+    fun sumSizeByUserId(userId: Long): Long
 }

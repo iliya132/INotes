@@ -12,4 +12,6 @@ interface NoteRepository : CrudRepository<Note, Long> {
 
     @Query(value = "select * from notes n where n.public_id = :noteUrl", nativeQuery = true)
     fun findByPublicUrl(@Param("noteUrl") noteUrl: String): Note
+
+    fun findNotebookIdById(noteId: Long): Long
 }

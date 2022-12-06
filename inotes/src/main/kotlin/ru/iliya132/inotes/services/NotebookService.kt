@@ -35,8 +35,9 @@ class NotebookService(
             NotebookWithNotesDTO(
                 it.id,
                 it.name,
+                isOwner = it.owner == id,
                 it.color,
-                notes[it.id] ?: listOf())
+                notes = notes[it.id] ?: listOf())
         }
     }
 
