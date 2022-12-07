@@ -22,7 +22,6 @@ class AuthController extends BaseController {
         return axios.postForm(this.authUrl + "login", formData, { withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
-
                     this.getUser();
                 } else {
                     this.dispatchStore(authError(response.data.message))

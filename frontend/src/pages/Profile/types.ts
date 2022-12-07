@@ -1,4 +1,6 @@
+import { User } from "../../store/types";
 
 export interface IProfileProps{
-    hidden?: boolean | null
+    hidden?: boolean | null;
+    user: User;
 }

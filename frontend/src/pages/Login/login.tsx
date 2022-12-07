@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
 import authController from '../../controllers/AuthController';
-import { authErrors, removeAuthErrors, validationError, validationErrors } from '../../store/reducers/authReducer';
+import { authErrors, isAuth, removeAuthErrors, validationError, validationErrors } from '../../store/reducers/authReducer';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './login.scss';
 import lockSvg from '../../../static/assets/lock.svg';
@@ -16,13 +16,18 @@ import { Input } from '../../components/Input/Input';
 import InputPage from '../Shared/InputPage';
 
 export default function Login() {
+    const authenticated = useSelector(isAuth);
+    const isSignedIn = authenticated === undefined ? false : authenticated;
     const dispatch = useAppDispatch();
     const hostUrl = properties.apiUrl;
     const location = useLocation();
+    const locationState = (location.state as { redirectTo: string })
+    const redirectUrl = locationState?.redirectTo || "/"
     const [isLoading, setLoading] = useState(false);
     useEffect(() => {
         dispatch(removeAuthErrors());
     }, [location]);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
@@ -58,7 +63,7 @@ export default function Login() {
         : validityErrors.errors?.password
             ? validityErrors.errors.password
             : undefined;
-    return (
+    return isSignedIn? <Navigate to={redirectUrl}/> : (
         <InputPage>
             <form
                 action="#"
