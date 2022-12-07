@@ -1,4 +1,6 @@
-export function NotFound() {
-    location.reload();
-    return undefined;
+import React from "react";
+
+export function NotFound(): JSX.Element {
+    location.reload(); // handled by nginx on prod
+    return (<></>);
 }

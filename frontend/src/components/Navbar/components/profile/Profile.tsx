@@ -12,6 +12,9 @@ import styles from './Profile.scss';
 export function Profile(props: IProfileProps) {
     const { hidden } = props;
     const user = useSelector(currentUser);
+    if (!user){
+        return undefined;
+    }
     const avatarUrl = user!.avatarUrl ? user?.avatarUrl : "/avatar.png";
 
     return hidden? null : (
