@@ -4,9 +4,9 @@
 ![tests](https://img.shields.io/github/workflow/status/iliya132/INotes/Test%20frontend?label=tests)
 ![last_commit](https://img.shields.io/github/last-commit/iliya132/INotes?style=flat-square)
 
-Приложение для организации хранения своих заметок. 
-Стэк: 
-`Kotlin, typescript, spring, react, postgresql, nginx, yandex-cloud` 
+Приложение для организации хранения своих заметок.  
+Стэк:  
+`Kotlin`, `typescript`, `spring`, `react`, `postgresql`, `nginx`, `yandex-cloud` 
 
 В стадии разработки 
 Планы:
@@ -21,9 +21,9 @@
 
 ---
 
-Notes web app 
-Stack: 
-`Kotlin, typescript, spring, react, postgresql, nginx, yandex-cloud` 
+Notes web app  
+Stack:  
+`Kotlin`, `typescript`, `spring`, `react`, `postgresql`, `nginx`, `yandex-cloud` 
 
 Work in progress
 Plans:
