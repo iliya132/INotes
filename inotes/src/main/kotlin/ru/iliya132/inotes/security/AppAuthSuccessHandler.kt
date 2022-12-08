@@ -17,7 +17,7 @@ class AppAuthSuccessHandler : SimpleUrlAuthenticationSuccessHandler() {
     @Autowired
     private lateinit var userService: UserService
 
-    @Value("\${i-note.frontend.url:http://localhost:3000/}")
+    @Value("\${i-note.frontend.oauth-redirect-url:http://localhost:3000/login}")
     private lateinit var frontendUrl: String
 
     @Throws(IOException::class, ServletException::class)

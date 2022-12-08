@@ -97,7 +97,7 @@ class SecurityConfig {
             .failureHandler(appAuthFailureHandler())
             .and()
             .oauth2Login {
-                it.defaultSuccessUrl("http://localhost:3000/")
+                it.defaultSuccessUrl("http://localhost:3000/login")
                 it.successHandler(appAuthSuccessHandler())
                 it.failureHandler(appAuthFailureHandler())
                 it.userInfoEndpoint().userService(oauthUserService())

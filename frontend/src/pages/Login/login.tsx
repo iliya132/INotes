@@ -14,6 +14,7 @@ import properties from '../../properties/properties';
 import PasswordInput from '../../components/PasswordInput';
 import { Input } from '../../components/Input/Input';
 import InputPage from '../Shared/InputPage';
+import { REDIRECT_URL } from '../../Misc/constant';
 
 export default function Login() {
     const authenticated = useSelector(isAuth);
@@ -22,7 +23,7 @@ export default function Login() {
     const hostUrl = properties.apiUrl;
     const location = useLocation();
     const locationState = (location.state as { redirectTo: string })
-    const redirectUrl = locationState?.redirectTo || "/"
+    const redirectUrl = localStorage.getItem(REDIRECT_URL) || locationState?.redirectTo || "/"
     const [isLoading, setLoading] = useState(false);
     useEffect(() => {
         dispatch(removeAuthErrors());
@@ -55,6 +56,20 @@ export default function Login() {
             setLoading(false);
         }
     };
+
+    const handleOauth = (url: string) => {
+        localStorage.setItem(REDIRECT_URL, redirectUrl)
+        document.location.replace(url)
+    }
+
+    const handleYandexOauth = () => {
+        handleOauth(`${hostUrl}oauth2/authorization/yandex`)
+    }
+
+    const handleGoogleOauth = () => {
+        handleOauth(`${hostUrl}oauth2/authorization/google`)
+    }
+
     const errors = useSelector(authErrors);
     const validityErrors = useSelector(validationErrors);
     const loginErrors = errors ? errors : validityErrors.errors?.login ? validityErrors.errors.login : undefined;
@@ -63,7 +78,7 @@ export default function Login() {
         : validityErrors.errors?.password
             ? validityErrors.errors.password
             : undefined;
-    return isSignedIn? <Navigate to={redirectUrl}/> : (
+    return isSignedIn ? <Navigate to={redirectUrl} /> : (
         <InputPage>
             <form
                 action="#"
@@ -100,10 +115,10 @@ export default function Login() {
                 </div>
                 <div className={styles['submit-area']}>
                     <div className={styles['oauth-btns']}>
-                        <a className={styles['ya-btn']} href={`${hostUrl}oauth2/authorization/yandex`}>
+                        <button className={styles['ya-btn']} onClick={handleYandexOauth} type="button">
                             <Svg icon={Icons.yandexBtn} />
-                        </a>
-                        <a className={styles['g-btn']} href={`${hostUrl}oauth2/authorization/google`}>
+                        </button>
+                        <button className={styles['g-btn']} onClick={handleGoogleOauth} type="button">
                             <div className={styles['google-btn']}>
                                 <div className={styles['google-icon-wrapper']}>
                                     <img
@@ -116,7 +131,7 @@ export default function Login() {
                                     <b>Sign in with Google</b>
                                 </p>
                             </div>
-                        </a>
+                        </button>
                     </div>
 
                     <Button title="Войти" className={styles['login-btn']} isLoading={isLoading} />

@@ -1,27 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, useLocation } from 'react-router-dom';
 import Button from '../../components/Button';
 import { Icons } from '../../components/Svg/types';
 import authController from '../../controllers/AuthController';
 import { ValidationResult } from '../../controllers/types';
 import { REG_EXP_VALIDATE_PASSWORD } from '../../Misc/regexp';
-import { authErrors, removeAuthErrors } from '../../store/reducers/authReducer';
+import { authErrors, isAuth, removeAuthErrors } from '../../store/reducers/authReducer';
 import { useAppDispatch } from '../../store/store.hooks';
 import styles from './register.scss';
 import lockSvg from '../../../static/assets/lock.svg';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { Input } from '../../components/Input/Input';
 import PasswordInput from '../../components/PasswordInput';
 import InputPage from '../Shared/InputPage';
+import { REDIRECT_URL } from '../../Misc/constant';
 
 export default function Register() {
+    const authenticated = useSelector(isAuth);
+    const isSignedIn = authenticated === undefined ? false : authenticated;
     const [validityState, setValidity] = useState({ isSucceded: true, errors: {} } as ValidationResult);
     const dispatch = useAppDispatch();
     const serverErrors = useSelector(authErrors);
     const [isLoading, setLoading] = useState(false);
     const containerRef = useRef(null);
     const location = useLocation();
+    const locationState = (location.state as { redirectTo: string })
+    const redirectUrl = localStorage.getItem(REDIRECT_URL) || locationState?.redirectTo || "/"
     useEffect(() => {
         dispatch(removeAuthErrors());
     }, [location]);
@@ -53,7 +57,7 @@ export default function Register() {
         }
     };
 
-    return (
+    return isSignedIn ? <Navigate to={redirectUrl} /> : (
         <InputPage>
             <form
                 action="#"

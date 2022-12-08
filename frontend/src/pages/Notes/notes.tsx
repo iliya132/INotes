@@ -6,6 +6,7 @@ import { allNotes } from '../../store/reducers/notebooksReducer';
 import { INote } from '../../store/types';
 import { Navigate, useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
+import { REDIRECT_URL } from '../../Misc/constant';
 
 export function NotesPage() {
     const notes = useSelector(allNotes);
@@ -24,6 +25,7 @@ export function NotesPage() {
                 return 'Вы не сохранили внесенные изменения. Если вы перейдете на другую страницу они будут потеряны';
             }
         };
+        localStorage.removeItem(REDIRECT_URL);
         return function cleanup() {
             window.onbeforeunload = null;
         };
