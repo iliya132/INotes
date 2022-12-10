@@ -11,4 +11,4 @@ EXPOSE 3443
 RUN npm ci
 RUN npm run build
 
-CMD node ./dist/server.js
+CMD node ./dist/server.js && rm -rf node_modules
