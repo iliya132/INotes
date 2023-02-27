@@ -17,7 +17,7 @@
 5. Двухфакторная аутентификация
 6. Создание HowTo или секции с документацией
 
-[Демо](https://www.i-note.online/)
+[Демо](https://notes.iliya132apps.ru/)
 
 ---
 
@@ -34,6 +34,6 @@ Plans:
 5. Two-factor authentication
 6. Create a HowTo or documentation section
 
-[Live demo](https://www.i-note.online/)
+[Live demo](https://notes.iliya132apps.ru/)
 
 
