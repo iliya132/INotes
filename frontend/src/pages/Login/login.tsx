@@ -114,25 +114,9 @@ export default function Login() {
                     </div>
                 </div>
                 <div className={styles['submit-area']}>
-                    <div className={styles['oauth-btns']}>
                         <button className={styles['ya-btn']} onClick={handleYandexOauth} type="button">
                             <Svg icon={Icons.yandexBtn} />
                         </button>
-                        <button className={styles['g-btn']} onClick={handleGoogleOauth} type="button">
-                            <div className={styles['google-btn']}>
-                                <div className={styles['google-icon-wrapper']}>
-                                    <img
-                                        className={styles['google-icon-svg']}
-                                        crossOrigin='anonymous'
-                                        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                                    />
-                                </div>
-                                <p className={styles['btn-text']}>
-                                    <b>Sign in with Google</b>
-                                </p>
-                            </div>
-                        </button>
-                    </div>
 
                     <Button title="Войти" className={styles['login-btn']} isLoading={isLoading} />
                     <NavLink to={'/register'} className={styles['nav-link']}>
