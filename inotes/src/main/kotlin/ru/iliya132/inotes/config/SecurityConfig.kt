@@ -123,6 +123,6 @@ class SecurityConfig {
 
     companion object {
         val ALLOWED_ORIGINS = listOf("http://localhost:3000", "http://localhost:80", "https://localhost:443",
-            "http://i-note.online", "https://i-note.online")
+            "http://notes.iliya132apps.ru", "https://notes.iliya132apps.ru")
     }
 }
