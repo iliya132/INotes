@@ -80,6 +80,7 @@ class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/api*").hasRole("user")
+            .antMatchers("/api/login/*").permitAll()
             .antMatchers("/api/notebook/shared-note/*").permitAll()
             .antMatchers("/auth/forgot-password/**").permitAll()
             .antMatchers("/auth/restore-password/**").permitAll()
