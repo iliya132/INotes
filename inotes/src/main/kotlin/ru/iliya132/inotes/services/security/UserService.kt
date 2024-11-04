@@ -2,7 +2,6 @@ package ru.iliya132.inotes.services.security
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
-import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -67,8 +66,12 @@ open class UserService(
 
         val user = userRepository.findById(userId).orElseThrow()
         if (!validatePassword(user, oldPassword)) {
-            return ResponseEntity.badRequest().body(ChangePasswordResponse(targets = arrayOf("old"), message =
-            "Неверно указан текущий пароль"))
+            return ResponseEntity.badRequest().body(
+                ChangePasswordResponse(
+                    targets = arrayOf("old"), message =
+                    "Неверно указан текущий пароль"
+                )
+            )
         }
         user.password = encoder.encode(password)
         userRepository.changePassword(encoder.encode(password), user.id)
@@ -91,13 +94,15 @@ open class UserService(
         val user = auth.principal as User
         val dbUser = userRepository.findByUserName(user.username)
 
-        val avatar = if (dbUser==null) NULL_AVATAR else imageRepository.findFirstIdByUserId(dbUser.id).orElse(NULL_AVATAR)
+        val avatar =
+            if (dbUser == null) NULL_AVATAR else imageRepository.findFirstIdByUserId(dbUser.id).orElse(NULL_AVATAR)
         return SimpleUserDTO(user.displayName
-            ?: user.userName, user.authorities.map { it.authority }, generateAvatarUrl(avatar))
+            ?: user.userName, user.authorities.map { it.authority }, generateAvatarUrl(avatar)
+        )
     }
 
     private fun generateAvatarUrl(avatarId: Long): String {
-        if (avatarId==NULL_AVATAR) {
+        if (avatarId == NULL_AVATAR) {
             return "${frontendUrl}avatar.png"
         }
         return "$host/api/static/img/$avatarId"

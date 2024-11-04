@@ -18,11 +18,19 @@ class UserRepositoryMock : UserRepository {
         TODO("Not yet implemented")
     }
 
+    override fun findByExternalLogin(login: String): User? {
+        TODO("Not yet implemented")
+    }
+
     override fun existsByUserName(username: String): Boolean {
         return findByUserName(username)!=null
     }
 
     override fun existsByExternalUserName(username: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun existsByExternalLogin(login: String): Boolean {
         TODO("Not yet implemented")
     }
 

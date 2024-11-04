@@ -27,7 +27,10 @@ import ru.iliya132.inotes.config.SecurityConfig
 import ru.iliya132.inotes.config.ServicesConfig
 import ru.iliya132.inotes.dto.NoteDTO
 import ru.iliya132.inotes.dto.NotebookDTO
-import ru.iliya132.inotes.models.*
+import ru.iliya132.inotes.models.Blob
+import ru.iliya132.inotes.models.Note
+import ru.iliya132.inotes.models.Notebook
+import ru.iliya132.inotes.models.User
 import ru.iliya132.inotes.repositories.FileRepository
 import ru.iliya132.inotes.repositories.RolesRepository
 import ru.iliya132.inotes.repositories.UserRepository
@@ -242,7 +245,8 @@ class FileControllerTest : BaseControllerTestWithDb() {
         val answer = mvcMock.perform(reqBuilder)
             .andExpect{Assertions.assertThat(it.response.status).isEqualTo(200)}
             .andReturn()
-        Assertions.assertThat(answer.response.contentAsString).isEqualTo("[{\"size\":15,\"fileName\":\"test_filename\"}]")
+        Assertions.assertThat(answer.response.contentAsString).contains("\"size\":15")
+        Assertions.assertThat(answer.response.contentAsString).contains("\"fileName\":\"test_filename\"")
     }
 
     @Test

@@ -3,6 +3,7 @@ package ru.iliya132.inotes.config
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -34,6 +35,7 @@ class ServicesConfig {
     }
 
     @Bean
+    @Profile("!test")
     fun emailSender(): JavaMailSender {
         return JavaMailSenderImpl()
     }
