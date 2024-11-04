@@ -25,8 +25,8 @@ class OAuthUserService(
         val userName = attributes[userNameAttributeName] as String
         val authProvider = userRequest.clientRegistration.clientName
 
-        return if (userService.isExistsExternal(userName)) {
-            userService.getExternalUser(userName)
+        return if (userService.isExistsExternalLogin(userName)) {
+            userService.getExternalUserByLogin(userName)
         } else {
             val newUser = SecurityUtils.extractUser(attributes, authProvider, userName)
             userService.register(newUser)

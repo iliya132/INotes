@@ -83,6 +83,10 @@ open class UserService(
         return userRepository.existsByExternalUserName(userName)
     }
 
+    open fun isExistsExternalLogin(login: String): Boolean {
+        return userRepository.existsByExternalLogin(login)
+    }
+
     fun getUser(auth: Authentication, request: HttpServletRequest): SimpleUserDTO {
         val user = auth.principal as User
         val dbUser = userRepository.findByUserName(user.username)
@@ -109,6 +113,10 @@ open class UserService(
 
     fun getExternalUser(userName: String): User {
         return userRepository.findByExternalUserName(userName) ?: throw NotFoundException()
+    }
+
+    fun getExternalUserByLogin(login: String): User {
+        return userRepository.findByExternalLogin(login) ?: throw NotFoundException()
     }
 
     fun getUserId(auth: Authentication): Long {
