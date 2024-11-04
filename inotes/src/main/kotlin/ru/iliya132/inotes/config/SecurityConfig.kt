@@ -99,8 +99,8 @@ class SecurityConfig {
             .failureHandler(appAuthFailureHandler())
             .and()
             .oauth2Login {
-                it.authorizationEndpoint()
-                    .baseUri("/api/login/oauth2")
+                it.redirectionEndpoint()
+                    .baseUri("/api/login/oauth2/code")
                 it.defaultSuccessUrl("http://localhost:3000/login")
                 it.successHandler(appAuthSuccessHandler())
                 it.failureHandler(appAuthFailureHandler())
